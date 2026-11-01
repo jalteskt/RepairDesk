@@ -4,7 +4,7 @@ A complete, modern, responsive frontend application for electronics repair shop 
 
 ---
 
-## 📁 Project Folder Structure
+##  Project Folder Structure
 
 ```
 RepairDesk/
@@ -41,7 +41,7 @@ RepairDesk/
 
 ---
 
-## 🚀 Key Feature Highlights
+## Key Feature Highlights
 
 ### 1. Customer Tracking Experience (`pages/track.html`)
 - **No account needed**: Customers access their repair status via a unique **6-character non-sequential code** (e.g., `B9X2K4`) or QR link (look-alike characters `0/O` and `1/I/L` excluded).
@@ -62,18 +62,3 @@ RepairDesk/
 - **Unclaimed Property Tracker**: Tracks 30-day ready collection window before daily storage fees or 1-year liquidation terms apply.
 
 ---
-
-## 💻 Running the Application
-
-Because this project uses vanilla HTML, CSS, and JS with zero external bundler dependencies, you can run it immediately using any local web server or directly in the browser:
-
-```bash
-# Option 1: Python HTTP Server (recommended for seamless relative paths)
-cd RepairDesk
-python -m http.server 8000
-
-# Open in your browser:
-# http://localhost:8000/
-# http://localhost:8000/pages/track.html
-# http://localhost:8000/dashboard/index.html
-```
