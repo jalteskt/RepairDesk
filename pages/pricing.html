@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing Plans — RepairDesk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <style>
+    .pricing-hero {
+      padding: 72px 0 40px;
+      text-align: center;
+      background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%);
+    }
+    .pricing-hero h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .pricing-hero p {
+      font-size: 1.15rem;
+      color: var(--text-light);
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+    .billing-toggle-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: #f1f5f9;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      margin-bottom: 48px;
+    }
+    .toggle-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-light);
+      cursor: pointer;
+    }
+    .toggle-label.active {
+      color: var(--text);
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1;
+      transition: .3s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+    .discount-badge {
+      background: #ccfbf1;
+      color: var(--primary-dark);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+
+    /* Cards */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-bottom: 80px;
+    }
+    @media (max-width: 992px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    .pricing-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px -4px rgba(13,148,136,0.12);
+    }
+    .pricing-card.featured {
+      border: 2px solid var(--primary);
+      box-shadow: 0 10px 25px -5px rgba(13,148,136,0.18);
+    }
+    .popular-pill {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 16px;
+      border-radius: 9999px;
+    }
+    .pricing-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .pricing-desc {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      min-height: 48px;
+    }
+    .pricing-cost {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
+    .price-value {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .price-period {
+      color: var(--text-light);
+      font-size: 1rem;
+    }
+    .pricing-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 32px;
+      flex: 1;
+    }
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .pricing-features svg {
+      width: 18px;
+      height: 18px;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* Comparison Table */
+    .comparison-section {
+      margin-bottom: 80px;
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 32px;
+      background: #fff;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .comparison-table th, .comparison-table td {
+      padding: 16px 20px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .comparison-table th {
+      background: #f8fafc;
+      font-weight: 700;
+    }
+    .comparison-table td:not(:first-child), .comparison-table th:not(:first-child) {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-brand">
+        <span class="navbar-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </span>
+        <span class="navbar-brand-name">RepairDesk</span>
+      </a>
+
+      <nav class="navbar-nav">
+        <ul class="navbar-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="help.html">Help Center</a></li>
+          <li><a href="pricing.html" class="active">Pricing</a></li>
+          <li><a href="track.html">Track Repair</a></li>
+        </ul>
+      </nav>
+
+      <div class="navbar-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Log In</a>
+        <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
+      </div>
+
+      <button class="navbar-hamburger" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <div class="navbar-mobile">
+      <ul class="navbar-mobile-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="help.html">Help Center</a></li>
+        <li><a href="pricing.html" class="active">Pricing</a></li>
+        <li><a href="track.html">Track Repair</a></li>
+      </ul>
+      <div class="navbar-mobile-actions">
+        <a href="login.html" class="btn btn-outline">Log In</a>
+        <a href="signup.html" class="btn btn-primary">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="pricing-hero">
+      <div class="container">
+        <span class="badge badge-teal" style="margin-bottom: 16px;">Transparent Pricing</span>
+        <h1>A little clarity for your repair business.</h1>
+        <p>Simple, predictable plans designed for repair shops, electronics centers, and mobile technicians. No hidden fees or surprises.</p>
+
+        <!-- Billing Toggle -->
+        <div class="billing-toggle-wrapper">
+          <span class="toggle-label active" id="label-monthly">Monthly</span>
+          <label class="switch">
+            <input type="checkbox" id="pricing-toggle" class="pricing-toggle">
+            <span class="slider"></span>
+          </label>
+          <span class="toggle-label" id="label-annual">Annual</span>
+          <span class="discount-badge">Save 20%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section class="section" style="padding-top: 0;">
+      <div class="container">
+        <div class="pricing-grid">
+          
+          <!-- Starter Tier -->
+          <div class="pricing-card">
+            <h3 class="pricing-title">Starter</h3>
+            <p class="pricing-desc">Ideal for solo technicians or small local repair shops just starting out in the Philippines.</p>
+            <div class="pricing-cost">
+              <span class="price-value price-monthly">₱1,490</span>
+              <span class="price-value price-annual" style="display: none;">₱1,190</span>
+              <span class="price-period">/ month</span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Up to 100 Active Jobs
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                2 Technician Accounts
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                QR Code & 6-Char Tracking
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Printable Intake Stickers
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Basic SMS / Email Notifications
+              </li>
+            </ul>
+            <a href="signup.html?plan=starter" class="btn btn-outline" style="width: 100%; text-align: center;">Get Started Free</a>
+          </div>
+
+          <!-- Professional Tier (Highlighted) -->
+          <div class="pricing-card featured">
+            <span class="popular-pill">Most Popular in PH</span>
+            <h3 class="pricing-title">Professional</h3>
+            <p class="pricing-desc">The complete operating system for busy repair workshops with multiple technicians across Metro Manila.</p>
+            <div class="pricing-cost">
+              <span class="price-value price-monthly">₱3,990</span>
+              <span class="price-value price-annual" style="display: none;">₱3,190</span>
+              <span class="price-period">/ month</span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <strong>Unlimited</strong> Repair Jobs
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Up to 10 Technicians + Admin
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Customer Quote Approval Portal
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Warranty Claim Tracking
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Email Automation & GCash/Maya Records
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Unclaimed 30-Day Auto Reminders
+              </li>
+            </ul>
+            <a href="signup.html?plan=pro" class="btn btn-primary" style="width: 100%; text-align: center;">Start 14-Day Free Trial</a>
+          </div>
+
+          <!-- Enterprise Tier -->
+          <div class="pricing-card">
+            <h3 class="pricing-title">Enterprise</h3>
+            <p class="pricing-desc">For multi-branch service centers (Greenhills, Gilmore, SM Malls) requiring custom roles and audit logs.</p>
+            <div class="pricing-cost">
+              <span class="price-value price-monthly">₱9,990</span>
+              <span class="price-value price-annual" style="display: none;">₱7,990</span>
+              <span class="price-period">/ month</span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Unlimited Everything & Locations
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Unlimited Technicians & Admins
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Full Audit Trail & Two-Factor Auth
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Custom Domain & Branding
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Dedicated Account Support Manager
+              </li>
+            </ul>
+            <a href="signup.html?plan=enterprise" class="btn btn-outline" style="width: 100%; text-align: center;">Contact Sales</a>
+          </div>
+
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="comparison-section">
+          <div style="text-align: center; margin-bottom: 24px;">
+            <h2>Compare Plan Features</h2>
+            <p style="color: var(--text-light);">Find the exact fit for your workshop capacity and team.</p>
+          </div>
+
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Features</th>
+                <th>Starter</th>
+                <th>Professional</th>
+                <th>Enterprise</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Active Repairs</td>
+                <td>100</td>
+                <td>Unlimited</td>
+                <td>Unlimited</td>
+              </tr>
+              <tr>
+                <td>Technicians Included</td>
+                <td>2</td>
+                <td>10</td>
+                <td>Unlimited</td>
+              </tr>
+              <tr>
+                <td>Customer QR / Code Tracker</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>Online Quote Approvals</td>
+                <td>—</td>
+                <td>✓</td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>Printable Intake Stickers</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>Unclaimed 30-Day Alerts & Fees</td>
+                <td>—</td>
+                <td>✓</td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>Warranty Claim Center</td>
+                <td>—</td>
+                <td>✓</td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>Role-based Access (Admin vs Tech)</td>
+                <td>Basic</td>
+                <td>Advanced</td>
+                <td>Custom RBAC</td>
+              </tr>
+              <tr>
+                <td>Audit Trail & Action Logs</td>
+                <td>—</td>
+                <td>30 Days</td>
+                <td>Unlimited</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-col footer-col-brand">
+          <a href="../index.html" class="footer-brand">
+            <span class="footer-logo-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+              </svg>
+            </span>
+            <span class="footer-brand-name">RepairDesk</span>
+          </a>
+          <p class="footer-tagline">The modern repair shop operating system. Track jobs, keep customers happy, and streamline intake to collection.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Product</h4>
+          <ul class="footer-links">
+            <li><a href="../index.html#features">Features</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="track.html">Customer Tracker</a></li>
+            <li><a href="../dashboard/index.html">Live Demo</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Company</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="help.html">Help Center</a></li>
+            <li><a href="about.html#team">Meet the Team</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Access</h4>
+          <ul class="footer-links">
+            <li><a href="login.html">Technician Login</a></li>
+            <li><a href="login.html?role=admin">Admin Sign In</a></li>
+            <li><a href="track.html">Lookup with 6-Char Code</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">&copy; 2026 RepairDesk Inc. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
+

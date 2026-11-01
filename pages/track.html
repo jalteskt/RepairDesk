@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Repair Tracker — RepairDesk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <style>
+    .track-hero {
+      background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%);
+      padding: 60px 0 40px;
+      text-align: center;
+    }
+    .track-search-card {
+      max-width: 580px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 24px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+    .track-input-group {
+      display: flex;
+      gap: 12px;
+    }
+    .track-input {
+      flex: 1;
+      padding: 14px 18px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      font-family: monospace, inherit;
+      text-align: center;
+    }
+    .track-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+    }
+
+    /* Tracker Body Container */
+    .status-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding-bottom: 80px;
+    }
+
+    /* Status Header Card */
+    .job-header-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .job-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .job-ref-badge {
+      font-family: monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: #334155;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Visual Stepper */
+    .stepper-wrapper {
+      margin: 32px 0 20px;
+      position: relative;
+    }
+    .stepper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .stepper::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 20px;
+      right: 20px;
+      height: 3px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+    .stepper-progress {
+      position: absolute;
+      top: 18px;
+      left: 20px;
+      height: 3px;
+      background: var(--primary);
+      z-index: 2;
+      transition: width 0.4s ease;
+    }
+    .step-item {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 80px;
+    }
+    .step-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 8px;
+      transition: all 0.3s;
+    }
+    .step-item.active .step-circle {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+    .step-item.completed .step-circle {
+      border-color: var(--primary);
+      background: #f0fdfa;
+      color: var(--primary);
+    }
+    .step-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748b;
+      line-height: 1.2;
+    }
+    .step-item.active .step-label {
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+
+    @media (max-width: 680px) {
+      .stepper {
+        overflow-x: auto;
+        padding-bottom: 12px;
+      }
+      .step-item {
+        min-width: 72px;
+      }
+    }
+
+    /* Grid Layout for Tracker details */
+    .tracker-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 840px) {
+      .tracker-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .detail-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .detail-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 500px) {
+      .info-list {
+        grid-template-columns: 1fr;
+      }
+    }
+    .info-item .info-label {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .info-item .info-val {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Notes history */
+    .note-entry {
+      border-left: 3px solid var(--primary);
+      padding-left: 14px;
+      margin-bottom: 16px;
+    }
+    .note-time {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-bottom: 4px;
+    }
+    .note-text {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    /* Quote Approval Alert Box */
+    .quote-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .quote-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    /* Price Table */
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 0.9rem;
+    }
+    .price-table td {
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+    .price-table tr:last-child td {
+      border-bottom: none;
+      font-weight: 700;
+      font-size: 1rem;
+      padding-top: 12px;
+    }
+
+    /* Contact Technician Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-card {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      max-width: 500px;
+      width: 100%;
+      padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-brand">
+        <span class="navbar-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </span>
+        <span class="navbar-brand-name">RepairDesk</span>
+      </a>
+
+      <nav class="navbar-nav">
+        <ul class="navbar-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="help.html">Help Center</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="track.html" class="active">Track Repair</a></li>
+        </ul>
+      </nav>
+
+      <div class="navbar-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Staff Login</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Tracker Hero Search -->
+    <section class="track-hero">
+      <div class="container">
+        <span class="badge badge-teal" style="margin-bottom: 12px;">Live Customer Portal</span>
+        <h1 style="font-size: 2.25rem; margin-bottom: 12px;">Track Your Repair Status</h1>
+        <p style="color: var(--text-light); max-width: 520px; margin: 0 auto 28px;">
+          Enter the 6-character code printed on your intake ticket or emailed to you.
+        </p>
+
+        <div class="track-search-card">
+          <form id="track-form" onsubmit="handleLookup(event)">
+            <div class="track-input-group">
+              <input type="text" id="track-code" class="track-input" maxlength="6" value="B9X2K4" placeholder="B9X2K4" required autofocus>
+              <button type="submit" class="btn btn-primary" style="padding: 0 28px;">Check Status</button>
+            </div>
+          </form>
+          <div style="font-size: 0.8rem; color: #64748b; margin-top: 10px;">
+            Example Demo Codes: <a href="javascript:void(0)" onclick="loadCode('B9X2K4')"><strong>B9X2K4</strong> (Awaiting Quote)</a> &bull; <a href="javascript:void(0)" onclick="loadCode('M4K7P2')"><strong>M4K7P2</strong> (Collected / Warranty)</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Tracking Content -->
+    <section class="section" style="padding-top: 0;">
+      <div class="container status-container" id="tracker-display">
+        
+        <!-- Job Header Banner -->
+        <div class="job-header-card">
+          <div class="job-title-row">
+            <div>
+              <span class="job-ref-badge" id="display-code">CODE: B9X2K4</span>
+              <span class="badge badge-amber" id="display-status-badge" style="margin-left: 8px;">Awaiting Quote Approval</span>
+              <h2 style="font-size: 1.75rem; margin-top: 8px;" id="display-appliance">Dyson V11 Torque Drive Cordless Vacuum</h2>
+              <p style="color: var(--text-light); margin: 0;">Reported fault: <span id="display-fault" style="color: var(--text);">Pulsing on boost mode, shuts off after 10 seconds.</span></p>
+            </div>
+
+            <div style="text-align: right;">
+              <div style="font-size: 0.85rem; color: var(--text-light);">Customer</div>
+              <strong id="display-customer" style="font-size: 1.1rem; color: var(--text);">Christine Reyes</strong>
+              <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;" id="display-date">Intake: Oct 28, 2026</div>
+            </div>
+          </div>
+
+          <!-- Stepper Progress -->
+          <div class="stepper-wrapper">
+            <div class="stepper-progress" id="stepper-progress-bar" style="width: 33%;"></div>
+            <ol class="stepper">
+              <li class="step-item completed" id="step-1">
+                <div class="step-circle">✓</div>
+                <span class="step-label">Received</span>
+              </li>
+              <li class="step-item completed" id="step-2">
+                <div class="step-circle">✓</div>
+                <span class="step-label">Diagnosing</span>
+              </li>
+              <li class="step-item active" id="step-3">
+                <div class="step-circle">3</div>
+                <span class="step-label">Quote Approval</span>
+              </li>
+              <li class="step-item" id="step-4">
+                <div class="step-circle">4</div>
+                <span class="step-label">Repairing</span>
+              </li>
+              <li class="step-item" id="step-5">
+                <div class="step-circle">5</div>
+                <span class="step-label">Ready</span>
+              </li>
+              <li class="step-item" id="step-6">
+                <div class="step-circle">6</div>
+                <span class="step-label">Collected</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="tracker-grid">
+          <!-- Left Column -->
+          <div>
+
+            <!-- Quote Action Box (Shown when Awaiting Quote Approval) -->
+            <div class="quote-box" id="quote-approval-box">
+              <h4 style="color: #92400e; margin-bottom: 8px; font-size: 1.05rem;">⚠️ Technician Diagnostics & Repair Quote Ready</h4>
+              <p style="color: #b45309; font-size: 0.9rem; margin-bottom: 12px;">
+                Technician Danilo Mendoza has diagnosed battery cell degradation and a clogged cyclone manifold. Your approval is required before our shop commences repair.
+              </p>
+              <div class="quote-actions">
+                <button type="button" class="btn btn-primary" onclick="approveQuote()">✓ Approve Repair Quote (₱5,550.00)</button>
+                <button type="button" class="btn btn-outline" style="border-color:#b45309; color:#b45309;" onclick="declineQuote()">✕ Decline Quote</button>
+              </div>
+            </div>
+
+            <!-- Technician Notes -->
+            <div class="detail-card">
+              <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Technician Progress Log
+              </h3>
+              <div id="notes-list">
+                <div class="note-entry">
+                  <div class="note-time">Oct 29, 2026 &bull; 14:15 &bull; Danilo Mendoza (Technician)</div>
+                  <div class="note-text">Diagnostics complete. Battery pack voltage under load drops from 25.2V to 18.1V causing auto-cutoff. Main logic board is intact. Quotation prepared for OEM battery replacement and thermal deep clean.</div>
+                </div>
+                <div class="note-entry">
+                  <div class="note-time">Oct 28, 2026 &bull; 09:30 &bull; Gilmore Intake Counter</div>
+                  <div class="note-text">Appliance received with aluminum wand and torque drive head. Wall charger included. Minor scuffs on exterior bin.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Warranty Section (Available if Collected) -->
+            <div class="detail-card" id="warranty-card" style="display: none;">
+              <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                90-Day Repair Guarantee
+              </h3>
+              <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 16px;">
+                This repair is backed by our 90-day parts and labor warranty covering the replaced components through <strong>Jan 26, 2027</strong>.
+              </p>
+              <button class="btn btn-outline btn-sm" onclick="alert('Warranty claim form opened. Our Gilmore support team will contact you within 24 hours.')">File Warranty Claim</button>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Billing & Actions -->
+          <div>
+            <!-- Billing Breakdown -->
+            <div class="detail-card">
+              <h3>Billing & Payment</h3>
+              
+              <table class="price-table">
+                <tr>
+                  <td>Diagnostic Inspection</td>
+                  <td style="text-align: right;">₱500.00</td>
+                </tr>
+                <tr>
+                  <td>OEM Battery Pack (7-Cell)</td>
+                  <td style="text-align: right;">₱3,850.00</td>
+                </tr>
+                <tr>
+                  <td>Filter Assembly & Labor</td>
+                  <td style="text-align: right;">₱1,200.00</td>
+                </tr>
+                <tr>
+                  <td>Total Estimated</td>
+                  <td style="text-align: right; color: var(--primary-dark); font-weight: 800;">₱5,550.00</td>
+                </tr>
+              </table>
+
+              <div style="margin-top: 16px; padding: 10px; background: #f8fafc; border-radius: 6px; font-size: 0.85rem;">
+                <strong>Payment Status:</strong> 
+                <span class="badge badge-amber" id="payment-badge" style="margin-left: 6px;">Unpaid</span>
+                <p style="color: var(--text-light); margin-top: 4px; font-size: 0.75rem;">
+                  Payment is made at our Gilmore counter upon item pickup via Cash, GCash, Maya, or Credit/Debit Card.
+                </p>
+              </div>
+            </div>
+
+            <!-- Quick Customer Actions -->
+            <div class="detail-card">
+              <h3>Need Assistance?</h3>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn btn-outline" style="width: 100%; text-align: center;" onclick="openContactModal()">
+                  ✉️ Message Technician
+                </button>
+                <button class="btn btn-sm" style="background:#fee2e2; color:#991b1b; border:none;" onclick="requestCancellation()">
+                  Request Repair Cancellation
+                </button>
+              </div>
+
+              <div style="margin-top: 20px; font-size: 0.75rem; color: #94a3b8; line-height: 1.4;">
+                * Per shop policy, completed repairs must be claimed within 30 days of readiness notice to prevent storage charges of ₱150/day.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Contact Modal -->
+  <div class="modal-overlay" id="contact-modal">
+    <div class="modal-card">
+      <h3 style="margin-bottom: 8px;">Message Assigned Technician</h3>
+      <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px;">
+        Your inquiry will be delivered to Technician Danilo Mendoza and the shop supervisor inbox.
+      </p>
+      <form onsubmit="submitMessage(event)">
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px;">Subject</label>
+          <input type="text" class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;" value="Inquiry on Job #RD-8492" required>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px;">Message</label>
+          <textarea rows="4" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px;" placeholder="Please write your note or question here..." required></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn btn-outline" onclick="closeContactModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom" style="border: none; padding-top: 0;">
+        <p class="footer-copyright">&copy; 2026 RepairDesk Philippines. Gilmore Ave., New Manila, Quezon City. Hotline: (02) 8392-8100 / +63 917 392 8100.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function loadCode(code) {
+      document.getElementById('track-code').value = code;
+      handleLookup(new Event('submit'));
+    }
+
+    function handleLookup(e) {
+      if (e) e.preventDefault();
+      const code = document.getElementById('track-code').value.trim().toUpperCase();
+      document.getElementById('display-code').innerText = 'CODE: ' + code;
+
+      if (code === 'M4K7P2') {
+        // Sample Completed / Collected Job
+        document.getElementById('display-status-badge').className = 'badge badge-green';
+        document.getElementById('display-status-badge').innerText = 'Collected (Repaired)';
+        document.getElementById('display-appliance').innerText = 'Apple MacBook Pro 14" M1 Pro';
+        document.getElementById('display-fault').innerText = 'Liquid spill damage on keyboard and trackpad from milk tea.';
+        document.getElementById('display-customer').innerText = 'Marcus Chen';
+        document.getElementById('stepper-progress-bar').style.width = '100%';
+        document.getElementById('quote-approval-box').style.display = 'none';
+        document.getElementById('warranty-card').style.display = 'block';
+        document.getElementById('payment-badge').className = 'badge badge-green';
+        document.getElementById('payment-badge').innerText = 'Paid (₱9,900.00 via Maya)';
+
+        // Mark all steps completed
+        for (let i = 1; i <= 6; i++) {
+          const el = document.getElementById(`step-${i}`);
+          el.className = 'step-item completed';
+          el.querySelector('.step-circle').innerText = '✓';
+        }
+      } else {
+        // Default Awaiting Quote job
+        document.getElementById('display-status-badge').className = 'badge badge-amber';
+        document.getElementById('display-status-badge').innerText = 'Awaiting Quote Approval';
+        document.getElementById('display-appliance').innerText = 'Dyson V11 Torque Drive Cordless Vacuum';
+        document.getElementById('display-fault').innerText = 'Pulsing on boost mode, shuts off after 10 seconds.';
+        document.getElementById('display-customer').innerText = 'Christine Reyes';
+        document.getElementById('stepper-progress-bar').style.width = '35%';
+        document.getElementById('quote-approval-box').style.display = 'block';
+        document.getElementById('warranty-card').style.display = 'none';
+        document.getElementById('payment-badge').className = 'badge badge-amber';
+        document.getElementById('payment-badge').innerText = 'Unpaid (₱5,550.00)';
+      }
+    }
+
+    function approveQuote() {
+      if (confirm('Approve the repair quotation of ₱5,550.00 to commence servicing?')) {
+        document.getElementById('quote-approval-box').innerHTML = `
+          <div style="color: #065f46; font-weight: 600; padding: 10px 0;">
+            ✓ Quote approved! Technician Danilo Mendoza has been notified and repair work has commenced.
+          </div>
+        `;
+        document.getElementById('display-status-badge').className = 'badge badge-teal';
+        document.getElementById('display-status-badge').innerText = 'Repairing';
+        document.getElementById('stepper-progress-bar').style.width = '60%';
+        document.getElementById('step-4').className = 'step-item active';
+      }
+    }
+
+    function declineQuote() {
+      if (confirm('Decline this repair quote? The item will be prepped for pickup at our Gilmore counter and the ₱500 diagnostic fee will apply.')) {
+        document.getElementById('quote-approval-box').innerHTML = `
+          <div style="color: #991b1b; font-weight: 600; padding: 10px 0;">
+            ✕ Quote declined. The item has been marked for counter pickup. The ₱500 diagnostic fee applies upon collection.
+          </div>
+        `;
+        document.getElementById('display-status-badge').className = 'badge badge-red';
+        document.getElementById('display-status-badge').innerText = 'Declined';
+      }
+    }
+
+    function requestCancellation() {
+      const reason = prompt('Please specify reason for cancellation request:');
+      if (reason) {
+        alert('Your cancellation request has been forwarded to Technician Danilo Mendoza and shop management for review.');
+      }
+    }
+
+    function openContactModal() {
+      document.getElementById('contact-modal').style.display = 'flex';
+    }
+    function closeContactModal() {
+      document.getElementById('contact-modal').style.display = 'none';
+    }
+    function submitMessage(e) {
+      e.preventDefault();
+      alert('Message sent! Technician Danilo Mendoza and the shop supervisor have received your note.');
+      closeContactModal();
+    }
+  </script>
+</body>
+</html>
+

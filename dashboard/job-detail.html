@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Details — RepairDesk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <style>
+    .breadcrumb-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .breadcrumb-row a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .detail-grid-3-1 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 900px) {
+      .detail-grid-3-1 {
+        grid-template-columns: 1fr;
+      }
+    }
+    .card-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .meta-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .meta-item .meta-label {
+      font-size: 12px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .meta-item .meta-val {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .timeline-item {
+      position: relative;
+      padding-left: 20px;
+      border-left: 2px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+    .timeline-time {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+    .timeline-act {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .timeline-user {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* Print Sticker Modal */
+    .sticker-preview {
+      width: 280px;
+      height: 220px;
+      border: 2px dashed #94a3b8;
+      border-radius: 8px;
+      padding: 16px;
+      background: #ffffff;
+      margin: 0 auto 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .sticker-qr {
+      width: 80px;
+      height: 80px;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      font-size: 10px;
+      text-align: center;
+      border-radius: 4px;
+      padding: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div>
+          <h2>RepairDesk</h2>
+          <span style="font-size: 11px; color: var(--primary-light); font-weight: 600;">WORKSHOP OPERATING OS</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">Operations</div>
+        <ul>
+          <li class="nav-item"><a href="index.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>Dashboard</span></a></li>
+          <li class="nav-item"><a href="jobs.html" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Jobs & Repairs</span></a></li>
+          <li class="nav-item"><a href="technicians.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Technicians</span></a></li>
+          <li class="nav-item"><a href="customers.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Customers</span></a></li>
+        </ul>
+        <div class="nav-section">Insights & Admin</div>
+        <ul>
+          <li class="nav-item"><a href="reports.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Reports & Revenue</span></a></li>
+          <li class="nav-item"><a href="settings.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Shop Settings</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="avatar" id="sidebar-avatar">EC</div>
+          <div class="user-info">
+            <div class="user-name" id="sidebar-user-name">Elena Corpuz</div>
+            <div class="user-role">
+              <select id="role-selector" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-size: 11px; padding: 2px 4px; margin-top: 4px; width: 100%;">
+                <option value="admin">Role: Shop Admin (Elena)</option>
+                <option value="technician">Role: Technician (Danilo)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" id="sidebar-toggle-btn" aria-label="Toggle menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <h1 id="topbar-job-title">Job Details</h1>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn btn-outline btn-sm" onclick="openStickerModal()">
+            🖨️ Print QR Sticker
+          </button>
+          <a href="../pages/track.html" target="_blank" class="btn btn-outline btn-sm">
+            👁️ Open Customer Portal
+          </a>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <div class="page-content">
+        
+        <!-- Breadcrumb -->
+        <div class="breadcrumb-row">
+          <a href="jobs.html">&larr; Back to Jobs List</a>
+          <span>/</span>
+          <span id="breadcrumb-job-id">JOB-101</span>
+        </div>
+
+        <!-- Job Header Banner -->
+        <div class="card-box" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+              <h2 style="font-size: 24px; margin: 0;" id="job-id-text">JOB-101</h2>
+              <span class="badge badge-teal" style="font-family: monospace; font-size: 12px;" id="job-code-badge">CODE: B9X2K4</span>
+              <span id="job-status-badge"></span>
+            </div>
+            <h3 style="font-size: 18px; color: var(--text); margin-bottom: 4px;" id="job-appliance-title">Dyson V11 Torque Drive</h3>
+            <p style="color: var(--text-light); margin: 0; font-size: 13px;">
+              Assigned to: <strong id="job-tech-name">Danilo "Dan" Mendoza</strong> &bull; Intake: <span id="job-date-started">2026-10-28</span> &bull; Est. Delivery: <span id="job-est-completion">2026-11-02</span>
+            </p>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-primary btn-sm" onclick="openStatusModal()">Update Lifecycle Status</button>
+            <button class="btn btn-outline btn-sm" onclick="markPaymentPaid()">Set Payment to Paid</button>
+            <button class="btn btn-sm btn-outline" style="color:#059669; border-color:#059669;" onclick="markCollected()">✓ Counter Pickup (Collected)</button>
+          </div>
+        </div>
+
+        <!-- 2 Column Details Layout -->
+        <div class="detail-grid-3-1">
+          
+          <!-- Left Column -->
+          <div>
+            
+            <!-- Appliance & Fault Details -->
+            <div class="card-box">
+              <div class="card-title">
+                <span>Appliance & Intake Specifications</span>
+              </div>
+              
+              <div class="meta-list" style="margin-bottom: 20px;">
+                <div class="meta-item">
+                  <div class="meta-label">Appliance Type</div>
+                  <div class="meta-val" id="job-appliance-type">Vacuum Cleaner</div>
+                </div>
+                <div class="meta-item">
+                  <div class="meta-label">Brand & Model</div>
+                  <div class="meta-val" id="job-brand-model">Dyson V11 Torque Drive</div>
+                </div>
+                <div class="meta-item">
+                  <div class="meta-label">Serial Number</div>
+                  <div class="meta-val" id="job-serial">DY-9812-74</div>
+                </div>
+                <div class="meta-item">
+                  <div class="meta-label">Accessories Checked In</div>
+                  <div class="meta-val" id="job-accessories">Torque head, aluminum wand, charger</div>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 16px;">
+                <div class="meta-label" style="font-size: 12px; color: var(--text-light); margin-bottom: 4px;">CUSTOMER REPORTED FAULT</div>
+                <div style="background: #f8fafc; padding: 12px; border-radius: 6px; font-size: 14px;" id="job-reported-issue">
+                  Pulsing on boost mode, shuts down after 10 seconds.
+                </div>
+              </div>
+
+              <div>
+                <div class="meta-label" style="font-size: 12px; color: var(--text-light); margin-bottom: 4px;">INTAKE PHYSICAL CONDITION</div>
+                <div style="font-size: 13px; color: #475569;" id="job-condition">
+                  Minor cosmetic scratches on bin canister. No structural cracks.
+                </div>
+              </div>
+            </div>
+
+            <!-- Diagnostics & Quote Billing -->
+            <div class="card-box">
+              <div class="card-title">
+                <span>Diagnostics & Repair Quotation</span>
+                <button class="btn btn-outline btn-sm" onclick="editDiagnostics()">+ Revise Parts / Quote</button>
+              </div>
+
+              <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 16px;">
+                <thead>
+                  <tr style="border-bottom: 1px solid var(--border); text-align: left; color: var(--text-light); font-size: 12px;">
+                    <th style="padding: 8px 0;">DESCRIPTION</th>
+                    <th style="padding: 8px 0;">CATEGORY</th>
+                    <th style="padding: 8px 0; text-align: right;">PRICE</th>
+                  </tr>
+                </thead>
+                <tbody id="billing-items-body">
+                  <tr style="border-bottom: 1px dashed var(--border);">
+                    <td style="padding: 8px 0;">Diagnostic Intake Inspection Fee</td>
+                    <td style="padding: 8px 0; color: var(--text-light);">Diagnostics</td>
+                    <td style="padding: 8px 0; text-align: right;">₱500.00</td>
+                  </tr>
+                  <tr style="border-bottom: 1px dashed var(--border);">
+                    <td style="padding: 8px 0;">OEM 7-Cell Lithium Battery Module</td>
+                    <td style="padding: 8px 0; color: var(--text-light);">Parts</td>
+                    <td style="padding: 8px 0; text-align: right;">₱3,850.00</td>
+                  </tr>
+                  <tr style="border-bottom: 1px dashed var(--border);">
+                    <td style="padding: 8px 0;">Cyclone Chamber Deep Clean & Filter Replacement</td>
+                    <td style="padding: 8px 0; color: var(--text-light);">Labor</td>
+                    <td style="padding: 8px 0; text-align: right;">₱1,200.00</td>
+                  </tr>
+                  <tr style="font-weight: 700; font-size: 15px;">
+                    <td colspan="2" style="padding: 12px 0;">Total Quotation</td>
+                    <td style="padding: 12px 0; text-align: right; color: var(--primary);" id="job-total-billing">₱5,550.00</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px; border-radius: 6px; font-size: 13px; color: #166534;">
+                Quote is synced with customer status link. Once approved on the status page, status updates to <strong>Repairing</strong>.
+              </div>
+            </div>
+
+            <!-- Technician Notes History -->
+            <div class="card-box">
+              <div class="card-title">
+                <span>Progress Notes & Service History</span>
+              </div>
+
+              <!-- Add Note Form -->
+              <form onsubmit="handleAddNote(event)" style="margin-bottom: 24px; background: #f8fafc; padding: 16px; border-radius: 8px;">
+                <textarea id="new-note-text" class="form-input" rows="2" placeholder="Add service note, parts tested, or progress update..." required></textarea>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                  <label style="font-size: 13px; color: var(--text); display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                    <input type="checkbox" id="note-cust-visible" checked>
+                    <span><strong>Customer-Visible</strong> (Show on tracking link)</span>
+                  </label>
+                  <button type="submit" class="btn btn-primary btn-sm">+ Post Note</button>
+                </div>
+              </form>
+
+              <!-- Notes List -->
+              <div id="notes-container">
+                <!-- Injected by script -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Column -->
+          <div>
+            
+            <!-- Customer Card -->
+            <div class="card-box">
+              <div class="card-title">
+                <span>Customer Contact</span>
+              </div>
+              <div style="margin-bottom: 12px;">
+                <strong style="font-size: 16px;" id="cust-name">Christine Reyes</strong>
+              </div>
+              <div style="font-size: 13px; color: var(--text-light); margin-bottom: 6px;">
+                📞 <a href="#" id="cust-phone" style="color: var(--text); text-decoration: none;">0917 234 8901</a>
+              </div>
+              <div style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">
+                ✉️ <a href="#" id="cust-email" style="color: var(--primary); text-decoration: none;">creyes@gmail.com</a>
+              </div>
+              <button class="btn btn-outline btn-sm" style="width: 100%; text-align: center;" onclick="alert('SMS and email notification center opened for this customer.')">
+                Contact Customer
+              </button>
+            </div>
+
+            <!-- Payment & Warranty Card -->
+            <div class="card-box">
+              <div class="card-title">
+                <span>Payment & Warranty</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 13px; color: var(--text-light);">Payment Status:</span>
+                <span id="job-payment-badge"></span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <span style="font-size: 13px; color: var(--text-light);">Warranty Duration:</span>
+                <span style="font-size: 13px; font-weight: 600;">90 Days</span>
+              </div>
+
+              <div style="font-size: 12px; color: #64748b; line-height: 1.4; border-top: 1px solid var(--border); padding-top: 12px;">
+                * Per shop rules, warranty starts from the counter collection date and is linked to Job ID.
+              </div>
+            </div>
+
+            <!-- Audit Trail & Timeline -->
+            <div class="card-box">
+              <div class="card-title">
+                <span>Audit Trail & Activity Log</span>
+              </div>
+              <div id="timeline-container">
+                <!-- Injected by script -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- QR Sticker Print Modal -->
+  <div class="modal-overlay" id="sticker-modal">
+    <div class="modal-card" style="max-width: 440px;">
+      <h3 style="margin-bottom: 12px; font-size: 18px;">Print Item Intake Sticker</h3>
+      <p style="font-size: 13px; color: var(--text-light); margin-bottom: 20px;">
+        Affix this 3" x 2" barcode sticker directly to the repaired item or bin tag.
+      </p>
+
+      <div class="sticker-preview">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <div style="font-size: 18px; font-weight: 800; color: #0f172a;" id="sticker-job-id">JOB-101</div>
+            <div style="font-size: 11px; font-family: monospace; font-weight: 700; color: #0d9488;" id="sticker-code">CODE: B9X2K4</div>
+          </div>
+          <div class="sticker-qr">
+            [QR CODE]<br>RD-8492
+          </div>
+        </div>
+        <div style="font-size: 12px; font-weight: 600; color: #1e293b;" id="sticker-appliance">
+          Dyson V11 Torque Drive
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 6px;">
+          <span id="sticker-customer">Christine Reyes</span>
+          <span id="sticker-date">Oct 28, 2026</span>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="btn btn-outline" onclick="closeStickerModal()">Close</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()">Print Sticker Label</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Status Modal -->
+  <div class="modal-overlay" id="status-modal">
+    <div class="modal-card" style="max-width: 440px;">
+      <h3 style="margin-bottom: 12px; font-size: 18px;">Update Job Lifecycle Status</h3>
+      <p style="font-size: 13px; color: var(--text-light); margin-bottom: 20px;">
+        Rule: Technicians can step back 1 status; Admins have full lifecycle access.
+      </p>
+
+      <div style="margin-bottom: 20px;">
+        <label class="form-label">Select New Status</label>
+        <select id="select-new-status" class="form-input">
+          <option value="Received">Received</option>
+          <option value="Diagnosing">Diagnosing</option>
+          <option value="Awaiting Quote Approval">Awaiting Quote Approval</option>
+          <option value="Repairing">Repairing</option>
+          <option value="Waiting for Parts">Waiting for Parts</option>
+          <option value="Ready">Ready</option>
+          <option value="Collected">Collected</option>
+          <option value="Cannot Be Repaired">Cannot Be Repaired</option>
+          <option value="Declined">Declined</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label class="form-label">Status Change Reason (Logged in Audit Log)</label>
+        <input type="text" id="status-change-reason" class="form-input" placeholder="e.g. Diagnostic inspection concluded">
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="btn btn-outline" onclick="closeStatusModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="confirmStatusUpdate()">Save Status</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/dashboard.js"></script>
+  <script>
+    let currentJob = null;
+
+    function getJobIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('id') || 'JOB-101';
+    }
+
+    function loadJobDetails() {
+      const jobId = getJobIdFromUrl();
+      const jobs = window.RepairDeskStore.getJobs();
+      currentJob = jobs.find(j => j.id === jobId) || jobs[0];
+
+      // Fill header
+      document.getElementById('breadcrumb-job-id').innerText = currentJob.id;
+      document.getElementById('topbar-job-title').innerText = `${currentJob.id} — ${currentJob.brand} ${currentJob.model}`;
+      document.getElementById('job-id-text').innerText = currentJob.id;
+      document.getElementById('job-code-badge').innerText = `CODE: ${currentJob.code}`;
+      document.getElementById('job-status-badge').innerHTML = window.RepairDeskStore.getStatusBadge(currentJob.status);
+      document.getElementById('job-appliance-title').innerText = `${currentJob.brand} ${currentJob.model}`;
+      document.getElementById('job-tech-name').innerText = currentJob.technician;
+      document.getElementById('job-date-started').innerText = currentJob.dateStarted;
+      document.getElementById('job-est-completion').innerText = currentJob.estCompletion;
+
+      // Meta specs
+      document.getElementById('job-appliance-type').innerText = currentJob.appliance;
+      document.getElementById('job-brand-model').innerText = `${currentJob.brand} ${currentJob.model}`;
+      document.getElementById('job-serial').innerText = currentJob.serial;
+      document.getElementById('job-accessories').innerText = currentJob.accessories;
+      document.getElementById('job-reported-issue').innerText = currentJob.reportedIssue;
+      document.getElementById('job-condition').innerText = currentJob.condition;
+
+      // Customer
+      document.getElementById('cust-name').innerText = currentJob.customer.name;
+      document.getElementById('cust-phone').innerText = currentJob.customer.phone;
+      document.getElementById('cust-email').innerText = currentJob.customer.email;
+
+      // Payment
+      document.getElementById('job-payment-badge').innerHTML = window.RepairDeskStore.getPaymentBadge(currentJob.payment);
+      document.getElementById('job-total-billing').innerText = `₱${Number(currentJob.billing.total).toLocaleString()}.00`;
+
+      // Sticker preview
+      document.getElementById('sticker-job-id').innerText = currentJob.id;
+      document.getElementById('sticker-code').innerText = `CODE: ${currentJob.code}`;
+      document.getElementById('sticker-appliance').innerText = `${currentJob.brand} ${currentJob.model}`;
+      document.getElementById('sticker-customer').innerText = currentJob.customer.name;
+      document.getElementById('sticker-date').innerText = currentJob.dateStarted;
+
+      // Render Notes
+      renderNotes();
+
+      // Render Timeline
+      renderTimeline();
+    }
+
+    function renderNotes() {
+      const container = document.getElementById('notes-container');
+      if (!currentJob.notes || currentJob.notes.length === 0) {
+        container.innerHTML = `<p style="color: var(--text-light); font-size: 13px;">No progress notes recorded yet.</p>`;
+        return;
+      }
+
+      container.innerHTML = currentJob.notes.map(n => `
+        <div style="border-left: 3px solid ${n.customerVisible ? 'var(--primary)' : '#94a3b8'}; padding-left: 14px; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-light); margin-bottom: 4px;">
+            <span><strong>${n.author}</strong> &bull; ${n.time}</span>
+            <span class="badge ${n.customerVisible ? 'badge-teal' : 'badge-gray'}" style="font-size: 10px;">
+              ${n.customerVisible ? 'Customer Visible' : 'Internal Only'}
+            </span>
+          </div>
+          <div style="font-size: 13px; color: var(--text);">${n.text}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderTimeline() {
+      const container = document.getElementById('timeline-container');
+      if (!currentJob.timeline || currentJob.timeline.length === 0) {
+        container.innerHTML = `<p style="color: var(--text-light); font-size: 13px;">No timeline logged.</p>`;
+        return;
+      }
+
+      container.innerHTML = currentJob.timeline.map(t => `
+        <div class="timeline-item">
+          <div class="timeline-time">${t.time}</div>
+          <div class="timeline-act">${t.action}</div>
+          <div class="timeline-user">by ${t.user}</div>
+        </div>
+      `).join('');
+    }
+
+    function handleAddNote(e) {
+      e.preventDefault();
+      const text = document.getElementById('new-note-text').value.trim();
+      const customerVisible = document.getElementById('note-cust-visible').checked;
+      const author = localStorage.getItem('repairdesk_user') || 'Technician';
+
+      const newNote = {
+        id: Date.now(),
+        time: new Date().toLocaleString(),
+        author: author,
+        text: text,
+        customerVisible: customerVisible
+      };
+
+      currentJob.notes.unshift(newNote);
+      saveCurrentJob();
+      document.getElementById('new-note-text').value = '';
+      renderNotes();
+    }
+
+    function openStatusModal() {
+      document.getElementById('select-new-status').value = currentJob.status;
+      document.getElementById('status-modal').style.display = 'flex';
+    }
+
+    function closeStatusModal() {
+      document.getElementById('status-modal').style.display = 'none';
+    }
+
+    function confirmStatusUpdate() {
+      const newStatus = document.getElementById('select-new-status').value;
+      const reason = document.getElementById('status-change-reason').value || 'Status moved in workflow';
+      const user = localStorage.getItem('repairdesk_user') || 'Staff';
+
+      currentJob.status = newStatus;
+      if (newStatus === 'Collected') {
+        currentJob.tab = 'completed';
+      } else if (['Cannot Be Repaired', 'Declined', 'Cancelled'].includes(newStatus)) {
+        currentJob.tab = 'cancelled';
+      } else {
+        currentJob.tab = 'pending';
+      }
+
+      currentJob.timeline.unshift({
+        time: new Date().toLocaleString(),
+        action: `Status changed to ${newStatus} (${reason})`,
+        user: user
+      });
+
+      saveCurrentJob();
+      closeStatusModal();
+      loadJobDetails();
+      alert(`Status updated to ${newStatus}`);
+    }
+
+    function markPaymentPaid() {
+      currentJob.payment = 'Paid';
+      currentJob.timeline.unshift({
+        time: new Date().toLocaleString(),
+        action: 'Payment marked as Paid (₱' + Number(currentJob.billing.total).toLocaleString() + ')',
+        user: localStorage.getItem('repairdesk_user') || 'Admin'
+      });
+      saveCurrentJob();
+      loadJobDetails();
+      alert('Payment status updated to Paid.');
+    }
+
+    function markCollected() {
+      if (currentJob.payment !== 'Paid') {
+        if (!confirm('Warning: Payment is currently Unpaid / Deposit. Admin override release item anyway?')) {
+          return;
+        }
+      }
+      currentJob.status = 'Collected';
+      currentJob.tab = 'completed';
+      currentJob.timeline.unshift({
+        time: new Date().toLocaleString(),
+        action: 'Item Collected at Gilmore Counter. 90-Day Warranty Started.',
+        user: localStorage.getItem('repairdesk_user') || 'Admin'
+      });
+      saveCurrentJob();
+      loadJobDetails();
+      alert('Item marked Collected! 90-day warranty countdown initiated.');
+    }
+
+    function editDiagnostics() {
+      const partCost = prompt('Enter parts replacement charge in Philippine Peso (₱):', '3850');
+      if (partCost !== null) {
+        const laborCost = prompt('Enter technician labor charge in Philippine Peso (₱):', '1200');
+        if (laborCost !== null) {
+          const parts = parseFloat(partCost) || 0;
+          const labor = parseFloat(laborCost) || 0;
+          currentJob.billing.parts = parts;
+          currentJob.billing.labor = labor;
+          currentJob.billing.total = (currentJob.billing.diagnosticFee || 500) + parts + labor;
+          currentJob.status = 'Awaiting Quote Approval';
+
+          currentJob.timeline.unshift({
+            time: new Date().toLocaleString(),
+            action: `Quote revised: Parts ₱${parts.toLocaleString()}, Labor ₱${labor.toLocaleString()}, Total ₱${currentJob.billing.total.toLocaleString()}. Moved to Awaiting Quote Approval.`,
+            user: localStorage.getItem('repairdesk_user') || 'Technician'
+          });
+
+          saveCurrentJob();
+          loadJobDetails();
+          alert('Quote updated and sent to customer via SMS and email for approval.');
+        }
+      }
+    }
+
+    function saveCurrentJob() {
+      const jobs = window.RepairDeskStore.getJobs();
+      const idx = jobs.findIndex(j => j.id === currentJob.id);
+      if (idx !== -1) {
+        jobs[idx] = currentJob;
+        window.RepairDeskStore.saveJobs(jobs);
+      }
+    }
+
+    function openStickerModal() {
+      document.getElementById('sticker-modal').style.display = 'flex';
+    }
+
+    function closeStickerModal() {
+      document.getElementById('sticker-modal').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadJobDetails();
+    });
+  </script>
+</body>
+</html>
+

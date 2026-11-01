@@ -1,0 +1,133 @@
+/* ============================================
+   RepairDesk - Footer Styles
+   ============================================ */
+
+.footer {
+  background-color: #1E293B;
+  color: #CBD5E1;
+  padding: 64px 0 0;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(4, 1fr);
+  gap: 40px;
+  padding-bottom: 48px;
+}
+
+/* --- Footer Brand --- */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-brand .footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.footer-brand .footer-logo svg {
+  width: 28px;
+  height: 28px;
+  color: var(--primary-light);
+}
+
+.footer-brand p {
+  font-size: 0.9375rem;
+  color: #94A3B8;
+  line-height: 1.6;
+}
+
+/* --- Footer Columns --- */
+.footer-column h4 {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #F1F5F9;
+  margin-bottom: 20px;
+}
+
+.footer-column ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-column a {
+  font-size: 0.9375rem;
+  color: #94A3B8;
+  transition: color var(--transition);
+}
+
+.footer-column a:hover {
+  color: var(--primary-light);
+}
+
+/* --- Footer Bottom --- */
+.footer-bottom {
+  border-top: 1px solid #334155;
+  padding: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-bottom p {
+  font-size: 0.875rem;
+  color: #64748B;
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-bottom-links a {
+  font-size: 0.875rem;
+  color: #64748B;
+  transition: color var(--transition);
+}
+
+.footer-bottom-links a:hover {
+  color: var(--primary-light);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 48px 0 0;
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}

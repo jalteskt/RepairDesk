@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop Settings — RepairDesk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <style>
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 32px;
+    }
+    @media (max-width: 768px) {
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .settings-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .settings-nav-btn {
+      width: 100%;
+      text-align: left;
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-light);
+      cursor: pointer;
+    }
+    .settings-nav-btn.active {
+      background: var(--primary-50);
+      color: var(--primary);
+    }
+    .settings-panel {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+    }
+    .form-group-custom {
+      margin-bottom: 20px;
+    }
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div>
+          <h2>RepairDesk</h2>
+          <span style="font-size: 11px; color: var(--primary-light); font-weight: 600;">WORKSHOP OPERATING OS</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">Operations</div>
+        <ul>
+          <li class="nav-item"><a href="index.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>Dashboard</span></a></li>
+          <li class="nav-item"><a href="jobs.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Jobs & Repairs</span></a></li>
+          <li class="nav-item"><a href="technicians.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Technicians</span></a></li>
+          <li class="nav-item"><a href="customers.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Customers</span></a></li>
+        </ul>
+        <div class="nav-section">Insights & Admin</div>
+        <ul>
+          <li class="nav-item"><a href="reports.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Reports & Revenue</span></a></li>
+          <li class="nav-item"><a href="settings.html" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Shop Settings</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="avatar" id="sidebar-avatar">EC</div>
+          <div class="user-info">
+            <div class="user-name" id="sidebar-user-name">Elena Corpuz</div>
+            <div class="user-role">
+              <select id="role-selector" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-size: 11px; padding: 2px 4px; margin-top: 4px; width: 100%;">
+                <option value="admin">Role: Shop Admin (Elena)</option>
+                <option value="technician">Role: Technician (Danilo)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" id="sidebar-toggle-btn" aria-label="Toggle menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <h1>Workshop Settings & Policy</h1>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <div class="page-content">
+        
+        <div class="settings-grid">
+          
+          <!-- Tab Navigation -->
+          <div>
+            <ul class="settings-nav">
+              <li><button class="settings-nav-btn active" onclick="switchSettingsTab('general', this)">Shop Profile</button></li>
+              <li><button class="settings-nav-btn" onclick="switchSettingsTab('notifications', this)">Resend Email Triggers</button></li>
+              <li><button class="settings-nav-btn" onclick="switchSettingsTab('unclaimed', this)">Unclaimed Items Policy</button></li>
+              <li><button class="settings-nav-btn" onclick="switchSettingsTab('security', this)">Security & RBAC</button></li>
+            </ul>
+          </div>
+
+          <!-- Tab Content Panes -->
+          <div>
+
+            <!-- General Pane -->
+            <div class="settings-panel" id="panel-general">
+              <h3 style="font-size: 18px; margin-bottom: 6px;">Workshop Profile</h3>
+              <p style="font-size: 13px; color: var(--text-light); margin-bottom: 24px;">This contact information appears on customer intake receipts and QR status pages.</p>
+
+              <form onsubmit="handleSave(event)">
+                <div class="form-group-custom">
+                  <label class="form-label">Shop Business Name</label>
+                  <input type="text" class="form-control" value="Metro Manila Electronics & Appliance Service Hub">
+                </div>
+
+                <div class="form-group-custom" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                  <div>
+                    <label class="form-label">Support Email</label>
+                    <input type="email" class="form-control" value="support@repairdesk.ph">
+                  </div>
+                  <div>
+                    <label class="form-label">Shop Counter Phone</label>
+                    <input type="tel" class="form-control" value="(02) 8392-8100 / 0917 392 8100">
+                  </div>
+                </div>
+
+                <div class="form-group-custom">
+                  <label class="form-label">Physical Counter Address</label>
+                  <input type="text" class="form-control" value="Unit 304, Gilmore Commercial Plaza, Aurora Blvd. cor. Gilmore Ave., New Manila, Quezon City 1112">
+                </div>
+
+                <div class="form-group-custom" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                  <div>
+                    <label class="form-label">Currency</label>
+                    <input type="text" class="form-control" value="PHP (₱)" readonly>
+                  </div>
+                  <div>
+                    <label class="form-label">Standard Diagnostic Inspection Fee</label>
+                    <input type="text" class="form-control" value="₱500.00">
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Profile Settings</button>
+              </form>
+            </div>
+
+            <!-- Notifications Pane -->
+            <div class="settings-panel" id="panel-notifications" style="display: none;">
+              <h3 style="font-size: 18px; margin-bottom: 6px;">Email Automation (via Resend)</h3>
+              <p style="font-size: 13px; color: var(--text-light); margin-bottom: 24px;">Configure automatic customer notifications sent throughout the job lifecycle.</p>
+
+              <div class="toggle-row">
+                <div>
+                  <strong>Intake Confirmation & QR Code</strong>
+                  <div style="font-size: 12px; color: var(--text-light);">Sent immediately upon creating a new repair job</div>
+                </div>
+                <input type="checkbox" checked>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <strong>Diagnostics & Quote Ready for Approval</strong>
+                  <div style="font-size: 12px; color: var(--text-light);">Includes repair quote breakdown and approve/decline buttons</div>
+                </div>
+                <input type="checkbox" checked>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <strong>Ready for Collection (Starts 30-Day Window)</strong>
+                  <div style="font-size: 12px; color: var(--text-light);">Dispatched when technician marks unit Ready</div>
+                </div>
+                <input type="checkbox" checked>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <strong>14-Day & 25-Day Unclaimed Item Reminders</strong>
+                  <div style="font-size: 12px; color: var(--text-light);">Alerts customer before 30-day storage fee policy applies</div>
+                </div>
+                <input type="checkbox" checked>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <strong>Customer Message Inquiries</strong>
+                  <div style="font-size: 12px; color: var(--text-light);">Copies incoming customer notes to Admin & assigned tech</div>
+                </div>
+                <input type="checkbox" checked>
+              </div>
+
+              <button class="btn btn-primary" style="margin-top: 24px;" onclick="alert('Notification settings saved.')">Save Email Triggers</button>
+            </div>
+
+            <!-- Unclaimed Policy Pane -->
+            <div class="settings-panel" id="panel-unclaimed" style="display: none;">
+              <h3 style="font-size: 18px; margin-bottom: 6px;">Unclaimed Property & Storage Terms</h3>
+              <p style="font-size: 13px; color: var(--text-light); margin-bottom: 24px;">Standard policies acknowledged in writing by customers during electronic intake.</p>
+
+              <div class="form-group-custom">
+                <label class="form-label">Claim Window (Days)</label>
+                <input type="number" class="form-control" value="30">
+                <small style="color: var(--text-light);">Starts automatically when item status moves to Ready.</small>
+              </div>
+
+              <div class="form-group-custom">
+                <label class="form-label">Daily Storage Fee After 30 Days (₱/day)</label>
+                <input type="text" class="form-control" value="₱150.00">
+              </div>
+
+              <div class="form-group-custom">
+                <label class="form-label">Disposal / Sale Liquidation Threshold</label>
+                <input type="text" class="form-control" value="365 Days (1 Year)" readonly>
+                <small style="color: var(--text-light);">Customer provides written statutory consent at intake allowing recycling or sale of unclaimed goods after 1 year.</small>
+              </div>
+
+              <button class="btn btn-primary" onclick="alert('Storage terms policy updated.')">Save Policy</button>
+            </div>
+
+            <!-- Security Pane -->
+            <div class="settings-panel" id="panel-security" style="display: none;">
+              <h3 style="font-size: 18px; margin-bottom: 6px;">Security & Role Access (RBAC)</h3>
+              <p style="font-size: 13px; color: var(--text-light); margin-bottom: 24px;">Manage authentication standards, session limits, and permission boundaries.</p>
+
+              <div class="toggle-row">
+                <div>
+                  <strong>Strict Technician Stepping Rule</strong>
+                  <div style="font-size: 12px; color: var(--text-light);">Technicians may only move jobs backward by 1 status step; Admins may jump any status.</div>
+                </div>
+                <input type="checkbox" checked>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <strong>Two-Factor Authentication (2FA) for Admins</strong>
+                  <div style="font-size: 12px; color: var(--text-light);">Requires authenticator code on Admin account logins</div>
+                </div>
+                <input type="checkbox" checked>
+              </div>
+
+              <div class="form-group-custom" style="margin-top: 20px;">
+                <label class="form-label">Auto Session Timeout</label>
+                <select class="form-control">
+                  <option>30 Minutes of Inactivity</option>
+                  <option>1 Hour</option>
+                  <option>4 Hours</option>
+                </select>
+              </div>
+
+              <button class="btn btn-primary" onclick="alert('Security preferences saved.')">Save Security Rules</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/dashboard.js"></script>
+  <script>
+    function switchSettingsTab(tabId, el) {
+      document.querySelectorAll('.settings-nav-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+
+      document.getElementById('panel-general').style.display = tabId === 'general' ? 'block' : 'none';
+      document.getElementById('panel-notifications').style.display = tabId === 'notifications' ? 'block' : 'none';
+      document.getElementById('panel-unclaimed').style.display = tabId === 'unclaimed' ? 'block' : 'none';
+      document.getElementById('panel-security').style.display = tabId === 'security' ? 'block' : 'none';
+    }
+
+    function handleSave(e) {
+      e.preventDefault();
+      alert('Workshop settings saved successfully.');
+    }
+  </script>
+</body>
+</html>
+

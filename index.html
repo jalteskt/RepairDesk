@@ -1,13 +1,445 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documedsadassdnt</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RepairDesk — Manage and Track Your Repairs Effortlessly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <style>
+    /* --- Landing Page Specific --- */
+    .hero {
+      padding: 80px 0 60px;
+      overflow: hidden;
+    }
+    .hero .container {
+      display: flex;
+      align-items: center;
+      gap: 64px;
+    }
+    .hero-content {
+      flex: 1;
+      max-width: 560px;
+    }
+    .hero-content .badge {
+      margin-bottom: 20px;
+    }
+    .hero-content h1 {
+      margin-bottom: 20px;
+      font-size: 3.25rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .hero-content p {
+      font-size: 1.125rem;
+      margin-bottom: 32px;
+      max-width: 480px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hero-illustration {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-visual {
+      width: 100%;
+      max-width: 480px;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 50%, #99f6e4 100%);
+      border-radius: var(--radius-xl);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      border: 1px solid #99f6e4;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-visual svg {
+      width: 80px;
+      height: 80px;
+      color: var(--primary);
+      opacity: 0.8;
+    }
+    .hero-visual::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(13, 148, 136, 0.08) 0%, transparent 70%);
+    }
+    .hero-visual-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      opacity: 0.7;
+    }
+
+    /* Features */
+    .features-grid .card {
+      text-align: center;
+    }
+    .features-grid .card-icon {
+      margin: 0 auto 20px;
+      width: 56px;
+      height: 56px;
+    }
+
+    /* How It Works */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+    .step {
+      text-align: center;
+      position: relative;
+    }
+    .step-number {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--primary);
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+    }
+    .step h3 {
+      margin-bottom: 8px;
+    }
+    .step-connector {
+      display: none;
+    }
+    @media (min-width: 769px) {
+      .step-connector {
+        display: block;
+        position: absolute;
+        top: 28px;
+        left: calc(50% + 36px);
+        width: calc(100% - 72px);
+        height: 2px;
+        background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 8px, transparent 8px, transparent 16px);
+      }
+      .step:last-child .step-connector {
+        display: none;
+      }
+    }
+
+    /* Stats */
+    .stats-bar {
+      background-color: var(--primary);
+      padding: 48px 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+    .stat h3 {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .stat p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1rem;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, #0F766E 0%, #0D9488 50%, #14B8A6 100%);
+      padding: 80px 0;
+      text-align: center;
+    }
+    .cta-section h2 {
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .cta-section p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1.125rem;
+      max-width: 520px;
+      margin: 0 auto 32px;
+    }
+
+    @media (max-width: 768px) {
+      .hero .container {
+        flex-direction: column;
+        gap: 40px;
+      }
+      .hero-content h1 {
+        font-size: 2.25rem;
+      }
+      .hero-illustration {
+        width: 100%;
+      }
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+  </style>
 </head>
 <body>
 
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+        Repair<span>Desk</span>
+      </a>
+      <div class="navbar-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="pages/about.html">About</a>
+        <a href="pages/help.html">Help Center</a>
+        <a href="pages/pricing.html">Pricing</a>
+        <a href="pages/track.html">Track Repair</a>
+      </div>
+      <div class="navbar-actions">
+        <a href="pages/login.html" class="btn btn-outline btn-sm">Log In</a>
+        <a href="pages/signup.html" class="btn btn-primary btn-sm">Sign Up</a>
+        <a href="dashboard/index.html" class="btn btn-outline btn-sm" style="border-color: var(--primary); color: var(--primary);">Workbench Demo &rarr;</a>
+      </div>
+      <button class="navbar-hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="navbar-mobile" id="navbar-mobile">
+    <a href="index.html">Home</a>
+    <a href="pages/about.html">About</a>
+    <a href="pages/help.html">Help Center</a>
+    <a href="pages/pricing.html">Pricing</a>
+    <a href="pages/track.html">Track Repair</a>
+    <div class="mobile-actions">
+      <a href="pages/login.html" class="btn btn-outline">Log In</a>
+      <a href="pages/signup.html" class="btn btn-primary">Sign Up</a>
+      <a href="dashboard/index.html" class="btn btn-primary">Workbench Demo</a>
+    </div>
+  </div>
+
+  <main>
+    <!-- ========== HERO ========== -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <span class="badge badge-primary">🚀 Now with QR Code Tracking</span>
+          <h1>Manage and track your repairs effortlessly</h1>
+          <p>The all-in-one platform for repair shops to manage jobs, communicate with customers, and streamline operations — from intake to collection.</p>
+          <div class="hero-actions">
+            <a href="pages/signup.html" class="btn btn-primary btn-lg">Get Started Free</a>
+            <a href="pages/track.html" class="btn btn-outline btn-lg">Track Repair (Code/QR)</a>
+            <a href="dashboard/index.html" class="btn btn-outline btn-lg" style="background:#f0fdfa; border-color:var(--primary); color:var(--primary);">Open Workshop Demo</a>
+          </div>
+        </div>
+        <div class="hero-illustration">
+          <div class="hero-visual">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+              <path d="M7 8h2m2 0h2m2 0h2"/>
+              <path d="M7 11h10"/>
+            </svg>
+            <span class="hero-visual-label">Dashboard Preview</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FEATURES ========== -->
+    <section class="section section-alt" id="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Everything your repair shop needs</h2>
+          <p>Powerful features designed to help you run your repair business more efficiently.</p>
+        </div>
+        <div class="grid grid-3 features-grid">
+          <!-- Feature 1: Job Tracking -->
+          <div class="card">
+            <div class="card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+            </div>
+            <h3>Job Tracking</h3>
+            <p>Track every repair from intake to collection. Set statuses, add notes, and never lose sight of a job again.</p>
+          </div>
+          <!-- Feature 2: Customer Portal -->
+          <div class="card">
+            <div class="card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+              </svg>
+            </div>
+            <h3>Customer Portal</h3>
+            <p>Customers can check their repair status anytime via a unique QR code — no phone calls needed.</p>
+          </div>
+          <!-- Feature 3: Team Management -->
+          <div class="card">
+            <div class="card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3>Team Management</h3>
+            <p>Assign jobs to technicians, monitor workloads, and keep your team running at peak efficiency.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== HOW IT WORKS ========== -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <h2>How it works</h2>
+          <p>Get up and running in minutes with three simple steps.</p>
+        </div>
+        <div class="steps-grid">
+          <!-- Step 1 -->
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Create a Job</h3>
+            <p>Log the device, customer details, and issue description. A unique tracking ID is generated instantly.</p>
+            <div class="step-connector"></div>
+          </div>
+          <!-- Step 2 -->
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Track Progress</h3>
+            <p>Update the job status as your technicians work — from diagnostics to repair to quality check.</p>
+            <div class="step-connector"></div>
+          </div>
+          <!-- Step 3 -->
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Notify Customer</h3>
+            <p>Customers get automatic updates via SMS or email. They can also scan a QR code for real-time status.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== STATS BAR ========== -->
+    <section class="stats-bar">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat">
+            <h3>500+</h3>
+            <p>Repair Shops</p>
+          </div>
+          <div class="stat">
+            <h3>50,000+</h3>
+            <p>Jobs Tracked</p>
+          </div>
+          <div class="stat">
+            <h3>99.9%</h3>
+            <p>Uptime</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CTA ========== -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Ready to streamline your repair shop?</h2>
+        <p>Join hundreds of repair businesses already using RepairDesk to save time and delight customers.</p>
+        <a href="pages/signup.html" class="btn btn-white btn-lg">Sign Up Free</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+            RepairDesk
+          </a>
+          <p>Streamline your repair shop operations with modern job tracking and customer communication tools.</p>
+        </div>
+        <div class="footer-column">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="pages/about.html">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#">Features</a></li>
+            <li><a href="pages/pricing.html">Pricing</a></li>
+            <li><a href="#">Integrations</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="pages/help.html">Help Center</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Status</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Security</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 RepairDesk. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
 </body>
 </html>
-
-
