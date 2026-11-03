@@ -166,7 +166,7 @@
     /* CTA */
     .cta-section {
       background: linear-gradient(135deg, #14532D 0%, #166534 50%, #16A34A 100%);
-      padding: 80px 0;
+      padding: 64px 0 72px;
       text-align: center;
     }
     .cta-section h2 {
@@ -177,7 +177,58 @@
       color: rgba(255, 255, 255, 0.85);
       font-size: 1.125rem;
       max-width: 520px;
-      margin: 0 auto 32px;
+      margin: 0 auto;
+    }
+
+    /* --- Map Placeholder --- */
+    .map-placeholder {
+      margin-top: 36px;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background:
+        repeating-linear-gradient(0deg, rgba(15, 23, 42, 0.07) 0 1px, transparent 1px 44px),
+        repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.07) 0 1px, transparent 1px 44px),
+        #F1F5F9;
+      border: 1px dashed #94A3B8;
+      border-radius: var(--radius-xl);
+    }
+    .map-pin {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.22);
+    }
+    .map-text {
+      text-align: left;
+    }
+    .map-text strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+    .map-text span {
+      font-size: 0.82rem;
+      color: var(--text-light);
+    }
+    @media (max-width: 680px) {
+      .map-placeholder {
+        min-height: 230px;
+      }
+      .map-pin {
+        width: 40px;
+        height: 40px;
+      }
     }
 
     /* --- Track Hero (Customer Portal) --- */
@@ -1040,10 +1091,6 @@
         <div class="hero-content">
           <h1>Manage and track your repairs — all in one place</h1>
           <p>The complete job tracking system for Metro Manila Gilmore Ave. electronics repair shops. From intake and diagnostics to quote approval, collection, and warranty tracking.</p>
-          <div class="hero-actions">
-            <a href="#track-section" class="btn btn-primary btn-lg">Track a Repair</a>
-            <a href="pages/help.html" class="btn btn-outline btn-lg">Help Center</a>
-          </div>
         </div>
         <div class="hero-illustration">
           <div class="hero-visual">
@@ -1238,9 +1285,16 @@
       <div class="container">
         <h2>Come visit us at Gilmore</h2>
         <p>Unit 304, Gilmore Commercial Plaza, Aurora Blvd. cor. Gilmore Ave., New Manila, Quezon City.<br>Open Mon–Sat, 9 AM – 6 PM.</p>
-        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px;">
-          <a href="#track-section" class="btn btn-white btn-lg">Track Your Repair</a>
-          <a href="pages/help.html" class="btn btn-white btn-lg" style="background: transparent; color: #fff; border-color: rgba(255,255,255,0.6);">Help Center</a>
+        <div class="map-placeholder">
+          <span class="map-pin">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+          </span>
+          <div class="map-text">
+            <strong>Map placeholder</strong>
+            <span>Gilmore Commercial Plaza — interactive map coming soon</span>
+          </div>
         </div>
       </div>
     </section>
@@ -1469,5 +1523,27 @@
     }
   </script>
   <script src="js/main.js"></script>
+  <script>
+    /* Homepage header highlight: "Track Repair" is active by default; "Need a Repair?"
+       becomes the highlighted item only when its section is opened. One line at a time. */
+    function applyHeaderHighlight() {
+      var need = document.getElementById('need-a-repair');
+      var openedNeed = window.location.hash === '#need-a-repair';
+      document.querySelectorAll('.navbar-links a, .navbar-mobile a:not(.btn)').forEach(function (l) {
+        var h = l.getAttribute('href') || '';
+        var matches = openedNeed ? (h === '#need-a-repair') : (h === 'index.html' || h === '#track-section');
+        l.classList.toggle('active', matches);
+      });
+      return 'highlight: ' + (openedNeed ? 'need-a-repair' : 'track-repair');
+    }
+    document.querySelectorAll('a[href="#need-a-repair"]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        if (window.history && window.history.replaceState) history.replaceState(null, '', '#need-a-repair');
+        applyHeaderHighlight();
+      });
+    });
+    window.addEventListener('hashchange', applyHeaderHighlight);
+    document.addEventListener('DOMContentLoaded', applyHeaderHighlight);
+  </script>
 </body>
 </html>

@@ -68,6 +68,7 @@ function initActiveNavLink() {
   navLinks.forEach(link => {
     const href = link.getAttribute('href');
     if (!href) return;
+    if (href.charAt(0) === '#') return; // in-page anchors (e.g. #need-a-repair) never take the active state
 
     // Normalize paths for comparison
     const linkPath = new URL(href, window.location.origin).pathname;
