@@ -1,11 +1,13 @@
 /* ============================================
    RepairDesk - Footer Styles
+   Industrial Eco & Restoration theme
    ============================================ */
 
 .footer {
-  background-color: #1E293B;
+  background-color: var(--dark);
   color: #CBD5E1;
   padding: 64px 0 0;
+  border-top: 1px solid var(--dark-alt);
 }
 
 .footer-grid {
@@ -28,13 +30,13 @@
   gap: 10px;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #fff;
+  color: #FFFFFF;
 }
 
 .footer-brand .footer-logo svg {
   width: 28px;
   height: 28px;
-  color: var(--primary-light);
+  color: var(--primary-bright);
 }
 
 .footer-brand p {
@@ -66,12 +68,12 @@
 }
 
 .footer-column a:hover {
-  color: var(--primary-light);
+  color: var(--primary-bright);
 }
 
 /* --- Footer Bottom --- */
 .footer-bottom {
-  border-top: 1px solid #334155;
+  border-top: 1px solid var(--dark-alt);
   padding: 24px 0;
   display: flex;
   align-items: center;
@@ -80,7 +82,7 @@
 
 .footer-bottom p {
   font-size: 0.875rem;
-  color: #64748B;
+  color: #94A3B8;
 }
 
 .footer-bottom-links {
@@ -90,12 +92,12 @@
 
 .footer-bottom-links a {
   font-size: 0.875rem;
-  color: #64748B;
+  color: #94A3B8;
   transition: color var(--transition);
 }
 
 .footer-bottom-links a:hover {
-  color: var(--primary-light);
+  color: var(--primary-bright);
 }
 
 /* --- Responsive --- */

@@ -4,17 +4,38 @@
 
 /* --- CSS Custom Properties --- */
 :root {
-  --primary: #0D9488;
-  --primary-dark: #0F766E;
-  --primary-light: #14B8A6;
-  --bg: #FFFFFF;
-  --bg-alt: #F8FAFB;
-  --text: #1E293B;
-  --text-light: #64748B;
+  /* --- Industrial Eco & Restoration palette --- */
+  /* Brand: forest green signals circular economy, repair and trust */
+  --primary: #166534;
+  --primary-dark: #14532D;
+  --primary-light: #16A34A;
+  --primary-bright: #4ADE80;
+  --primary-50: #F0FDF4;
+  --primary-100: #DCFCE7;
+  --primary-200: #BBF7D0;
+  /* Accent: amber / warm copper for pending work and urgent states */
+  --accent: #D97706;
+  --accent-dark: #B45309;
+  --accent-light: #F59E0B;
+  --accent-50: #FFFBEB;
+  --accent-100: #FEF3C7;
+  /* Deep slate used for sidebar, headers and footer */
+  --dark: #0F172A;
+  --dark-alt: #1E293B;
+  --brand-slate: #1E3A8A;
+  --success: #16A34A;
+  --warning: #D97706;
+  --danger: #DC2626;
+  --info: #1E3A8A;
+  --bg: #F8FAFC;
+  --bg-alt: #F1F5F9;
+  --surface: #FFFFFF;
+  --text: #0F172A;
+  --text-light: #475569;
   --border: #E2E8F0;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -2px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -4px rgba(15, 23, 42, 0.06);
   --radius: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
@@ -194,7 +215,7 @@ p {
 }
 
 .btn-white:hover {
-  background-color: #f0fdfa;
+  background-color: var(--primary-50);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -220,7 +241,7 @@ p {
   font-size: 0.9375rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background-color: var(--bg);
+  background-color: var(--surface);
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 
@@ -228,7 +249,7 @@ p {
 .form-textarea:focus,
 .form-select:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  box-shadow: 0 0 0 3px rgba(22, 101, 52, 0.14);
 }
 
 .form-input::placeholder {
@@ -254,6 +275,7 @@ p {
   border-radius: 100px;
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
+  background-color: var(--surface);
 }
 
 .search-bar .search-icon {
@@ -268,7 +290,7 @@ p {
 
 /* --- Card Component --- */
 .card {
-  background-color: var(--bg);
+  background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 32px;
@@ -286,7 +308,7 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0fdfa;
+  background-color: var(--primary-50);
   color: var(--primary);
   border-radius: var(--radius);
   margin-bottom: 20px;
@@ -319,18 +341,33 @@ p {
 }
 
 .badge-primary {
-  background-color: #f0fdfa;
+  background-color: var(--primary-50);
   color: var(--primary);
 }
 
+.badge-teal {
+  background-color: var(--primary-50);
+  color: var(--primary-dark);
+}
+
+.badge-amber {
+  background-color: var(--accent-50);
+  color: var(--accent-dark);
+}
+
+.badge-gray {
+  background-color: var(--bg-alt);
+  color: var(--text-light);
+}
+
 .badge-success {
-  background-color: #f0fdf4;
-  color: #16a34a;
+  background-color: var(--primary-100);
+  color: #15803D;
 }
 
 .badge-warning {
-  background-color: #fffbeb;
-  color: #d97706;
+  background-color: var(--accent-50);
+  color: var(--accent);
 }
 
 .badge-danger {

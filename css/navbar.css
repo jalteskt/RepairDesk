@@ -1,5 +1,6 @@
 /* ============================================
    RepairDesk - Navbar Styles
+   Industrial Eco & Restoration theme
    ============================================ */
 
 /* Body offset for fixed navbar */
@@ -18,16 +19,16 @@ body.dashboard-body {
   left: 0;
   right: 0;
   height: 64px;
-  background-color: #ffffff !important;
-  background: #ffffff !important;
-  border-bottom: 1px solid var(--border);
+  background-color: var(--dark) !important;
+  background: var(--dark) !important;
+  border-bottom: 1px solid var(--dark-alt);
   z-index: 1000;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
   transition: box-shadow 200ms ease;
 }
 
 .navbar.scrolled {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.35);
 }
 
 .navbar .container {
@@ -44,7 +45,7 @@ body.dashboard-body {
   gap: 8px;
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--text);
+  color: #F8FAFC;
   flex-shrink: 0;
   text-decoration: none;
 }
@@ -52,12 +53,12 @@ body.dashboard-body {
 .navbar-logo svg {
   width: 24px;
   height: 24px;
-  color: var(--primary);
+  color: var(--primary-bright);
   flex-shrink: 0;
 }
 
 .navbar-logo span {
-  color: var(--primary);
+  color: var(--primary-bright);
 }
 
 /* --- Nav Links --- */
@@ -71,7 +72,7 @@ body.dashboard-body {
   position: relative;
   font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--text-light);
+  color: #CBD5E1;
   transition: color var(--transition);
   padding: 6px 0;
   text-decoration: none;
@@ -85,14 +86,14 @@ body.dashboard-body {
   left: 0;
   width: 0;
   height: 2px;
-  background-color: var(--primary);
+  background-color: var(--primary-bright);
   border-radius: 1px;
   transition: width 200ms ease;
 }
 
 .navbar-links a:hover,
 .navbar-links a.active {
-  color: var(--primary);
+  color: #FFFFFF;
 }
 
 .navbar-links a:hover::after,
@@ -119,14 +120,14 @@ body.dashboard-body {
 }
 
 .navbar-hamburger:hover {
-  background-color: var(--bg-alt);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .navbar-hamburger span {
   display: block;
   width: 20px;
   height: 2px;
-  background-color: var(--text);
+  background-color: #F1F5F9;
   border-radius: 2px;
   transition: transform 200ms ease, opacity 200ms ease;
 }
@@ -152,8 +153,8 @@ body.dashboard-body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ffffff !important;
-  background: #ffffff !important;
+  background-color: var(--dark) !important;
+  background: var(--dark) !important;
   opacity: 1 !important;
   z-index: 9999;
   padding: 20px 24px 40px;
@@ -161,8 +162,8 @@ body.dashboard-body {
   gap: 6px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  border-top: 1px solid var(--border);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid var(--dark-alt);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
   animation: slideDown 180ms ease;
 }
 
@@ -180,18 +181,18 @@ body.dashboard-body {
   padding: 14px 18px;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--text);
+  color: #E2E8F0;
   border-radius: var(--radius);
-  background-color: #ffffff;
+  background-color: transparent;
   transition: background-color var(--transition), color var(--transition);
   text-decoration: none;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .navbar-mobile a:hover,
 .navbar-mobile a.active {
-  background-color: var(--bg-alt);
-  color: var(--primary);
+  background-color: rgba(74, 222, 128, 0.1);
+  color: var(--primary-bright);
   font-weight: 600;
 }
 
