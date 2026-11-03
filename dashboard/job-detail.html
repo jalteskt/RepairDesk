@@ -94,6 +94,18 @@
       color: #64748b;
     }
 
+    /* Modal (shared with other dashboard pages) */
+    .modal-card {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
     /* Print Sticker Modal */
     .sticker-preview {
       width: 280px;
@@ -188,7 +200,7 @@
           <button class="btn btn-outline btn-sm" onclick="openStickerModal()">
             🖨️ Print QR Sticker
           </button>
-          <a href="../pages/track.html" target="_blank" class="btn btn-outline btn-sm">
+          <a href="../index.html" target="_blank" class="btn btn-outline btn-sm">
             👁️ Open Customer Portal
           </a>
         </div>
@@ -585,11 +597,11 @@
 
     function openStatusModal() {
       document.getElementById('select-new-status').value = currentJob.status;
-      document.getElementById('status-modal').style.display = 'flex';
+      document.getElementById('status-modal').classList.add('show');
     }
 
     function closeStatusModal() {
-      document.getElementById('status-modal').style.display = 'none';
+      document.getElementById('status-modal').classList.remove('show');
     }
 
     function confirmStatusUpdate() {
@@ -683,11 +695,11 @@
     }
 
     function openStickerModal() {
-      document.getElementById('sticker-modal').style.display = 'flex';
+      document.getElementById('sticker-modal').classList.add('show');
     }
 
     function closeStickerModal() {
-      document.getElementById('sticker-modal').style.display = 'none';
+      document.getElementById('sticker-modal').classList.remove('show');
     }
 
     document.addEventListener('DOMContentLoaded', () => {

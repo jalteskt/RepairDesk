@@ -58,7 +58,6 @@
       inset: 0;
       background: rgba(15, 23, 42, 0.5);
       backdrop-filter: blur(4px);
-      display: none;
       align-items: center;
       justify-content: center;
       z-index: 1000;
@@ -168,22 +167,22 @@
       <form onsubmit="handleAddTechnician(event)">
         <div style="margin-bottom: 14px;">
           <label style="display:block; font-size: 13px; font-weight:600; margin-bottom:4px;">Full Name *</label>
-          <input type="text" id="tech-name-input" class="form-control" placeholder="e.g. Rafael Santos" required>
+          <input type="text" id="tech-name-input" class="form-input" placeholder="e.g. Rafael Santos" required>
         </div>
 
         <div style="margin-bottom: 14px;">
           <label style="display:block; font-size: 13px; font-weight:600; margin-bottom:4px;">Email (Login ID) *</label>
-          <input type="email" id="tech-email-input" class="form-control" placeholder="rafael.s@repairdesk.ph" required>
+          <input type="email" id="tech-email-input" class="form-input" placeholder="rafael.s@repairdesk.ph" required>
         </div>
 
         <div style="margin-bottom: 14px;">
           <label style="display:block; font-size: 13px; font-weight:600; margin-bottom:4px;">Phone Number *</label>
-          <input type="tel" id="tech-phone-input" class="form-control" placeholder="0917 890 1209" required>
+          <input type="tel" id="tech-phone-input" class="form-input" placeholder="0917 890 1209" required>
         </div>
 
         <div style="margin-bottom: 20px;">
           <label style="display:block; font-size: 13px; font-weight:600; margin-bottom:4px;">Specialty / Focus Area</label>
-          <input type="text" id="tech-spec-input" class="form-control" placeholder="e.g. Inverter Aircon Boards & Power Supplies">
+          <input type="text" id="tech-spec-input" class="form-input" placeholder="e.g. Inverter Aircon Boards & Power Supplies">
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 10px;">
@@ -271,11 +270,11 @@
     }
 
     function openAddTechModal() {
-      document.getElementById('add-tech-modal').style.display = 'flex';
+      document.getElementById('add-tech-modal').classList.add('show');
     }
 
     function closeAddTechModal() {
-      document.getElementById('add-tech-modal').style.display = 'none';
+      document.getElementById('add-tech-modal').classList.remove('show');
     }
 
     function handleAddTechnician(e) {
