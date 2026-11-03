@@ -35,7 +35,7 @@ function initMobileMenu() {
 
   // Close menu on resize to desktop
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 860) {
       hamburger.classList.remove('active');
       mobileMenu.classList.remove('open');
       document.body.style.overflow = '';

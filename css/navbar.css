@@ -4,7 +4,12 @@
 
 /* Body offset for fixed navbar */
 body {
-  padding-top: 72px;
+  padding-top: 64px;
+}
+
+/* Dashboard pages don't use the public navbar */
+body.dashboard-body {
+  padding-top: 0;
 }
 
 .navbar {
@@ -12,15 +17,17 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 72px;
-  background-color: var(--bg);
+  height: 64px;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
   border-bottom: 1px solid var(--border);
   z-index: 1000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: box-shadow 200ms ease;
 }
 
 .navbar.scrolled {
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .navbar .container {
@@ -34,17 +41,19 @@ body {
 .navbar-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1.25rem;
+  gap: 8px;
+  font-size: 1.125rem;
   font-weight: 700;
   color: var(--text);
   flex-shrink: 0;
+  text-decoration: none;
 }
 
 .navbar-logo svg {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   color: var(--primary);
+  flex-shrink: 0;
 }
 
 .navbar-logo span {
@@ -55,7 +64,7 @@ body {
 .navbar-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 28px;
 }
 
 .navbar-links a {
@@ -64,13 +73,15 @@ body {
   font-weight: 500;
   color: var(--text-light);
   transition: color var(--transition);
-  padding: 4px 0;
+  padding: 6px 0;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .navbar-links a::after {
   content: '';
   position: absolute;
-  bottom: -2px;
+  bottom: 0;
   left: 0;
   width: 0;
   height: 2px;
@@ -89,26 +100,22 @@ body {
   width: 100%;
 }
 
-/* --- Auth Buttons --- */
-.navbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-}
-
-/* --- Mobile Hamburger --- */
+/* --- Mobile Hamburger Button --- */
 .navbar-hamburger {
   display: none;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 5px;
-  width: 36px;
-  height: 36px;
-  padding: 6px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
   cursor: pointer;
   border-radius: var(--radius);
   transition: background-color var(--transition);
+  background-color: transparent;
+  border: 1px solid transparent;
+  margin-left: auto;
 }
 
 .navbar-hamburger:hover {
@@ -117,11 +124,11 @@ body {
 
 .navbar-hamburger span {
   display: block;
-  width: 100%;
+  width: 20px;
   height: 2px;
   background-color: var(--text);
-  border-radius: 1px;
-  transition: all 200ms ease;
+  border-radius: 2px;
+  transition: transform 200ms ease, opacity 200ms ease;
 }
 
 .navbar-hamburger.active span:nth-child(1) {
@@ -130,82 +137,97 @@ body {
 
 .navbar-hamburger.active span:nth-child(2) {
   opacity: 0;
+  transform: scaleX(0);
 }
 
 .navbar-hamburger.active span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* --- Mobile Menu --- */
+/* --- Mobile Menu Drawer --- */
 .navbar-mobile {
   display: none;
   position: fixed;
-  top: 72px;
+  top: 64px;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--bg);
-  z-index: 999;
-  padding: 24px;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  opacity: 1 !important;
+  z-index: 9999;
+  padding: 20px 24px 40px;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   overflow-y: auto;
-  animation: slideDown 200ms ease;
+  -webkit-overflow-scrolling: touch;
+  border-top: 1px solid var(--border);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  animation: slideDown 180ms ease;
 }
 
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .navbar-mobile.open {
-  display: flex;
+  display: flex !important;
 }
 
 .navbar-mobile a {
   display: block;
-  padding: 14px 16px;
-  font-size: 1.0625rem;
+  padding: 14px 18px;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text);
   border-radius: var(--radius);
-  transition: background-color var(--transition);
+  background-color: #ffffff;
+  transition: background-color var(--transition), color var(--transition);
+  text-decoration: none;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .navbar-mobile a:hover,
 .navbar-mobile a.active {
   background-color: var(--bg-alt);
   color: var(--primary);
+  font-weight: 600;
 }
 
-.navbar-mobile .mobile-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-}
+/* --- Responsive Breakpoints --- */
 
-.navbar-mobile .mobile-actions .btn {
-  width: 100%;
-  justify-content: center;
-}
-
-/* --- Responsive --- */
-@media (max-width: 768px) {
-  .navbar-links,
-  .navbar-actions {
-    display: none;
+/* Tablet (collapse links into hamburger at <= 860px) */
+@media (max-width: 860px) {
+  .navbar-links {
+    display: none !important;
   }
 
   .navbar-hamburger {
-    display: flex;
+    display: flex !important;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 600px) {
+  .navbar {
+    height: 56px;
+  }
+
+  body {
+    padding-top: 56px;
+  }
+
+  .navbar-mobile {
+    top: 56px;
+  }
+
+  .navbar-logo {
+    font-size: 1.05rem;
+  }
+
+  .navbar-logo svg {
+    width: 22px;
+    height: 22px;
   }
 }

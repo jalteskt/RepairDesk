@@ -13,7 +13,7 @@
   <style>
     .track-hero {
       background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%);
-      padding: 60px 0 40px;
+      padding: 48px 0 32px;
       text-align: center;
     }
     .track-search-card {
@@ -40,6 +40,7 @@
       border-radius: var(--radius-md);
       font-family: monospace, inherit;
       text-align: center;
+      min-width: 0;
     }
     .track-input:focus {
       outline: none;
@@ -51,7 +52,7 @@
     .status-container {
       max-width: 900px;
       margin: 0 auto;
-      padding-bottom: 80px;
+      padding-bottom: 60px;
     }
 
     /* Status Header Card */
@@ -82,10 +83,14 @@
       letter-spacing: 0.05em;
     }
 
-    /* Visual Stepper */
+    /* Visual Stepper - Responsive Horizontal Scroller on Mobile */
     .stepper-wrapper {
-      margin: 32px 0 20px;
+      margin: 28px 0 16px;
       position: relative;
+    }
+    .stepper-scroll-container {
+      position: relative;
+      width: 100%;
     }
     .stepper {
       display: flex;
@@ -94,13 +99,14 @@
       list-style: none;
       padding: 0;
       margin: 0;
+      min-width: 100%;
     }
     .stepper::before {
       content: '';
       position: absolute;
       top: 18px;
-      left: 20px;
-      right: 20px;
+      left: 24px;
+      right: 24px;
       height: 3px;
       background: #e2e8f0;
       z-index: 1;
@@ -108,7 +114,7 @@
     .stepper-progress {
       position: absolute;
       top: 18px;
-      left: 20px;
+      left: 24px;
       height: 3px;
       background: var(--primary);
       z-index: 2;
@@ -122,6 +128,7 @@
       align-items: center;
       text-align: center;
       width: 80px;
+      flex-shrink: 0;
     }
     .step-circle {
       width: 36px;
@@ -159,26 +166,11 @@
       font-weight: 700;
     }
 
-    @media (max-width: 680px) {
-      .stepper {
-        overflow-x: auto;
-        padding-bottom: 12px;
-      }
-      .step-item {
-        min-width: 72px;
-      }
-    }
-
     /* Grid Layout for Tracker details */
     .tracker-grid {
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 24px;
-    }
-    @media (max-width: 840px) {
-      .tracker-grid {
-        grid-template-columns: 1fr;
-      }
     }
 
     .detail-card {
@@ -201,11 +193,6 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
-    }
-    @media (max-width: 500px) {
-      .info-list {
-        grid-template-columns: 1fr;
-      }
     }
     .info-item .info-label {
       font-size: 0.8rem;
@@ -249,6 +236,7 @@
       display: flex;
       gap: 12px;
       margin-top: 16px;
+      flex-wrap: wrap;
     }
 
     /* Price Table */
@@ -273,13 +261,13 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.5);
+      background: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(4px);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
-      padding: 20px;
+      z-index: 10000;
+      padding: 16px;
     }
     .modal-card {
       background: #fff;
@@ -288,38 +276,117 @@
       width: 100%;
       padding: 32px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 860px) {
+      .tracker-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .track-hero {
+        padding: 32px 0 24px;
+      }
+      .track-hero h1 {
+        font-size: 1.75rem;
+      }
+      .track-search-card {
+        padding: 16px;
+      }
+      .track-input-group {
+        flex-direction: column;
+      }
+      .track-input-group .btn {
+        width: 100%;
+      }
+      .job-header-card {
+        padding: 20px 16px;
+      }
+      .job-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .job-title-row > div:last-child {
+        text-align: left !important;
+        border-top: 1px solid var(--border);
+        padding-top: 10px;
+        width: 100%;
+      }
+      .job-title-row h2 {
+        font-size: 1.35rem;
+      }
+
+      /* Stepper horizontal scroll on small screens */
+      .stepper-scroll-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 8px;
+      }
+      .stepper {
+        min-width: 520px;
+      }
+      .stepper::before {
+        left: 20px;
+        right: 20px;
+      }
+
+      .detail-card {
+        padding: 18px 16px;
+      }
+      .info-list {
+        grid-template-columns: 1fr;
+      }
+      .quote-actions {
+        flex-direction: column;
+      }
+      .quote-actions .btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+      }
+      .modal-card {
+        padding: 22px 18px;
+      }
     }
   </style>
 </head>
 <body>
 
   <!-- Navigation Bar -->
-  <header class="navbar">
-    <div class="navbar-container">
-      <a href="../index.html" class="navbar-brand">
-        <span class="navbar-logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-        </span>
-        <span class="navbar-brand-name">RepairDesk</span>
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="../index.html" class="navbar-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+        Repair<span>Desk</span>
       </a>
-
-      <nav class="navbar-nav">
-        <ul class="navbar-links">
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="help.html">Help Center</a></li>
-          <li><a href="pricing.html">Pricing</a></li>
-          <li><a href="track.html" class="active">Track Repair</a></li>
-        </ul>
-      </nav>
-
-      <div class="navbar-actions">
-        <a href="login.html" class="btn btn-outline btn-sm">Staff Login</a>
+      <div class="navbar-links">
+        <a href="../index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="help.html">Help Center</a>
+        <a href="pricing.html">Service Fees</a>
+        <a href="track.html" class="active">Track Repair</a>
       </div>
+      <button class="navbar-hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
-  </header>
+  </nav>
+  <div class="navbar-mobile" id="navbar-mobile">
+    <a href="../index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="help.html">Help Center</a>
+    <a href="pricing.html">Service Fees</a>
+    <a href="track.html" class="active">Track Repair</a>
+  </div>
 
   <main>
     <!-- Tracker Hero Search -->
@@ -368,33 +435,35 @@
 
           <!-- Stepper Progress -->
           <div class="stepper-wrapper">
-            <div class="stepper-progress" id="stepper-progress-bar" style="width: 33%;"></div>
-            <ol class="stepper">
-              <li class="step-item completed" id="step-1">
-                <div class="step-circle">✓</div>
-                <span class="step-label">Received</span>
-              </li>
-              <li class="step-item completed" id="step-2">
-                <div class="step-circle">✓</div>
-                <span class="step-label">Diagnosing</span>
-              </li>
-              <li class="step-item active" id="step-3">
-                <div class="step-circle">3</div>
-                <span class="step-label">Quote Approval</span>
-              </li>
-              <li class="step-item" id="step-4">
-                <div class="step-circle">4</div>
-                <span class="step-label">Repairing</span>
-              </li>
-              <li class="step-item" id="step-5">
-                <div class="step-circle">5</div>
-                <span class="step-label">Ready</span>
-              </li>
-              <li class="step-item" id="step-6">
-                <div class="step-circle">6</div>
-                <span class="step-label">Collected</span>
-              </li>
-            </ol>
+            <div class="stepper-scroll-container">
+              <div class="stepper-progress" id="stepper-progress-bar" style="width: 33%;"></div>
+              <ol class="stepper">
+                <li class="step-item completed" id="step-1">
+                  <div class="step-circle">✓</div>
+                  <span class="step-label">Received</span>
+                </li>
+                <li class="step-item completed" id="step-2">
+                  <div class="step-circle">✓</div>
+                  <span class="step-label">Diagnosing</span>
+                </li>
+                <li class="step-item active" id="step-3">
+                  <div class="step-circle">3</div>
+                  <span class="step-label">Quote Approval</span>
+                </li>
+                <li class="step-item" id="step-4">
+                  <div class="step-circle">4</div>
+                  <span class="step-label">Repairing</span>
+                </li>
+                <li class="step-item" id="step-5">
+                  <div class="step-circle">5</div>
+                  <span class="step-label">Ready</span>
+                </li>
+                <li class="step-item" id="step-6">
+                  <div class="step-circle">6</div>
+                  <span class="step-label">Collected</span>
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
 
@@ -627,6 +696,7 @@
       closeContactModal();
     }
   </script>
+  <script src="../js/main.js"></script>
 </body>
 </html>
 

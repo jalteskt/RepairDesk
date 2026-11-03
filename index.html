@@ -180,23 +180,82 @@
       margin: 0 auto 32px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .hero .container {
-        flex-direction: column;
         gap: 40px;
       }
       .hero-content h1 {
         font-size: 2.25rem;
       }
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding: 48px 0 36px;
+      }
+      .hero .container {
+        flex-direction: column;
+        gap: 28px;
+      }
+      .hero-content {
+        max-width: 100%;
+        text-align: center;
+      }
+      .hero-content h1 {
+        font-size: 1.875rem;
+      }
+      .hero-content p {
+        font-size: 1rem;
+        margin-bottom: 24px;
+      }
+      .hero-actions {
+        justify-content: center;
+      }
       .hero-illustration {
         width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
       }
       .steps-grid {
         grid-template-columns: 1fr;
       }
       .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .stat h3 {
+        font-size: 1.75rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding: 32px 0 28px;
+      }
+      .hero-content h1 {
+        font-size: 1.625rem;
+        line-height: 1.2;
+      }
+      .hero-content p {
+        font-size: 0.9375rem;
+      }
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .hero-actions .btn {
+        text-align: center;
+        justify-content: center;
+      }
+      .hero-visual {
+        aspect-ratio: 16/9;
+      }
+      .stats-grid {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 20px;
+      }
+      .stat h3 {
+        font-size: 2rem;
       }
     }
   </style>
@@ -216,13 +275,8 @@
         <a href="index.html" class="active">Home</a>
         <a href="pages/about.html">About</a>
         <a href="pages/help.html">Help Center</a>
-        <a href="pages/pricing.html">Pricing</a>
+        <a href="pages/pricing.html">Service Fees</a>
         <a href="pages/track.html">Track Repair</a>
-      </div>
-      <div class="navbar-actions">
-        <a href="pages/login.html" class="btn btn-outline btn-sm">Log In</a>
-        <a href="pages/signup.html" class="btn btn-primary btn-sm">Sign Up</a>
-        <a href="dashboard/index.html" class="btn btn-outline btn-sm" style="border-color: var(--primary); color: var(--primary);">Workbench Demo &rarr;</a>
       </div>
       <button class="navbar-hamburger" aria-label="Toggle menu">
         <span></span>
@@ -235,13 +289,8 @@
     <a href="index.html">Home</a>
     <a href="pages/about.html">About</a>
     <a href="pages/help.html">Help Center</a>
-    <a href="pages/pricing.html">Pricing</a>
+    <a href="pages/pricing.html">Service Fees</a>
     <a href="pages/track.html">Track Repair</a>
-    <div class="mobile-actions">
-      <a href="pages/login.html" class="btn btn-outline">Log In</a>
-      <a href="pages/signup.html" class="btn btn-primary">Sign Up</a>
-      <a href="dashboard/index.html" class="btn btn-primary">Workbench Demo</a>
-    </div>
   </div>
 
   <main>
@@ -249,13 +298,11 @@
     <section class="hero">
       <div class="container">
         <div class="hero-content">
-          <span class="badge badge-primary">🚀 Now with QR Code Tracking</span>
-          <h1>Manage and track your repairs effortlessly</h1>
-          <p>The all-in-one platform for repair shops to manage jobs, communicate with customers, and streamline operations — from intake to collection.</p>
+          <h1>Manage and track your repairs — all in one place</h1>
+          <p>The complete job tracking system for Metro Manila Gilmore Ave. electronics repair shops. From intake and diagnostics to quote approval, collection, and warranty tracking.</p>
           <div class="hero-actions">
-            <a href="pages/signup.html" class="btn btn-primary btn-lg">Get Started Free</a>
-            <a href="pages/track.html" class="btn btn-outline btn-lg">Track Repair (Code/QR)</a>
-            <a href="dashboard/index.html" class="btn btn-outline btn-lg" style="background:#f0fdfa; border-color:var(--primary); color:var(--primary);">Open Workshop Demo</a>
+            <a href="pages/track.html" class="btn btn-primary btn-lg">Track a Repair</a>
+            <a href="pages/help.html" class="btn btn-outline btn-lg">Help Center</a>
           </div>
         </div>
         <div class="hero-illustration">
@@ -360,26 +407,29 @@
         <div class="stats-grid">
           <div class="stat">
             <h3>500+</h3>
-            <p>Repair Shops</p>
+            <p>Repairs Completed</p>
           </div>
           <div class="stat">
-            <h3>50,000+</h3>
-            <p>Jobs Tracked</p>
+            <h3>4</h3>
+            <p>Expert Technicians</p>
           </div>
           <div class="stat">
-            <h3>99.9%</h3>
-            <p>Uptime</p>
+            <h3>90-Day</h3>
+            <p>Parts Warranty</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ========== CTA ========== -->
+    <!-- ========== CONTACT / INFO STRIP ========== -->
     <section class="cta-section">
       <div class="container">
-        <h2>Ready to streamline your repair shop?</h2>
-        <p>Join hundreds of repair businesses already using RepairDesk to save time and delight customers.</p>
-        <a href="pages/signup.html" class="btn btn-white btn-lg">Sign Up Free</a>
+        <h2>Come visit us at Gilmore</h2>
+        <p>Unit 304, Gilmore Commercial Plaza, Aurora Blvd. cor. Gilmore Ave., New Manila, Quezon City.<br>Open Mon–Sat, 9 AM – 6 PM.</p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px;">
+          <a href="pages/track.html" class="btn btn-white btn-lg">Track Your Repair</a>
+          <a href="pages/help.html" class="btn btn-white btn-lg" style="background: transparent; color: #fff; border-color: rgba(255,255,255,0.6);">Help Center</a>
+        </div>
       </div>
     </section>
   </main>
@@ -401,24 +451,24 @@
           <h4>Company</h4>
           <ul>
             <li><a href="pages/about.html">About</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Blog</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Product</h4>
-          <ul>
-            <li><a href="#">Features</a></li>
-            <li><a href="pages/pricing.html">Pricing</a></li>
-            <li><a href="#">Integrations</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Support</h4>
-          <ul>
+            <li><a href="pages/about.html#team">Open Roles</a></li>
             <li><a href="pages/help.html">Help Center</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Status</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Service Fees</h4>
+          <ul>
+            <li><a href="pages/pricing.html">Inspection Fees</a></li>
+            <li><a href="pages/pricing.html#storage">Storage Policy</a></li>
+            <li><a href="pages/pricing.html#warranty">Warranty Terms</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Customer Portal</h4>
+          <ul>
+            <li><a href="pages/track.html">Track a Repair</a></li>
+            <li><a href="pages/help.html">Contact & Support</a></li>
+            <li><a href="pages/about.html#team">Our Workshop Team</a></li>
           </ul>
         </div>
         <div class="footer-column">

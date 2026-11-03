@@ -284,11 +284,27 @@ function initRoleSwitcher() {
 function initSidebarToggle() {
   const toggleBtn = document.getElementById("sidebar-toggle-btn");
   const sidebar = document.querySelector(".sidebar");
-  if (toggleBtn && sidebar) {
+  if (!sidebar) return;
+
+  // Create overlay if not present
+  let overlay = document.querySelector(".sidebar-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.className = "sidebar-overlay";
+    document.body.appendChild(overlay);
+  }
+
+  if (toggleBtn) {
     toggleBtn.addEventListener("click", () => {
       sidebar.classList.toggle("open");
+      overlay.classList.toggle("show");
     });
   }
+
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+  });
 }
 
 // Export functions to global scope
