@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technicians — RepairDesk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <style>
+    .tech-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .tech-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .tech-header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .tech-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .workload-bar-wrap {
+      margin: 16px 0;
+    }
+    .workload-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-card {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      max-width: 500px;
+      width: 100%;
+      padding: 32px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div>
+          <h2>RepairDesk</h2>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">Operations</div>
+        <ul>
+          <li class="nav-item"><a href="index.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>Dashboard</span></a></li>
+          <li class="nav-item"><a href="jobs.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Jobs & Repairs</span></a></li>
+          <li class="nav-item"><a href="technicians.html" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Technicians</span></a></li>
+          <li class="nav-item"><a href="customers.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Customers</span></a></li>
+        </ul>
+        <div class="nav-section">Insights & Admin</div>
+        <ul>
+          <li class="nav-item"><a href="reports.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Reports & Revenue</span></a></li>
+          <li class="nav-item"><a href="settings.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Shop Settings</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="avatar" id="sidebar-avatar">EC</div>
+          <div class="user-info">
+            <div class="user-name" id="sidebar-user-name">Elena Corpuz</div>
+            <div class="user-role">
+              <select id="role-selector" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-size: 11px; padding: 2px 4px; margin-top: 4px; width: 100%;">
+                <option value="admin">Role: Shop Admin (Elena)</option>
+                <option value="technician">Role: Technician (Danilo)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" id="sidebar-toggle-btn" aria-label="Toggle menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <h1>Technician Roster & Workloads</h1>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn btn-primary btn-sm" onclick="openAddTechModal()">
+            + Add New Technician
+          </button>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <div class="page-content">
+        
+        <div class="page-welcome">
+          <h2>Workshop Bench Team</h2>
+          <p>Monitor technician capacity, active repair queues, and system access permissions.</p>
+        </div>
+
+        <!-- Tech Cards Grid -->
+        <div class="tech-card-grid" id="tech-list-grid">
+          <!-- Rendered by JS -->
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Tech Modal -->
+  <div class="modal-overlay" id="add-tech-modal">
+    <div class="modal-card">
+      <h3 style="font-size: 18px; margin-bottom: 8px;">Provision Technician Account</h3>
+      <p style="font-size: 13px; color: var(--text-light); margin-bottom: 20px;">
+        An invite email with temporary credentials will be dispatched via Resend.
+      </p>
+
+      <form onsubmit="handleAddTechnician(event)">
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size: 13px; font-weight:600; margin-bottom:4px;">Full Name *</label>
+          <input type="text" id="tech-name-input" class="form-input" placeholder="e.g. Rafael Santos" required>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size: 13px; font-weight:600; margin-bottom:4px;">Email (Login ID) *</label>
+          <input type="email" id="tech-email-input" class="form-input" placeholder="rafael.s@repairdesk.ph" required>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size: 13px; font-weight:600; margin-bottom:4px;">Phone Number *</label>
+          <input type="tel" id="tech-phone-input" class="form-input" placeholder="0917 890 1209" required>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display:block; font-size: 13px; font-weight:600; margin-bottom:4px;">Specialty / Focus Area</label>
+          <input type="text" id="tech-spec-input" class="form-input" placeholder="e.g. Inverter Aircon Boards & Power Supplies">
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn btn-outline" onclick="closeAddTechModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/dashboard.js"></script>
+  <script>
+    function renderTechnicians() {
+      const techs = window.RepairDeskStore.getTechnicians();
+      const grid = document.getElementById('tech-list-grid');
+
+      grid.innerHTML = techs.map(t => {
+        const initials = t.name.split(' ').map(n => n[0]).join('');
+        const isActive = t.status === 'Active';
+        const pct = Math.min(100, (t.activeJobs / 6) * 100);
+
+        return `
+          <div class="tech-card">
+            <div>
+              <div class="tech-header">
+                <div class="tech-avatar" style="${!isActive ? 'background: #94a3b8;' : ''}">${initials}</div>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <strong style="font-size: 16px;">${t.name}</strong>
+                    <span class="badge ${isActive ? 'badge-green' : 'badge-gray'}">${t.status}</span>
+                  </div>
+                  <div style="font-size: 12px; color: var(--text-light); margin-top: 2px;">${t.specialty}</div>
+                </div>
+              </div>
+
+              <div style="font-size: 13px; color: var(--text-light); margin-bottom: 4px;">
+                ✉️ ${t.email}
+              </div>
+              <div style="font-size: 13px; color: var(--text-light); margin-bottom: 12px;">
+                📞 ${t.phone}
+              </div>
+
+              <div class="workload-bar-wrap">
+                <div class="workload-label">
+                  <span>Current Active Jobs</span>
+                  <strong>${t.activeJobs} jobs</strong>
+                </div>
+                <div style="height: 8px; background: #e2e8f0; border-radius: 9999px; overflow: hidden;">
+                  <div style="width: ${pct}%; height: 100%; background: ${pct > 80 ? 'var(--warning)' : 'var(--primary)'};"></div>
+                </div>
+              </div>
+
+              <div style="font-size: 12px; color: var(--text-light);">
+                Total lifetime jobs completed: <strong>${t.completedJobs}</strong>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px;">
+              <a href="jobs.html" class="btn btn-outline btn-sm" style="flex: 1; text-align: center;">View Jobs</a>
+              <button class="btn btn-sm ${isActive ? 'btn-outline' : 'btn-primary'}" onclick="toggleTechStatus('${t.id}')">
+                ${isActive ? 'Deactivate' : 'Reactivate'}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleTechStatus(id) {
+      const techs = window.RepairDeskStore.getTechnicians();
+      const t = techs.find(x => x.id === id);
+      if (t) {
+        if (t.status === 'Active') {
+          if (t.activeJobs > 0) {
+            alert(`Notice: ${t.name} has ${t.activeJobs} active jobs. Please reassign their open jobs before deactivation.`);
+            return;
+          }
+          t.status = 'Deactivated';
+        } else {
+          t.status = 'Active';
+        }
+        window.RepairDeskStore.saveTechnicians(techs);
+        renderTechnicians();
+      }
+    }
+
+    function openAddTechModal() {
+      document.getElementById('add-tech-modal').classList.add('show');
+    }
+
+    function closeAddTechModal() {
+      document.getElementById('add-tech-modal').classList.remove('show');
+    }
+
+    function handleAddTechnician(e) {
+      e.preventDefault();
+      const techs = window.RepairDeskStore.getTechnicians();
+      const newTech = {
+        id: 'TECH-' + (techs.length + 1),
+        name: document.getElementById('tech-name-input').value,
+        email: document.getElementById('tech-email-input').value,
+        phone: document.getElementById('tech-phone-input').value,
+        specialty: document.getElementById('tech-spec-input').value || 'General Electronics',
+        activeJobs: 0,
+        completedJobs: 0,
+        status: 'Active'
+      };
+
+      techs.push(newTech);
+      window.RepairDeskStore.saveTechnicians(techs);
+      closeAddTechModal();
+      renderTechnicians();
+      alert(`Technician ${newTech.name} provisioned! Temporary login credentials dispatched via Resend email.`);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTechnicians();
+    });
+  </script>
+</body>
+</html>
+

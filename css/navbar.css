@@ -1,0 +1,234 @@
+/* ============================================
+   RepairDesk - Navbar Styles
+   Industrial Eco & Restoration theme
+   ============================================ */
+
+/* Body offset for fixed navbar */
+body {
+  padding-top: 64px;
+}
+
+/* Dashboard pages don't use the public navbar */
+body.dashboard-body {
+  padding-top: 0;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: var(--dark) !important;
+  background: var(--dark) !important;
+  border-bottom: 1px solid var(--dark-alt);
+  z-index: 1000;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
+  transition: box-shadow 200ms ease;
+}
+
+.navbar.scrolled {
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.35);
+}
+
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* --- Logo --- */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #F8FAFC;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.navbar-logo svg {
+  width: 24px;
+  height: 24px;
+  color: var(--primary-bright);
+  flex-shrink: 0;
+}
+
+.navbar-logo span {
+  color: var(--primary-bright);
+}
+
+/* --- Nav Links --- */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navbar-links a {
+  position: relative;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #CBD5E1;
+  transition: color var(--transition);
+  padding: 6px 0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navbar-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-bright);
+  border-radius: 1px;
+  transition: width 200ms ease;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+  color: #FFFFFF;
+}
+
+.navbar-links a:hover::after,
+.navbar-links a.active::after {
+  width: 100%;
+}
+
+/* --- Mobile Hamburger Button --- */
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: background-color var(--transition);
+  background-color: transparent;
+  border: 1px solid transparent;
+  margin-left: auto;
+}
+
+.navbar-hamburger:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.navbar-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: #F1F5F9;
+  border-radius: 2px;
+  transition: transform 200ms ease, opacity 200ms ease;
+}
+
+.navbar-hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.navbar-hamburger.active span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.navbar-hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* --- Mobile Menu Drawer --- */
+.navbar-mobile {
+  display: none;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--dark) !important;
+  background: var(--dark) !important;
+  opacity: 1 !important;
+  z-index: 9999;
+  padding: 20px 24px 40px;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  border-top: 1px solid var(--dark-alt);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  animation: slideDown 180ms ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.navbar-mobile.open {
+  display: flex !important;
+}
+
+.navbar-mobile a {
+  display: block;
+  padding: 14px 18px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #E2E8F0;
+  border-radius: var(--radius);
+  background-color: transparent;
+  transition: background-color var(--transition), color var(--transition);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.navbar-mobile a:hover,
+.navbar-mobile a.active {
+  background-color: rgba(74, 222, 128, 0.1);
+  color: var(--primary-bright);
+  font-weight: 600;
+}
+
+/* --- Responsive Breakpoints --- */
+
+/* Tablet (collapse links into hamburger at <= 860px) */
+@media (max-width: 860px) {
+  .navbar-links {
+    display: none !important;
+  }
+
+  .navbar-hamburger {
+    display: flex !important;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 600px) {
+  .navbar {
+    height: 56px;
+  }
+
+  body {
+    padding-top: 56px;
+  }
+
+  .navbar-mobile {
+    top: 56px;
+  }
+
+  .navbar-logo {
+    font-size: 1.05rem;
+  }
+
+  .navbar-logo svg {
+    width: 22px;
+    height: 22px;
+  }
+}
