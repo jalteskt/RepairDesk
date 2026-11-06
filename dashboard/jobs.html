@@ -350,17 +350,18 @@
 
         <div style="background: #f8fafc; padding: 12px; border-radius: 6px; font-size: 12px; color: #64748b; margin-bottom: 20px;">
           ✓ Customer consents to data storage (RA 10173) and accepts the 30-day unclaimed collection window policy.<br>
-          ✓ System will auto-generate unique 6-character code (non-sequential, no look-alike 0/O, 1/I/L) & QR code.
+          ✓ System will auto-generate unique 6-character code (non-sequential, no look-alike 0/O, 1/I/L).
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 12px;">
           <button type="button" class="btn btn-outline" onclick="closeNewJobModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Generate Ticket & Email Customer</button>
+          <button type="submit" class="btn btn-primary">Generate Ticket</button>
         </div>
       </form>
     </div>
   </div>
 
+  <script src="../js/api.js"></script>
   <script src="../js/dashboard.js"></script>
   <script>
     let activeTab = 'pending';
@@ -374,12 +375,10 @@
 
     function renderJobsTable() {
       const allJobs = window.RepairDeskStore.getJobs();
-      const currentRole = localStorage.getItem('repairdesk_role') || 'admin';
+      const currentRole = RD.user.role;
 
       // Role filter: Danilo only sees his jobs if in technician mode
-      let filtered = currentRole === 'technician'
-        ? allJobs.filter(j => j.technician.includes('Danilo') || j.technician.includes('Dan'))
-        : allJobs;
+      let filtered = allJobs;
 
       // Tab filter
       filtered = filtered.filter(j => j.tab === activeTab);
@@ -426,24 +425,24 @@
       tbody.innerHTML = filtered.map(job => `
         <tr>
           <td>
-            <strong>${job.id}</strong>
-            <div style="font-size: 11px; font-family: monospace; color: var(--primary); font-weight: 700;">${job.code}</div>
+            <strong>${RD.escape(job.id)}</strong>
+            <div style="font-size: 11px; font-family: monospace; color: var(--primary); font-weight: 700;">${RD.escape(job.code)}</div>
           </td>
           <td>
-            <div style="font-weight: 600;">${job.brand} ${job.model}</div>
-            <div style="font-size: 12px; color: var(--text-light);">${job.appliance}</div>
+            <div style="font-weight: 600;">${RD.escape(job.brand)} ${RD.escape(job.model)}</div>
+            <div style="font-size: 12px; color: var(--text-light);">${RD.escape(job.appliance)}</div>
           </td>
           <td>
-            <div>${job.customer.name}</div>
-            <div style="font-size: 11px; color: var(--text-light);">${job.customer.phone}</div>
+            <div>${RD.escape(job.customer.name)}</div>
+            <div style="font-size: 11px; color: var(--text-light);">${RD.escape(job.customer.phone)}</div>
           </td>
-          <td>${job.technician}</td>
-          <td>${job.dateStarted}</td>
+          <td>${RD.escape(job.technician)}</td>
+          <td>${RD.escape(job.dateStarted)}</td>
           <td>${window.RepairDeskStore.getStatusBadge(job.status)}</td>
           <td>₱${Number(job.billing.total).toLocaleString()}</td>
           <td>${window.RepairDeskStore.getPaymentBadge(job.payment)}</td>
           <td>
-            <a href="job-detail.html?id=${job.id}" class="btn btn-sm btn-outline" style="padding: 4px 8px; font-size: 12px;">Open</a>
+            <a href="job-detail.html?id=${RD.escape(job.id)}" class="btn btn-sm btn-outline" style="padding: 4px 8px; font-size: 12px;">Open</a>
           </td>
         </tr>
       `).join('');
@@ -464,51 +463,15 @@
       document.getElementById('new-job-modal').classList.remove('show');
     }
 
-    function handleCreateJob(e) {
+    async function handleCreateJob(e) {
       e.preventDefault();
-      const jobs = window.RepairDeskStore.getJobs();
-      const newId = 'JOB-' + (100 + jobs.length + 1);
-      const newCode = window.RepairDeskStore.generateJobCode();
-
-      const newJob = {
-        id: newId,
-        code: newCode,
-        appliance: document.getElementById('input-appliance').value,
-        brand: document.getElementById('input-brand').value,
-        model: document.getElementById('input-model').value,
-        serial: document.getElementById('input-serial').value || 'N/A',
-        reportedIssue: document.getElementById('input-issue').value,
-        accessories: document.getElementById('input-accessories').value || 'None',
-        condition: document.getElementById('input-condition').value || 'Normal',
-        customer: {
-          name: document.getElementById('input-cust-name').value,
-          phone: document.getElementById('input-cust-phone').value,
-          email: document.getElementById('input-cust-email').value
-        },
-        technician: document.getElementById('input-tech').value,
-        status: 'Received',
-        tab: 'pending',
-        dateStarted: new Date().toISOString().split('T')[0],
-        estCompletion: '2026-11-06',
-        billing: { diagnosticFee: 500, parts: 0, labor: 0, total: 500 },
-        payment: 'Unpaid',
-        notes: [
-          { id: 1, time: new Date().toLocaleString(), author: 'Gilmore Intake Counter', text: 'Intake ticket created. Item tagged and stored in bin.', customerVisible: true }
-        ],
-        timeline: [
-          { time: new Date().toLocaleString(), action: 'Job Created', user: localStorage.getItem('repairdesk_user') || 'Admin' }
-        ]
-      };
-
-      jobs.unshift(newJob);
-      window.RepairDeskStore.saveJobs(jobs);
-      closeNewJobModal();
-      document.getElementById('create-job-form').reset();
-      renderJobsTable();
-      alert(`Job created successfully!\nJob ID: ${newId}\nCustomer Tracking Code: ${newCode}\nIntake confirmation email dispatched.`);
+      const value=id=>document.getElementById(id).value;
+      if(!confirm('Confirm that the customer consented to storing their contact and repair details and accepted the collection policy.'))return;
+      const j=await RD.call('create-job',{appliance:value('input-appliance'),brand:value('input-brand'),model:value('input-model'),serial:value('input-serial'),reportedIssue:value('input-issue'),accessories:value('input-accessories'),condition:value('input-condition'),technician:value('input-tech'),customer:{name:value('input-cust-name'),phone:value('input-cust-phone'),email:value('input-cust-email')},consent:true});
+      await refreshData();closeNewJobModal();document.getElementById('create-job-form').reset();renderJobsTable();alert('Job created: '+j.id+'; tracking code: '+j.code+'. Share this code with the customer.');
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('repairdesk:ready', () => {
       // Check query param for modal
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('action') === 'new') {

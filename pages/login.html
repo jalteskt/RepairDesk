@@ -223,7 +223,7 @@
 
       <!-- Demo Access Banner -->
       <div class="demo-banner">
-        <strong>Demo Access:</strong> Click a role to fill credentials:
+        <strong>Demo Access:</strong> Sample password: <strong>Pass123!</strong><br>Admin: admin@repairdesk.net<br>Technician: tech@repairdesk.net
         <div class="demo-chips">
           <button type="button" class="demo-chip" onclick="fillDemo('admin')">👑 Admin (Elena)</button>
           <button type="button" class="demo-chip" onclick="fillDemo('tech')">🔧 Technician (Danilo)</button>
@@ -233,20 +233,20 @@
       <form id="login-form" onsubmit="handleLogin(event)">
         <div class="form-group">
           <label class="form-label" for="email">Work Email Address</label>
-          <input type="email" id="email" class="form-control" placeholder="name@repairdesk.ph" required value="admin@repairdesk.ph">
+          <input type="email" id="email" class="form-control" placeholder="name@repairdesk.ph" required value="">
         </div>
 
         <div class="form-group">
           <label class="form-label" for="password">Password</label>
-          <input type="password" id="password" class="form-control" placeholder="••••••••" required value="admin2026!">
+          <input type="password" id="password" class="form-control" placeholder="••••••••" required value="">
         </div>
 
         <div class="auth-row">
           <label class="remember-me">
-            <input type="checkbox" checked>
-            <span>Remember for 30 days</span>
+            <input type="checkbox" disabled>
+            <span>Session expires after 1 hour idle</span>
           </label>
-          <a href="#" class="forgot-link">Forgot password?</a>
+          <a href="#" onclick="alert('Contact the shop administrator to reset access.'); return false;" class="forgot-link">Forgot password?</a>
         </div>
 
         <button type="submit" class="btn btn-primary btn-submit">Sign In to Workbench</button>
@@ -255,37 +255,11 @@
   </div>
 
   <script src="../js/main.js"></script>
+  <script src="../js/api.js"></script>
   <script>
-    function fillDemo(role) {
-      const email = document.getElementById('email');
-      const pass = document.getElementById('password');
-      if (role === 'admin') {
-        email.value = 'admin@repairdesk.ph';
-        pass.value = 'admin2026!';
-        localStorage.setItem('repairdesk_role', 'admin');
-        localStorage.setItem('repairdesk_user', 'Elena Corpuz (Shop Admin)');
-      } else {
-        email.value = 'dan.mendoza@repairdesk.ph';
-        pass.value = 'tech2026!';
-        localStorage.setItem('repairdesk_role', 'technician');
-        localStorage.setItem('repairdesk_user', 'Danilo "Dan" Mendoza (Technician)');
-      }
-    }
-
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('email').value.trim();
-      if (!localStorage.getItem('repairdesk_role')) {
-        if (email.includes('admin')) {
-          localStorage.setItem('repairdesk_role', 'admin');
-          localStorage.setItem('repairdesk_user', 'Elena Corpuz (Shop Admin)');
-        } else {
-          localStorage.setItem('repairdesk_role', 'technician');
-          localStorage.setItem('repairdesk_user', 'Danilo "Dan" Mendoza (Technician)');
-        }
-      }
-      window.location.href = '../dashboard/index.html';
-    }
+    function fillDemo(role) { document.getElementById('email').value=role==='admin'?'admin@repairdesk.net':'tech@repairdesk.net';document.getElementById('password').value='Pass123!'; }
+    async function handleLogin(e) {e.preventDefault();await RD.session();await RD.call('login',{email:document.getElementById('email').value,password:document.getElementById('password').value});location.href='../dashboard/index.html';}
+    document.addEventListener('DOMContentLoaded',async()=>{await RD.session();document.querySelector('.demo-banner').hidden=!RD.demo;});
   </script>
 </body>
 </html>

@@ -193,6 +193,7 @@
     </div>
   </div>
 
+  <script src="../js/api.js"></script>
   <script src="../js/dashboard.js"></script>
   <script>
     function renderTechnicians() {
@@ -208,21 +209,21 @@
           <div class="tech-card">
             <div>
               <div class="tech-header">
-                <div class="tech-avatar" style="${!isActive ? 'background: #94a3b8;' : ''}">${initials}</div>
+                <div class="tech-avatar" style="${!isActive ? 'background: #94a3b8;' : ''}">${RD.escape(initials)}</div>
                 <div>
                   <div style="display: flex; align-items: center; gap: 8px;">
-                    <strong style="font-size: 16px;">${t.name}</strong>
-                    <span class="badge ${isActive ? 'badge-green' : 'badge-gray'}">${t.status}</span>
+                    <strong style="font-size: 16px;">${RD.escape(t.name)}</strong>
+                    <span class="badge ${isActive ? 'badge-green' : 'badge-gray'}">${RD.escape(t.status)}</span>
                   </div>
-                  <div style="font-size: 12px; color: var(--text-light); margin-top: 2px;">${t.specialty}</div>
+                  <div style="font-size: 12px; color: var(--text-light); margin-top: 2px;">${RD.escape(t.specialty)}</div>
                 </div>
               </div>
 
               <div style="font-size: 13px; color: var(--text-light); margin-bottom: 4px;">
-                ✉️ ${t.email}
+                ✉️ ${RD.escape(t.email)}
               </div>
               <div style="font-size: 13px; color: var(--text-light); margin-bottom: 12px;">
-                📞 ${t.phone}
+                📞 ${RD.escape(t.phone)}
               </div>
 
               <div class="workload-bar-wrap">
@@ -242,7 +243,7 @@
 
             <div style="display: flex; gap: 8px; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px;">
               <a href="jobs.html" class="btn btn-outline btn-sm" style="flex: 1; text-align: center;">View Jobs</a>
-              <button class="btn btn-sm ${isActive ? 'btn-outline' : 'btn-primary'}" onclick="toggleTechStatus('${t.id}')">
+              <button class="btn btn-sm ${isActive ? 'btn-outline' : 'btn-primary'}" onclick="toggleTechStatus('${RD.escape(t.id)}')">
                 ${isActive ? 'Deactivate' : 'Reactivate'}
               </button>
             </div>
@@ -251,23 +252,7 @@
       }).join('');
     }
 
-    function toggleTechStatus(id) {
-      const techs = window.RepairDeskStore.getTechnicians();
-      const t = techs.find(x => x.id === id);
-      if (t) {
-        if (t.status === 'Active') {
-          if (t.activeJobs > 0) {
-            alert(`Notice: ${t.name} has ${t.activeJobs} active jobs. Please reassign their open jobs before deactivation.`);
-            return;
-          }
-          t.status = 'Deactivated';
-        } else {
-          t.status = 'Active';
-        }
-        window.RepairDeskStore.saveTechnicians(techs);
-        renderTechnicians();
-      }
-    }
+    async function toggleTechStatus(id){const t=getTechnicians().find(t=>t.id===id);await RD.call('staff',{id:Number(id.replace('TECH-','')),active:t.status!=='Active'});await refreshData();renderTechnicians();}
 
     function openAddTechModal() {
       document.getElementById('add-tech-modal').classList.add('show');
@@ -277,28 +262,9 @@
       document.getElementById('add-tech-modal').classList.remove('show');
     }
 
-    function handleAddTechnician(e) {
-      e.preventDefault();
-      const techs = window.RepairDeskStore.getTechnicians();
-      const newTech = {
-        id: 'TECH-' + (techs.length + 1),
-        name: document.getElementById('tech-name-input').value,
-        email: document.getElementById('tech-email-input').value,
-        phone: document.getElementById('tech-phone-input').value,
-        specialty: document.getElementById('tech-spec-input').value || 'General Electronics',
-        activeJobs: 0,
-        completedJobs: 0,
-        status: 'Active'
-      };
+    async function handleAddTechnician(e){e.preventDefault();const password=prompt('Initial staff password (at least 8 characters):');if(password===null)return;const value=id=>document.getElementById(id).value;await RD.call('staff',{name:value('tech-name-input'),email:value('tech-email-input'),phone:value('tech-phone-input'),specialty:value('tech-spec-input'),password});await refreshData();closeAddTechModal();renderTechnicians();alert('Account created. Share the initial password privately.');}
 
-      techs.push(newTech);
-      window.RepairDeskStore.saveTechnicians(techs);
-      closeAddTechModal();
-      renderTechnicians();
-      alert(`Technician ${newTech.name} provisioned! Temporary login credentials dispatched via Resend email.`);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('repairdesk:ready', () => {
       renderTechnicians();
     });
   </script>

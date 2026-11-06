@@ -124,7 +124,7 @@
         </div>
 
         <div class="topbar-right">
-          <button class="btn btn-outline btn-sm" onclick="alert('Exporting CSV of all jobs, quotes and turnover...')">
+          <button class="btn btn-outline btn-sm" onclick="exportJobs()">
             📥 Export CSV
           </button>
         </div>
@@ -142,7 +142,7 @@
         <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
           <div class="stat-card">
             <div class="stat-header">
-              <span class="stat-label">Total Monthly Revenue</span>
+              <span class="stat-label">Recorded Payments</span>
               <div class="stat-icon blue">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
               </div>
@@ -153,7 +153,7 @@
 
           <div class="stat-card">
             <div class="stat-header">
-              <span class="stat-label">Avg Repair Turnaround</span>
+              <span class="stat-label">Active Repairs</span>
               <div class="stat-icon teal">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </div>
@@ -164,7 +164,7 @@
 
           <div class="stat-card">
             <div class="stat-header">
-              <span class="stat-label">Repairs Completed (This Month)</span>
+              <span class="stat-label">Repairs Collected</span>
               <div class="stat-icon green">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
               </div>
@@ -178,10 +178,10 @@
         <div class="chart-container">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div>
-              <h3 style="font-size: 16px; font-weight: 700; margin: 0;">Completed Repairs by Technician (October)</h3>
+              <h3 style="font-size: 16px; font-weight: 700; margin: 0;">Collected Repairs by Technician</h3>
               <p style="font-size: 13px; color: var(--text-light); margin: 4px 0 0;">Volume of completed and collected customer tickets</p>
             </div>
-            <span class="badge badge-teal">October 2026</span>
+            <span class="badge badge-teal">All recorded months</span>
           </div>
 
           <div class="bar-chart">
@@ -228,7 +228,7 @@
                   <th>Jobs Intake</th>
                   <th>Repairs Completed</th>
                   <th>Quote Approval Rate</th>
-                  <th>Diagnostic Fees</th>
+                  <th>Diagnostic Charges</th>
                   <th>Gross Revenue</th>
                 </tr>
               </thead>
@@ -274,7 +274,12 @@
     </main>
   </div>
 
+  <script src="../js/api.js"></script>
   <script src="../js/dashboard.js"></script>
+<script>
+    function exportJobs(){const cols=['id','code','status','technician','dateStarted'];const csv=[cols.join(','),...getJobs().map(j=>cols.map(k=>'"'+String(j[k]).replace(/^[=+@-]/,"' </body>").replaceAll('"','""')+'"').join(','))].join('\r\n');const u=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download='repairdesk-jobs.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+    document.addEventListener('repairdesk:ready',async()=>{const report=await RD.call('reports');const jobs=getJobs();const values=[formatPHP(report.payments.reduce((s,p)=>s+Number(p.revenue),0)),jobs.filter(j=>j.tab==='pending').length,jobs.filter(j=>j.status==='Collected').length];document.querySelectorAll('.stat-number').forEach((e,i)=>e.textContent=values[i]);document.querySelectorAll('.stat-change').forEach(e=>e.textContent='From saved records');const chart=document.querySelector('.bar-chart');const template=chart.firstElementChild.cloneNode(true);chart.replaceChildren();const techs=getTechnicians();const max=Math.max(1,...techs.map(t=>t.completedJobs));for(const t of techs){const col=template.cloneNode(true);col.querySelector('.bar-label').textContent=t.name;col.querySelector('.bar-val').textContent=t.completedJobs;col.querySelector('.bar-fill').style.height=t.completedJobs/max*100+'%';chart.append(col);}const tbody=document.querySelector('tbody');tbody.replaceChildren();const months=[...new Set([...report.months.map(m=>m.month),...report.payments.map(m=>m.month)])].sort().reverse();for(const month of months){const m=report.months.find(m=>m.month===month)||{intake:0,completed:0,decided:0,approved:0,diagnostic:0};const row=document.createElement('tr');for(const v of [month,m.intake,m.completed,Number(m.decided)?Math.round(Number(m.approved)/Number(m.decided)*100)+'%':'N/A',formatPHP(m.diagnostic),formatPHP(report.payments.find(p=>p.month===month)?.revenue||0)]){const td=document.createElement('td');td.textContent=v;row.append(td);}tbody.append(row);}});
+  </script>
 </body>
 </html>
 

@@ -158,7 +158,7 @@
             </div>
             <div class="stat-number">1</div>
             <div class="stat-change" style="margin-top: 6px; color: var(--warning);">
-              <span>Customer SMS sent</span>
+              <span>Awaiting customer response</span>
             </div>
           </div>
 
@@ -171,20 +171,20 @@
             </div>
             <div class="stat-number">1</div>
             <div class="stat-change up" style="margin-top: 6px;">
-              <span>30-day window active</span>
+              <span>Awaiting collection</span>
             </div>
           </div>
 
           <div class="stat-card">
             <div class="stat-header">
-              <span class="stat-label">October Revenue</span>
+              <span class="stat-label">Recorded Payments</span>
               <div class="stat-icon blue">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
               </div>
             </div>
             <div class="stat-number">₱485,250</div>
             <div class="stat-change up" style="margin-top: 6px;">
-              <span>+18.4% from last month</span>
+              <span>All recorded payments</span>
             </div>
           </div>
         </div>
@@ -272,7 +272,7 @@
                 Unclaimed Policy Tracker
               </h4>
               <p style="font-size: 12px; color: #b45309; line-height: 1.4; margin: 0;">
-                Job <strong>#JOB-106</strong> (Denon Receiver) has been marked Ready for 3 days. Automated 14-day reminder scheduled via SMS / Resend email.
+                Storage charges and automatic reminders are not enabled in this release.
               </p>
             </div>
 
@@ -284,46 +284,40 @@
     </main>
   </div>
 
+  <script src="../js/api.js"></script>
   <script src="../js/dashboard.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('repairdesk:ready', () => {
       const jobs = window.RepairDeskStore.getJobs();
-      const currentRole = localStorage.getItem('repairdesk_role') || 'admin';
+      const currentRole = RD.user.role;
       
       // If technician role, filter to only Danilo's jobs
-      const displayJobs = currentRole === 'technician' 
-        ? jobs.filter(j => j.technician.includes('Danilo') || j.technician.includes('Dan'))
-        : jobs;
+      const displayJobs = jobs;
 
       const tbody = document.getElementById('overview-jobs-body');
       tbody.innerHTML = displayJobs.slice(0, 5).map(job => `
         <tr>
           <td>
-            <strong>${job.id}</strong>
-            <div style="font-size: 11px; font-family: monospace; color: var(--text-light);">${job.code}</div>
+            <strong>${RD.escape(job.id)}</strong>
+            <div style="font-size: 11px; font-family: monospace; color: var(--text-light);">${RD.escape(job.code)}</div>
           </td>
           <td>
-            <div>${job.brand} ${job.model}</div>
-            <div style="font-size: 11px; color: var(--text-light);">${job.appliance}</div>
+            <div>${RD.escape(job.brand)} ${RD.escape(job.model)}</div>
+            <div style="font-size: 11px; color: var(--text-light);">${RD.escape(job.appliance)}</div>
           </td>
-          <td>${job.customer.name}</td>
-          <td>${job.technician}</td>
+          <td>${RD.escape(job.customer.name)}</td>
+          <td>${RD.escape(job.technician)}</td>
           <td>${window.RepairDeskStore.getStatusBadge(job.status)}</td>
           <td>${window.RepairDeskStore.getPaymentBadge(job.payment)}</td>
           <td>
-            <a href="job-detail.html?id=${job.id}" class="btn btn-sm btn-outline" style="padding: 4px 8px; font-size: 12px;">View</a>
+            <a href="job-detail.html?id=${RD.escape(job.id)}" class="btn btn-sm btn-outline" style="padding: 4px 8px; font-size: 12px;">View</a>
           </td>
         </tr>
       `).join('');
 
-      // Custom greeting based on role
-      const role = localStorage.getItem('repairdesk_role');
-      if (role === 'technician') {
-        document.getElementById('header-user-greeting').innerText = 'Welcome back, Danilo Mendoza (Technician)';
-        document.getElementById('sidebar-user-name').innerText = 'Danilo Mendoza';
-        document.getElementById('sidebar-avatar').innerText = 'DM';
-      }
+      document.getElementById('header-user-greeting').textContent='Welcome back, '+RD.user.name;
     });
+    document.addEventListener('repairdesk:ready',()=>{const jobs=getJobs();const values=[jobs.filter(j=>j.tab==='pending').length,jobs.filter(j=>j.status==='Awaiting Quote Approval').length,jobs.filter(j=>j.status==='Ready').length,formatPHP(jobs.reduce((sum,j)=>sum+j.paidAmount,0))];document.querySelectorAll('.stat-number').forEach((e,i)=>e.textContent=values[i]);const title=[...document.querySelectorAll('h3')].find(e=>e.textContent.includes('Technician Workload'));const list=title.nextElementSibling;const template=list.firstElementChild.cloneNode(true);list.replaceChildren();for(const t of getTechnicians()){const row=template.cloneNode(true);row.querySelector('strong').textContent=t.name;row.querySelector('span').textContent=t.activeJobs+' active jobs';row.lastElementChild.firstElementChild.style.width=Math.min(100,t.activeJobs/6*100)+'%';list.append(row);}});
   </script>
 </body>
 </html>

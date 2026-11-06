@@ -892,8 +892,7 @@
             </div>
           </form>
           <div id="code-hint" style="font-size: 0.8rem; color: var(--text-light); margin-top: 10px;">
-            Example Demo Codes: <a href="javascript:void(0)" onclick="loadCode('B9X2K4')"><strong>B9X2K4</strong> (Awaiting Quote)</a> &bull; <a href="javascript:void(0)" onclick="loadCode('M4K7P2')"><strong>M4K7P2</strong> (Collected / Warranty)</a>
-          </div>
+            Demo: <strong>B9X2K4</strong> + <strong>customer@example.com</strong></div>
 
           <!-- Step 2: OTP verification (sample, for demonstration) -->
           <div id="verify-step" style="display: none;">
@@ -901,18 +900,18 @@
               <span class="code-receipt-label">Job Code</span>
               <span class="job-ref-badge" id="verify-code">&mdash;</span>
             </div>
-            <p class="otp-lead">Enter the 6-digit verification code sent by SMS to the customer's registered mobile number. This is a sample OTP shown for demonstration only.</p>
+            <p class="otp-lead">Enter the complete email recorded at intake. The result displays a masked email.</p>
             <div class="otp-demo-box">
-              <span class="otp-demo-label">Sample OTP (for demonstration)</span>
-              <strong class="otp-demo-code">483920</strong>
+              <span class="otp-demo-label">Sample email (demo job B9X2K4)</span>
+              <strong class="otp-demo-code">customer@example.com</strong>
             </div>
-            <form id="otp-form" onsubmit="verifyOtp(event)">
+            <form id="otp-form" onsubmit="verifyTracking(event)">
               <div class="track-input-group">
-                <input type="text" id="otp-input" class="track-input" maxlength="6" inputmode="numeric" autocomplete="one-time-code" placeholder="483920" oninput="this.value = this.value.replace(/\D/g, '')" style="letter-spacing: 0.3em;">
+                <input type="email" id="tracking-email" class="track-input" autocomplete="email" placeholder="customer@example.com" required>
                 <button type="submit" class="btn btn-primary" style="padding: 0 28px;">Verify & View Status</button>
               </div>
             </form>
-            <div id="otp-error">&times; Incorrect verification code. For this demonstration, enter the sample OTP shown above.</div>
+            <div id="otp-error">Tracking code and email do not match.</div>
             <a href="javascript:void(0)" class="track-reset-link" onclick="resetToSearch()">&larr; Use a different code</a>
           </div>
         </div>
@@ -1017,7 +1016,7 @@
               <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 16px;">
                 This repair is backed by our 90-day parts and labor warranty covering the replaced components through <strong>Jan 26, 2027</strong>.
               </p>
-              <button class="btn btn-outline btn-sm" onclick="alert('Warranty claim form opened. Our Gilmore support team will contact you within 24 hours.')">File Warranty Claim</button>
+              <button class="btn btn-outline btn-sm" onclick="requestWarranty()">File Warranty Claim</button>
             </div>
 
           </div>
@@ -1034,11 +1033,11 @@
                   <td style="text-align: right;">&#8369;500.00</td>
                 </tr>
                 <tr>
-                  <td>OEM Battery Pack (7-Cell)</td>
+                  <td>Replacement Parts</td>
                   <td style="text-align: right;">&#8369;3,850.00</td>
                 </tr>
                 <tr>
-                  <td>Filter Assembly & Labor</td>
+                  <td>Labor</td>
                   <td style="text-align: right;">&#8369;1,200.00</td>
                 </tr>
                 <tr>
@@ -1362,7 +1361,7 @@
     <div class="modal-card">
       <h3 style="margin-bottom: 8px;">Message Assigned Technician</h3>
       <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px;">
-        Your inquiry will be delivered to Technician Danilo Mendoza and the shop supervisor inbox.
+        Your inquiry will be saved for the shop administrator to review.
       </p>
       <form onsubmit="submitMessage(event)">
         <div style="margin-bottom: 14px;">
@@ -1381,147 +1380,8 @@
     </div>
   </div>
 
-  <script>
-    const SAMPLE_OTP = '483920';
-
-    function loadCode(code) {
-      document.getElementById('track-code').value = code;
-      handleLookup();
-    }
-
-    function handleLookup(e) {
-      if (e && typeof e.preventDefault === 'function') e.preventDefault();
-      const code = document.getElementById('track-code').value.trim().toUpperCase();
-      if (!code) return;
-      document.getElementById('display-code').innerText = 'CODE: ' + code;
-
-      if (code === 'M4K7P2') {
-        // Sample Completed / Collected Job
-        document.getElementById('display-status-badge').className = 'badge badge-success';
-        document.getElementById('display-status-badge').innerText = 'Collected (Repaired)';
-        document.getElementById('display-appliance').innerText = 'Apple MacBook Pro 14" M1 Pro';
-        document.getElementById('display-fault').innerText = 'Liquid spill damage on keyboard and trackpad from milk tea.';
-        document.getElementById('display-customer').innerText = 'Marcus Chen';
-        document.getElementById('stepper-progress-bar').style.width = '100%';
-        document.getElementById('quote-approval-box').style.display = 'none';
-        document.getElementById('warranty-card').style.display = 'block';
-        document.getElementById('payment-badge').className = 'badge badge-success';
-        document.getElementById('payment-badge').innerText = 'Paid (\u20B19,900.00 via Maya)';
-
-        // Mark all steps completed
-        for (let i = 1; i <= 6; i++) {
-          const el = document.getElementById(`step-${i}`);
-          el.className = 'step-item completed';
-          el.querySelector('.step-circle').innerText = '\u2713';
-        }
-      } else {
-        // Default Awaiting Quote job
-        document.getElementById('display-status-badge').className = 'badge badge-amber';
-        document.getElementById('display-status-badge').innerText = 'Awaiting Quote Approval';
-        document.getElementById('display-appliance').innerText = 'Dyson V11 Torque Drive Cordless Vacuum';
-        document.getElementById('display-fault').innerText = 'Pulsing on boost mode, shuts off after 10 seconds.';
-        document.getElementById('display-customer').innerText = 'Christine Reyes';
-        document.getElementById('stepper-progress-bar').style.width = '35%';
-        document.getElementById('quote-approval-box').style.display = 'block';
-        document.getElementById('warranty-card').style.display = 'none';
-        document.getElementById('payment-badge').className = 'badge badge-amber';
-        document.getElementById('payment-badge').innerText = 'Unpaid (\u20B15,550.00)';
-      }
-
-      // Move to the OTP verification step (sample OTP for demonstration)
-      document.getElementById('verify-code').innerText = code;
-      document.getElementById('otp-input').value = '';
-      document.getElementById('otp-error').style.display = 'none';
-      document.getElementById('track-form').style.display = 'none';
-      document.getElementById('code-hint').style.display = 'none';
-      document.getElementById('verify-step').style.display = 'block';
-
-      // Hide the homepage content while proceeding to verify
-      hideHomeContent();
-
-      document.getElementById('track-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      const otpInput = document.getElementById('otp-input');
-      if (otpInput && window.innerWidth > 680) otpInput.focus();
-    }
-
-    function verifyOtp(e) {
-      if (e && typeof e.preventDefault === 'function') e.preventDefault();
-      const val = document.getElementById('otp-input').value.trim();
-      if (val === SAMPLE_OTP) {
-        document.getElementById('verify-step').style.display = 'none';
-        document.getElementById('tracker-display').style.display = 'block';
-        hideHomeContent();
-        document.getElementById('tracker-display').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        document.getElementById('otp-error').style.display = 'block';
-      }
-    }
-
-    function resetToSearch() {
-      document.getElementById('verify-step').style.display = 'none';
-      document.getElementById('tracker-display').style.display = 'none';
-      document.getElementById('track-form').style.display = '';
-      document.getElementById('code-hint').style.display = '';
-      document.getElementById('track-code').value = 'B9X2K4';
-      showHomeContent();
-      document.getElementById('track-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    function hideHomeContent() {
-      const el = document.getElementById('home-content');
-      if (el) el.style.display = 'none';
-    }
-
-    function showHomeContent() {
-      const el = document.getElementById('home-content');
-      if (el) el.style.display = '';
-    }
-
-    function approveQuote() {
-      if (confirm('Approve the repair quotation of \u20B15,550.00 to commence servicing?')) {
-        document.getElementById('quote-approval-box').innerHTML = `
-          <div style="color: #065f46; font-weight: 600; padding: 10px 0;">
-            \u2713 Quote approved! Technician Danilo Mendoza has been notified and repair work has commenced.
-          </div>
-        `;
-        document.getElementById('display-status-badge').className = 'badge badge-primary';
-        document.getElementById('display-status-badge').innerText = 'Repairing';
-        document.getElementById('stepper-progress-bar').style.width = '60%';
-        document.getElementById('step-4').className = 'step-item active';
-      }
-    }
-
-    function declineQuote() {
-      if (confirm('Decline this repair quote? The item will be prepped for pickup at our Gilmore counter and the \u20B1500 diagnostic fee will apply.')) {
-        document.getElementById('quote-approval-box').innerHTML = `
-          <div style="color: #991b1b; font-weight: 600; padding: 10px 0;">
-            \u2715 Quote declined. The item has been marked for counter pickup. The \u20B1500 diagnostic fee applies upon collection.
-          </div>
-        `;
-        document.getElementById('display-status-badge').className = 'badge badge-danger';
-        document.getElementById('display-status-badge').innerText = 'Declined';
-      }
-    }
-
-    function requestCancellation() {
-      const reason = prompt('Please specify reason for cancellation request:');
-      if (reason) {
-        alert('Your cancellation request has been forwarded to Technician Danilo Mendoza and shop management for review.');
-      }
-    }
-
-    function openContactModal() {
-      document.getElementById('contact-modal').style.display = 'flex';
-    }
-    function closeContactModal() {
-      document.getElementById('contact-modal').style.display = 'none';
-    }
-    function submitMessage(e) {
-      e.preventDefault();
-      alert('Message sent! Technician Danilo Mendoza and the shop supervisor have received your note.');
-      closeContactModal();
-    }
-  </script>
+  <script src="js/api.js"></script>
+  <script src="js/tracking.js"></script>
   <script src="js/main.js"></script>
   <script>
     /* Homepage header highlight: "Track Repair" is active by default; "Need a Repair?"

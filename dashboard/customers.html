@@ -111,39 +111,32 @@
     </main>
   </div>
 
+  <script src="../js/api.js"></script>
   <script src="../js/dashboard.js"></script>
   <script>
-    const SAMPLE_CUSTOMERS = [
-      { name: "Christine Reyes", phone: "0917 234 8901", email: "creyes@gmail.com", totalRepairs: 2, activeJob: "JOB-101 (Dyson V11)", consentDate: "2026-10-28" },
-      { name: "Roberto \"Robert\" De Silva", phone: "0920 892 1133", email: "rdesilva@techno.ph", totalRepairs: 1, activeJob: "JOB-102 (MacBook Pro 16\")", consentDate: "2026-10-27" },
-      { name: "Sofia Martinez", phone: "0918 441 9022", email: "smartinez@cafe.ph", totalRepairs: 3, activeJob: "JOB-103 (Breville BES880)", consentDate: "2026-10-25" },
-      { name: "Marcus Chen", phone: "0919 312 7788", email: "mchen@designhub.ph", totalRepairs: 1, activeJob: "JOB-104 (Collected)", consentDate: "2026-10-15" },
-      { name: "David Lim", phone: "0917 782 9011", email: "dlim@media.ph", totalRepairs: 1, activeJob: "JOB-105 (Closed)", consentDate: "2026-10-20" },
-      { name: "Jessica Tolentino", phone: "0922 431 8890", email: "jtolentino@sound.ph", totalRepairs: 2, activeJob: "JOB-106 (Denon AVR)", consentDate: "2026-10-22" },
-      { name: "Emily Watson-Santos", phone: "0917 671 2244", email: "emily.santos@outlook.ph", totalRepairs: 4, activeJob: "None", consentDate: "2026-09-12" },
-      { name: "Arthur Dela Cruz", phone: "0998 420 1979", email: "arthur.dc@galaxy.ph", totalRepairs: 1, activeJob: "None", consentDate: "2026-08-04" }
-    ];
+    let SAMPLE_CUSTOMERS = [];
 
     function renderCustomers(list = SAMPLE_CUSTOMERS) {
       const tbody = document.getElementById('cust-table-body');
       tbody.innerHTML = list.map(c => `
         <tr>
           <td>
-            <strong>${c.name}</strong>
+            <strong>${RD.escape(c.name)}</strong>
           </td>
-          <td>${c.phone}</td>
-          <td><a href="mailto:${c.email}" style="color: var(--primary); text-decoration: none;">${c.email}</a></td>
+          <td>${RD.escape(c.phone)}</td>
+          <td><a href="mailto:${RD.escape(c.email)}" style="color: var(--primary); text-decoration: none;">${RD.escape(c.email)}</a></td>
           <td><span class="badge badge-gray">${c.totalRepairs} repairs</span></td>
-          <td>${c.activeJob}</td>
-          <td>${c.consentDate}</td>
+          <td>${RD.escape(c.activeJob)}</td>
+          <td>${RD.escape(c.consentDate)}</td>
           <td>
-            <button class="btn btn-sm btn-outline" onclick="alert('Viewing profile for ${c.name}')">History</button>
+            <button class="btn btn-sm btn-outline" onclick="location.href='jobs.html'">History</button>
           </td>
         </tr>
       `).join('');
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('repairdesk:ready', () => {
+      SAMPLE_CUSTOMERS=Object.values(getJobs().reduce((all,j)=>{const c=j.customer;const key=c.email;all[key]??={...c,totalRepairs:0,activeJob:'None',consentDate:c.consent_at?.slice(0,10)||''};all[key].totalRepairs++;if(j.tab==='pending')all[key].activeJob=j.id+' ('+j.model+')';return all;},{}));
       renderCustomers();
       document.getElementById('cust-search').addEventListener('input', (e) => {
         const val = e.target.value.toLowerCase().trim();

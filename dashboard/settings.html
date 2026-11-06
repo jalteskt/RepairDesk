@@ -323,23 +323,23 @@
 
                 <div class="form-group-custom">
                   <label class="form-label">Shop Business Name</label>
-                  <input type="text" class="form-input" value="Metro Manila Electronics & Appliance Service Hub">
+                  <input id="shop-name" type="text" class="form-input" value="Metro Manila Electronics & Appliance Service Hub">
                 </div>
 
                 <div class="form-group-custom form-row-2">
                   <div>
                     <label class="form-label">Support Email</label>
-                    <input type="email" class="form-input" value="support@repairdesk.ph">
+                    <input id="shop-email" type="email" class="form-input" value="support@repairdesk.ph">
                   </div>
                   <div>
                     <label class="form-label">Shop Counter Phone</label>
-                    <input type="tel" class="form-input" value="(02) 8392-8100 / 0917 392 8100">
+                    <input id="shop-phone" type="tel" class="form-input" value="(02) 8392-8100 / 0917 392 8100">
                   </div>
                 </div>
 
                 <div class="form-group-custom">
                   <label class="form-label">Physical Counter Address</label>
-                  <input type="text" class="form-input" value="Unit 304, Gilmore Commercial Plaza, Aurora Blvd. cor. Gilmore Ave., New Manila, Quezon City 1112">
+                  <input id="shop-address" type="text" class="form-input" value="Unit 304, Gilmore Commercial Plaza, Aurora Blvd. cor. Gilmore Ave., New Manila, Quezon City 1112">
                 </div>
 
                 <div class="form-group-custom">
@@ -380,7 +380,7 @@
 
                   <div class="logo-actions">
                     <button type="button" class="btn btn-primary btn-sm" onclick="alert('Image upload is disabled in this demo.')">Update</button>
-                    <button type="button" class="btn btn-outline btn-sm" onclick="alert('Logo removed.')">Remove</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="alert('Logo uploads are not enabled in this release.')">Remove</button>
                   </div>
 
                   <div class="dropzone" onclick="alert('Image upload is disabled in this demo.')">
@@ -399,7 +399,7 @@
             <!-- Resend Email Triggers -->
             <div class="settings-card" id="panel-notifications" style="display: none;">
               <h3>Email Automation (via Resend)</h3>
-              <p class="card-sub">Configure automatic customer notifications sent throughout the job lifecycle.</p>
+              <p class="card-sub">Email automation is not enabled in this release.</p>
 
               <div class="toggle-row">
                 <div>
@@ -445,7 +445,7 @@
             <!-- Unclaimed Items Policy -->
             <div class="settings-card" id="panel-unclaimed" style="display: none;">
               <h3>Unclaimed Property & Storage Terms</h3>
-              <p class="card-sub">Standard policies acknowledged in writing by customers during electronic intake.</p>
+              <p class="card-sub">Policy reference only. Automatic storage charges are not implemented.</p>
 
               <div class="form-group-custom">
                 <label class="form-label">Claim Window (Days)</label>
@@ -481,7 +481,7 @@
               <div class="toggle-row">
                 <div>
                   <strong>Two-Factor Authentication (2FA) for Admins</strong>
-                  <div class="row-sub">Requires authenticator code on Admin account logins</div>
+                  <div class="row-sub">Not enabled in this release.</div>
                 </div>
                 <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
               </div>
@@ -504,6 +504,7 @@
     </main>
   </div>
 
+  <script src="../js/api.js"></script>
   <script src="../js/dashboard.js"></script>
   <script>
     const SETTINGS_PANEL_IDS = ['general', 'notifications', 'unclaimed', 'security'];
@@ -521,14 +522,11 @@
       document.getElementById('settings-subtitle').textContent = el.dataset.sub;
     }
 
-    function saveSettings() {
-      const activeBtn = document.querySelector('.settings-nav-btn.active');
-      alert(activeBtn ? activeBtn.dataset.saveMsg : 'Workshop settings saved successfully.');
-    }
+    async function saveSettings(){if(document.querySelector('.settings-nav-btn.active')?.dataset.title!=='General Details'){alert('Only shop contact settings are editable in this release.');return;}const fields={};for(const id of ['shop-name','shop-email','shop-phone','shop-address'])fields[id]=document.getElementById(id).value;await RD.call('settings',fields);await refreshData();alert('Shop contact settings saved.');}
 
-    function discardChanges() {
-      alert('Changes discarded.');
-    }
+    function discardChanges(){for(const row of snapshot.settings){const el=document.getElementById(row.field);if(el)el.value=row.value;}}
+
+    document.addEventListener('repairdesk:ready',()=>{discardChanges();document.querySelectorAll('#panel-general input:not([id]), #panel-notifications input, #panel-unclaimed input, #panel-security input, #panel-security select').forEach(el=>el.disabled=true);document.querySelectorAll('#panel-notifications input').forEach(el=>el.checked=false);const sec=document.querySelectorAll('#panel-security input');if(sec[1])sec[1].checked=false;document.querySelector('#panel-security select').selectedIndex=1;});
   </script>
 </body>
 </html>
