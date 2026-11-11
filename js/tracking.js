@@ -1,9 +1,30 @@
 let trackedJob=null;
-function loadCode(code){document.getElementById('track-code').value=code;handleLookup();}
-function handleLookup(e){e?.preventDefault();trackedJob=null;document.getElementById('tracker-display').style.display='none';document.getElementById('verify-code').textContent=document.getElementById('track-code').value.trim().toUpperCase();document.getElementById('track-form').style.display='none';document.getElementById('verify-step').style.display='block';document.getElementById('tracking-email').value='';hideHomeContent();}
-async function verifyTracking(e){e.preventDefault();await RD.session();trackedJob=await RD.call('track',{code:document.getElementById('track-code').value,email:document.getElementById('tracking-email').value});document.getElementById('tracking-email').value='';renderTracking();}
+const byId = id => document.getElementById(id);
+async function handleLookup(e) {
+  e?.preventDefault();
+  const code = byId('track-code').value.trim().toUpperCase();
+  if (!/^[A-Z2-9]{8}$/.test(code)) return RDUI.notice('Enter an eight-character ticket code.');
+  await RD.session();
+  await RD.call('request-otp',{code});
+  trackedJob=null;
+  byId('verify-code').textContent=code;
+  byId('track-form').hidden=true; byId('scan-ticket').hidden=true;
+  byId('verify-step').style.display='block'; byId('tracking-otp').value='';
+  byId('tracking-otp').focus(); hideHomeContent();
+}
+async function verifyTracking(e) {
+  e.preventDefault();
+  trackedJob=await RD.call('track',{otp:byId('tracking-otp').value});
+  byId('tracking-otp').value=''; renderTracking();
+}
 function renderTracking(){
- const j=trackedJob;const put=(id,v)=>document.getElementById(id).textContent=v;
+ const j=trackedJob;
+ byId('track-section').hidden=true;
+ byId('step-0').setAttribute('aria-current',j.status==='Cannot Be Repaired'?'step':'false');
+ byId('step-0').classList.toggle('active',j.status==='Cannot Be Repaired');
+ document.querySelector('[onclick="requestCancellation()"]').hidden=!j.canCancel;
+ byId('inquiry-subject').value='Question about '+j.id;
+const put=(id,v)=>document.getElementById(id).textContent=v;
  put('display-code','CODE: '+j.code);put('display-status-badge',j.status);put('display-appliance',j.brand+' '+j.model);put('display-fault',j.reportedIssue);put('display-customer',j.customer.name+' ('+j.customer.email+')');put('display-date','Intake: '+j.dateStarted);put('payment-badge',j.payment);
  const flow=['Received','Diagnosing','Awaiting Quote Approval','Repairing','Ready','Collected'];const step=j.status==='Waiting for Parts'?3:flow.indexOf(j.status);
  document.getElementById('stepper-progress-bar').style.width=Math.max(0,step)*20+'%';
@@ -16,14 +37,37 @@ function renderTracking(){
 }
 function peso(n){return new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP'}).format(n);}
 async function customerAction(kind,message){if(!trackedJob)throw Error('Verify tracking details first.');trackedJob=await RD.call('customer-action',{kind,message,version:trackedJob.version});renderTracking();}
-async function approveQuote(){if(confirm('Approve '+peso(trackedJob.billing.total)+'?'))await customerAction('approve');}
-async function declineQuote(){if(confirm('Decline this quote?'))await customerAction('decline');}
-async function requestCancellation(){const m=prompt('Reason for cancellation request:');if(m){await customerAction('cancellation',m);alert('Request saved for shop review.');}}
-async function requestWarranty(){const m=prompt('Describe the warranty issue:');if(m){await customerAction('warranty',m);alert('Warranty request saved.');}}
+async function approveQuote(){if(await RDUI.ask('Approve '+peso(trackedJob.billing.total)+'?'))await customerAction('approve');}
+async function declineQuote(){if(await RDUI.ask('Decline this quote?'))await customerAction('decline');}
+async function requestCancellation(){const m=await RDUI.input('Reason for cancellation request:');if(m){await customerAction('cancellation',m);RDUI.notice('Request saved for shop review.');}}
+async function requestWarranty(){const m=await RDUI.input('Describe the warranty issue:');if(m){await customerAction('warranty',m);RDUI.notice('Warranty request saved.');}}
 function openContactModal(){document.getElementById('contact-modal').style.display='flex';}
 function closeContactModal(){document.getElementById('contact-modal').style.display='none';}
-async function submitMessage(e){e.preventDefault();await customerAction('message',e.target.querySelector('input').value+': '+e.target.querySelector('textarea').value);closeContactModal();alert('Message saved for shop review.');}
+async function submitMessage(e){e.preventDefault();await customerAction('message',e.target.querySelector('input').value+': '+e.target.querySelector('textarea').value);closeContactModal();RDUI.notice('Message saved for shop review.');}
 function hideHomeContent(){document.getElementById('home-content').style.display='none';}
 function showHomeContent(){document.getElementById('home-content').style.display='';}
-function resetToSearch(){trackedJob=null;document.getElementById('verify-step').style.display='none';document.getElementById('tracker-display').style.display='none';document.getElementById('track-form').style.display='';document.getElementById('tracking-email').value='';showHomeContent();}
-document.addEventListener('DOMContentLoaded',async()=>{await RD.session();document.getElementById('code-hint').hidden=!RD.demo;document.querySelector('.otp-demo-box').hidden=!RD.demo;});
+function resetToSearch() {
+ trackedJob=null; byId('track-section').hidden=false; byId('verify-step').style.display='none';
+ byId('tracker-display').style.display='none'; byId('track-form').hidden=false; byId('scan-ticket').hidden=false;
+ byId('tracking-otp').value=''; showHomeContent(); byId('track-code').focus();
+}
+async function scanTicket() {
+ if (typeof Html5QrcodeScanner==='undefined') return RDUI.notice('The QR reader is unavailable. Enter your ticket code instead.');
+ const dialog=document.createElement('dialog'); dialog.className='rd-dialog'; dialog.setAttribute('aria-label','Scan ticket QR code');
+ const reader=document.createElement('div'); reader.id='ticket-camera';
+ const cancel=document.createElement('button'); cancel.className='btn btn-outline'; cancel.textContent='Close';
+ dialog.append(reader,cancel); document.body.append(dialog); dialog.showModal();
+ const scanner=new Html5QrcodeScanner(reader.id,{fps:10,qrbox:200},false);
+ let done=false;
+ async function finish(code) {
+   if(done)return; done=true;
+   try { await scanner.clear(); } finally {dialog.close();dialog.remove();}
+   if(code){byId('track-code').value=code;await handleLookup();}
+ }
+ cancel.onclick=()=>finish(); dialog.oncancel=e=>{e.preventDefault();finish();};
+ scanner.render(raw=>{const code=raw.trim().toUpperCase();if(/^[A-Z2-9]{8}$/.test(code))finish(code);});
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ byId('scan-ticket').onclick=scanTicket;
+ byId('resend-otp').onclick=async()=>{await handleLookup();await RDUI.notice('Check your inbox. Allow one minute between requests.');};
+});

@@ -212,6 +212,8 @@
     .dropzone .dz-sub { font-size: 11.5px; margin-top: 4px; }
 
   </style>
+  <link rel="stylesheet" href="../css/interactions.css">
+  <script src="../js/dialogs.js"></script>
 </head>
 <body>
 
@@ -240,20 +242,21 @@
         </ul>
         <div class="nav-section">Insights & Admin</div>
         <ul>
-          <li class="nav-item"><a href="reports.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Reports & Revenue</span></a></li>
+
           <li class="nav-item"><a href="settings.html" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Shop Settings</span></a></li>
         </ul>
       </nav>
 
       <div class="sidebar-footer">
+        <a href="../pages/login.html" class="nav-link" aria-label="Sign out">Sign out</a>
         <div class="sidebar-user">
           <div class="avatar" id="sidebar-avatar">EC</div>
           <div class="user-info">
             <div class="user-name" id="sidebar-user-name">Elena Corpuz</div>
             <div class="user-role">
               <select id="role-selector" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-size: 11px; padding: 2px 4px; margin-top: 4px; width: 100%;">
-                <option value="admin">Role: Shop Admin (Elena)</option>
-                <option value="technician">Role: Technician (Danilo)</option>
+                <option value="admin">Shop Admin</option>
+                <option value="technician">Technician</option>
               </select>
             </div>
           </div>
@@ -316,6 +319,7 @@
             <!-- General Details: two-column card layout -->
             <div class="settings-cards-grid" id="panel-general">
 
+              <section class="settings-card"><h3>Open positions</h3><div id="positions"></div><form id="position-form"><label>Position title<input name="title" class="form-input" required maxlength="120"></label><label>Description<textarea name="description" class="form-input" required maxlength="4000"></textarea></label><button class="btn btn-primary" type="submit">List position</button></form></section>
               <!-- Left: workshop info form -->
               <div class="settings-card">
                 <h3>Workshop Information</h3>
@@ -379,11 +383,11 @@
                   </div>
 
                   <div class="logo-actions">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="alert('Image upload is disabled in this demo.')">Update</button>
-                    <button type="button" class="btn btn-outline btn-sm" onclick="alert('Logo uploads are not enabled in this release.')">Remove</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="RDUI.notice('Image upload is disabled in this demo.')">Update</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="RDUI.notice('Logo uploads are not enabled in this release.')">Remove</button>
                   </div>
 
-                  <div class="dropzone" onclick="alert('Image upload is disabled in this demo.')">
+                  <div class="dropzone" onclick="RDUI.notice('Image upload is disabled in this demo.')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <polyline points="16 16 12 20 8 16"/><line x1="12" y1="12" x2="12" y2="20"/>
                       <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
@@ -522,11 +526,12 @@
       document.getElementById('settings-subtitle').textContent = el.dataset.sub;
     }
 
-    async function saveSettings(){if(document.querySelector('.settings-nav-btn.active')?.dataset.title!=='General Details'){alert('Only shop contact settings are editable in this release.');return;}const fields={};for(const id of ['shop-name','shop-email','shop-phone','shop-address'])fields[id]=document.getElementById(id).value;await RD.call('settings',fields);await refreshData();alert('Shop contact settings saved.');}
+    async function saveSettings(){if(document.querySelector('.settings-nav-btn.active')?.dataset.title!=='General Details'){RDUI.notice('Only shop contact settings are editable in this release.');return;}const fields={};for(const id of ['shop-name','shop-email','shop-phone','shop-address'])fields[id]=document.getElementById(id).value;await RD.call('settings',fields);await refreshData();RDUI.notice('Shop contact settings saved.');}
 
     function discardChanges(){for(const row of snapshot.settings){const el=document.getElementById(row.field);if(el)el.value=row.value;}}
 
     document.addEventListener('repairdesk:ready',()=>{discardChanges();document.querySelectorAll('#panel-general input:not([id]), #panel-notifications input, #panel-unclaimed input, #panel-security input, #panel-security select').forEach(el=>el.disabled=true);document.querySelectorAll('#panel-notifications input').forEach(el=>el.checked=false);const sec=document.querySelectorAll('#panel-security input');if(sec[1])sec[1].checked=false;document.querySelector('#panel-security select').selectedIndex=1;});
   </script>
+<script src="../js/positions.js"></script>
 </body>
 </html>

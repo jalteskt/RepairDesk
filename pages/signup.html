@@ -125,6 +125,8 @@
       text-decoration: none;
     }
   </style>
+  <link rel="stylesheet" href="../css/interactions.css">
+  <script src="../js/dialogs.js"></script>
 </head>
 <body>
 
@@ -212,7 +214,7 @@
 
   <script src="../js/main.js"></script>
   <script>
-    function handleSignup(e) { e.preventDefault(); alert('This is a single-shop installation. Ask the shop administrator to create your staff account.'); }
+    function handleSignup(e) { e.preventDefault(); RDUI.notice('This is a single-shop installation. Ask the shop administrator to create your staff account.'); }
   </script>
 </body>
 </html>

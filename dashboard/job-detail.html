@@ -135,6 +135,8 @@
       padding: 4px;
     }
   </style>
+  <link rel="stylesheet" href="../css/interactions.css">
+  <script src="../js/dialogs.js"></script>
 </head>
 <body>
 
@@ -163,20 +165,21 @@
         </ul>
         <div class="nav-section">Insights & Admin</div>
         <ul>
-          <li class="nav-item"><a href="reports.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Reports & Revenue</span></a></li>
+
           <li class="nav-item"><a href="settings.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Shop Settings</span></a></li>
         </ul>
       </nav>
 
       <div class="sidebar-footer">
+        <a href="../pages/login.html" class="nav-link" aria-label="Sign out">Sign out</a>
         <div class="sidebar-user">
           <div class="avatar" id="sidebar-avatar">EC</div>
           <div class="user-info">
             <div class="user-name" id="sidebar-user-name">Elena Corpuz</div>
             <div class="user-role">
               <select id="role-selector" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-size: 11px; padding: 2px 4px; margin-top: 4px; width: 100%;">
-                <option value="admin">Role: Shop Admin (Elena)</option>
-                <option value="technician">Role: Technician (Danilo)</option>
+                <option value="admin">Shop Admin</option>
+                <option value="technician">Technician</option>
               </select>
             </div>
           </div>
@@ -200,9 +203,7 @@
           <button class="btn btn-outline btn-sm" onclick="openStickerModal()">
             🖨️ Preview Intake Ticket
           </button>
-          <a href="../index.html" target="_blank" class="btn btn-outline btn-sm">
-            👁️ Open Customer Portal
-          </a>
+
         </div>
       </header>
 
@@ -221,7 +222,7 @@
           <div>
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
               <h2 style="font-size: 24px; margin: 0;" id="job-id-text">JOB-101</h2>
-              <span class="badge badge-teal" style="font-family: monospace; font-size: 12px;" id="job-code-badge">CODE: B9X2K4</span>
+              <span class="badge badge-teal" style="font-family: monospace; font-size: 12px;" id="job-code-badge">CODE: B9X2K4XX</span>
               <span id="job-status-badge"></span>
             </div>
             <h3 style="font-size: 18px; color: var(--text); margin-bottom: 4px;" id="job-appliance-title">Dyson V11 Torque Drive</h3>
@@ -231,6 +232,7 @@
           </div>
 
           <!-- Quick Action Buttons -->
+          <button id="retry-email" hidden class="btn btn-outline btn-sm" onclick="retryEmail()">Retry pending email</button>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button class="btn btn-primary btn-sm" onclick="openStatusModal()">Update Lifecycle Status</button>
             <button class="btn btn-outline btn-sm" onclick="markPaymentPaid()">Set Payment to Paid</button>
@@ -425,11 +427,9 @@
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
           <div>
             <div style="font-size: 18px; font-weight: 800; color: #0f172a;" id="sticker-job-id">JOB-101</div>
-            <div style="font-size: 11px; font-family: monospace; font-weight: 700; color: var(--primary);" id="sticker-code">CODE: B9X2K4</div>
+            <div style="font-size: 11px; font-family: monospace; font-weight: 700; color: var(--primary);" id="sticker-code">CODE: B9X2K4XX</div>
           </div>
-          <div class="sticker-qr">
-            Tracking code only
-          </div>
+          <div class="sticker-qr" id="ticket-qr"></div>
         </div>
         <div style="font-size: 12px; font-weight: 600; color: #1e293b;" id="sticker-appliance">
           Dyson V11 Torque Drive
@@ -464,7 +464,7 @@
           <option value="Repairing">Repairing</option>
           <option value="Waiting for Parts">Waiting for Parts</option>
           <option value="Ready">Ready</option>
-          <option value="Collected">Collected</option>
+
           <option value="Cannot Be Repaired">Cannot Be Repaired</option>
           <option value="Declined">Declined</option>
           <option value="Cancelled">Cancelled</option>
@@ -493,12 +493,17 @@
       return params.get('id') || 'JOB-101';
     }
 
-    function loadJobDetails() {
+    async function loadJobDetails() {
       const jobId = getJobIdFromUrl();
       const jobs = window.RepairDeskStore.getJobs();
       currentJob = jobs.find(j => j.id === jobId);
-      if(!currentJob){alert('Job not found or access denied.');location.href='jobs.html';return;}
+      if(!currentJob){await RDUI.notice('Job not found or access denied.');location.href='jobs.html';return;}
 
+      document.querySelector('[onclick="markPaymentPaid()"]').hidden=RD.user.role!=='admin'||!currentJob.canPay;
+      document.querySelector('[onclick="markCollected()"]').hidden=RD.user.role!=='admin'||!currentJob.canPickUp;
+      const retry=document.getElementById('retry-email'); retry.hidden=RD.user.role!=='admin'||!currentJob.pendingEmails;
+      retry.textContent='Retry pending email ('+currentJob.pendingEmails+')';
+      document.getElementById('cust-email').href='mailto:'+currentJob.customer.email+'?subject='+encodeURIComponent('RepairDesk '+currentJob.id);
       // Fill header
       document.getElementById('breadcrumb-job-id').innerText = currentJob.id;
       document.getElementById('topbar-job-title').innerText = `${currentJob.id} — ${currentJob.brand} ${currentJob.model}`;
@@ -593,15 +598,22 @@
 
     async function confirmStatusUpdate(){await changeJob('status',{status:document.getElementById('select-new-status').value,reason:document.getElementById('status-change-reason').value||'Staff update'});closeStatusModal();}
 
-    async function markPaymentPaid(){await changeJob('payment');}
+    async function markPaymentPaid(){
+      if(await RDUI.ask('Mark the outstanding balance on '+currentJob.id+' as paid?'))await changeJob('payment');
+    }
 
-    async function markCollected(){if(currentJob.payment!=='Paid' && !confirm('Release with an outstanding balance?'))return;await changeJob('status',{status:'Collected',reason:'Released at counter'});}
+    async function markCollected(){
+      if(await RDUI.ask('Confirm that the customer has collected this item?'))await changeJob('pickup');
+    }
 
-    async function editDiagnostics(){const parts=prompt('Parts charge in PHP:',currentJob.billing.parts);if(parts===null)return;const labor=prompt('Labor charge in PHP:',currentJob.billing.labor);if(labor===null)return;await changeJob('quote',{parts,labor,diagnosticFee:currentJob.billing.diagnosticFee});}
+    async function editDiagnostics(){const parts=await RDUI.input('Parts charge in PHP:',currentJob.billing.parts);if(parts===null)return;const labor=await RDUI.input('Labor charge in PHP:',currentJob.billing.labor);if(labor===null)return;await changeJob('quote',{parts,labor,diagnosticFee:currentJob.billing.diagnosticFee});}
 
     function saveCurrentJob(){throw new Error('Use a specific server operation.');}
 
     function openStickerModal() {
+      const box=document.getElementById('ticket-qr');box.textContent='';
+      if(typeof qrcode==='function'){const qr=qrcode(0,'M');qr.addData(currentJob.code);qr.make();box.innerHTML=qr.createSvgTag(2,8);}
+      else box.textContent=currentJob.code;
       document.getElementById('sticker-modal').classList.add('show');
     }
 
@@ -612,10 +624,12 @@
     document.addEventListener('repairdesk:ready', () => {
       loadJobDetails();
     });
-    async function viewCustomerRequests(){const rows=await RD.call('requests',{});alert(rows.filter(r=>Number(r.job_id)===currentJob.dbId).map(r=>r.created_at+' | '+r.kind+' | '+r.message).join('\n\n')||'No customer requests.');}
-    async function reassignJob(){const id=prompt('Technician ID: '+getTechnicians().filter(t=>t.status==='Active').map(t=>t.id+' = '+t.name).join(', '));if(!id)return;await RD.call('reassign',{id:currentJob.dbId,version:currentJob.version,technicianId:Number(id.replace('TECH-',''))});await refreshData();loadJobDetails();}
+    async function retryEmail(){await RD.call('retry-emails',{id:currentJob.dbId});await refreshData();loadJobDetails();}
+    async function viewCustomerRequests(){const rows=await RD.call('requests',{});RDUI.notice(rows.filter(r=>Number(r.job_id)===currentJob.dbId).map(r=>r.created_at+' | '+r.kind+' | '+r.message).join('\n\n')||'No customer requests.');}
+    async function reassignJob(){const id=await RDUI.input('Technician ID: '+getTechnicians().filter(t=>t.status==='Active').map(t=>t.id+' = '+t.name).join(', '));if(!id)return;await RD.call('reassign',{id:currentJob.dbId,version:currentJob.version,technicianId:Number(id.replace('TECH-',''))});await refreshData();loadJobDetails();}
     document.addEventListener('repairdesk:ready',()=>{const el=document.getElementById('job-tech-name');if(RD.user.role==='admin'){el.title='Click to reassign technician';el.onclick=reassignJob;}});
   </script>
+<script src="../node_modules/qrcode-generator/qrcode.js"></script>
 </body>
 </html>
 

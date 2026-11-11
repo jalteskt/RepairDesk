@@ -5,5 +5,10 @@ return [
     'database' => 'YOUR_DATABASE_NAME',
     'username' => 'YOUR_DATABASE_USER',
     'password' => 'YOUR_DATABASE_PASSWORD',
+    'tracking_url' => 'http://localhost/RepairDesk/',
+    'smtp' => [
+        'host' => 'smtp.gmail.com', 'port' => 587,
+        'username' => '', 'password' => '', 'from' => '',
+    ],
     'demo' => true, // Disable demo hints and change seeded passwords before public use.
 ];

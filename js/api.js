@@ -12,4 +12,4 @@ window.RD = {
   },
   async session() { const s = await this.call('session'); this.csrf=s.csrf; this.user=s.user; this.demo=s.demo; return s; }
 };
-window.addEventListener('unhandledrejection', e => { e.preventDefault(); alert(e.reason?.message || 'Request failed.'); });
+window.addEventListener('unhandledrejection', e => { e.preventDefault(); RDUI.notice(e.reason?.message || 'Request failed.'); });

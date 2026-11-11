@@ -78,5 +78,13 @@ document.addEventListener('DOMContentLoaded',async()=>{
     if(id==='filter-technician')select.add(new Option('All technicians','all'));
     snapshot.technicians.filter(t=>t.status==='Active').forEach(t=>select.add(new Option(t.name,t.name)));
   }
+  if(RD.user.role==='technician'){
+    document.querySelectorAll('.sidebar-nav a').forEach(link=>{
+      if(!['index.html','jobs.html'].includes(link.getAttribute('href')))link.closest('li')?.remove();
+    });
+    document.querySelectorAll('.nav-section, a[href*="action=new"], [onclick="openNewJobModal()"], a[href="technicians.html"], [onclick="viewCustomerRequests()"]').forEach(el=>el.hidden=true);
+  }
+  const badge=document.querySelector('.sidebar-nav a[href="jobs.html"] .badge');if(badge)badge.textContent=snapshot.jobs.length;
+  const avatar=document.getElementById('sidebar-avatar');if(avatar)avatar.textContent=RD.user.name.split(/\s+/).map(word=>word[0]).slice(0,2).join('');
   document.dispatchEvent(new Event('repairdesk:ready'));
 });

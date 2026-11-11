@@ -75,6 +75,8 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="../css/interactions.css">
+  <script src="../js/dialogs.js"></script>
 </head>
 <body>
 
@@ -293,7 +295,7 @@
         <div class="contact-cta">
           <h3>Still need help?</h3>
           <p>Our support team is available Monday – Friday, 9am – 6pm EST. We typically respond within 2 hours.</p>
-          <a href="#" class="btn btn-primary">Contact Support</a>
+          <a href="#" data-shop-contact class="btn btn-primary">Contact Support</a>
         </div>
       </div>
     </section>
@@ -356,5 +358,13 @@
   </footer>
 
   <script src="../js/main.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/contact.js"></script>
+<script>
+  const search=document.querySelector('.search-bar input');
+  const articles=[...document.querySelectorAll('.accordion-item')];
+  const feedback=document.createElement('p');feedback.setAttribute('role','status');search.closest('.search-bar').after(feedback);
+  search.addEventListener('input',()=>{const term=search.value.trim().toLowerCase();let matches=0;for(const article of articles){article.hidden=!article.textContent.toLowerCase().includes(term);if(!article.hidden)matches++;}feedback.textContent=term ? matches+' matching articles' : '';});
+</script>
 </body>
 </html>

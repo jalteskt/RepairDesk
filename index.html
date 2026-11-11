@@ -841,6 +841,8 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="css/interactions.css">
+  <script src="js/dialogs.js"></script>
 </head>
 <body>
 
@@ -877,22 +879,22 @@
     <!-- ========== TRACK HERO / SEARCH ========== -->
     <section class="track-hero" id="track-section">
       <div class="container">
-        <span class="badge badge-teal" style="margin-bottom: 12px;">Live Customer Portal</span>
         <h1 style="font-size: 2.25rem; margin-bottom: 12px;">Track Your Repair Status</h1>
         <p style="color: var(--text-light); max-width: 520px; margin: 0 auto 28px;">
-          Enter the 6-character code printed on your intake ticket or emailed to you.
+          Enter the 8-character code printed on your intake ticket or emailed to you.
         </p>
 
         <div class="track-search-card" id="track-card">
           <!-- Step 1: code lookup -->
           <form id="track-form" onsubmit="handleLookup(event)">
             <div class="track-input-group">
-              <input type="text" id="track-code" class="track-input" maxlength="6" value="B9X2K4" placeholder="B9X2K4" required autofocus>
+              <input type="text" id="track-code" class="track-input" maxlength="8" minlength="8" pattern="[A-Za-z2-9]{8}" placeholder="B9X2K4XX" required autofocus>
               <button type="submit" class="btn btn-primary" style="padding: 0 28px;">Check Status</button>
             </div>
           </form>
+          <button type="button" id="scan-ticket" class="btn btn-outline">Scan QR code</button>
           <div id="code-hint" style="font-size: 0.8rem; color: var(--text-light); margin-top: 10px;">
-            Demo: <strong>B9X2K4</strong> + <strong>customer@example.com</strong></div>
+            Tickets originally printed with six characters now end in XX.</div>
 
           <!-- Step 2: OTP verification (sample, for demonstration) -->
           <div id="verify-step" style="display: none;">
@@ -900,18 +902,14 @@
               <span class="code-receipt-label">Job Code</span>
               <span class="job-ref-badge" id="verify-code">&mdash;</span>
             </div>
-            <p class="otp-lead">Enter the complete email recorded at intake. The result displays a masked email.</p>
-            <div class="otp-demo-box">
-              <span class="otp-demo-label">Sample email (demo job B9X2K4)</span>
-              <strong class="otp-demo-code">customer@example.com</strong>
-            </div>
+            <p class="otp-lead">If the ticket exists, a six-digit code was sent to the email recorded at intake. Enter it within ten minutes.</p>
             <form id="otp-form" onsubmit="verifyTracking(event)">
               <div class="track-input-group">
-                <input type="email" id="tracking-email" class="track-input" autocomplete="email" placeholder="customer@example.com" required>
+                <input type="text" id="tracking-otp" class="track-input" inputmode="numeric" maxlength="6" minlength="6" pattern="[0-9]{6}" autocomplete="one-time-code" aria-label="Six-digit verification code" required>
                 <button type="submit" class="btn btn-primary" style="padding: 0 28px;">Verify & View Status</button>
               </div>
             </form>
-            <div id="otp-error">Tracking code and email do not match.</div>
+            <button type="button" class="btn btn-outline" id="resend-otp">Resend code</button>
             <a href="javascript:void(0)" class="track-reset-link" onclick="resetToSearch()">&larr; Use a different code</a>
           </div>
         </div>
@@ -925,8 +923,9 @@
         <!-- Job Header Banner -->
         <div class="job-header-card">
           <div class="job-title-row">
+            <div class="rd-photo" aria-label="Product picture placeholder">Product photo</div>
             <div>
-              <span class="job-ref-badge" id="display-code">CODE: B9X2K4</span>
+              <span class="job-ref-badge" id="display-code">CODE: B9X2K4XX</span>
               <span class="badge badge-amber" id="display-status-badge" style="margin-left: 8px;">Awaiting Quote Approval</span>
               <h2 style="font-size: 1.75rem; margin-top: 8px;" id="display-appliance">Dyson V11 Torque Drive Cordless Vacuum</h2>
               <p style="color: var(--text-light); margin: 0;">Reported fault: <span id="display-fault" style="color: var(--text);">Pulsing on boost mode, shuts off after 10 seconds.</span></p>
@@ -944,6 +943,7 @@
             <div class="stepper-scroll-container">
               <div class="stepper-progress" id="stepper-progress-bar" style="width: 33%;"></div>
               <ol class="stepper">
+                <li class="step-item" id="step-0"><div class="step-circle">0</div><span class="step-label">Cannot Be Repaired</span></li>
                 <li class="step-item completed" id="step-1">
                   <div class="step-circle">&#10003;</div>
                   <span class="step-label">Received</span>
@@ -1060,7 +1060,7 @@
               <h3>Need Assistance?</h3>
               <div style="display: flex; flex-direction: column; gap: 10px;">
                 <button class="btn btn-outline" style="width: 100%; text-align: center;" onclick="openContactModal()">
-                  &#9993;&#65039; Message Technician
+                  &#9993;&#65039; Ask about this repair
                 </button>
                 <button class="btn btn-sm" style="background:#fee2e2; color:#991b1b; border:none;" onclick="requestCancellation()">
                   Request Repair Cancellation
@@ -1240,7 +1240,7 @@
               </li>
             </ul>
             <div class="repair-actions">
-              <a class="btn btn-primary" href="mailto:support@repairdesk.ph?subject=Repair%20Inquiry%20-%20Need%20a%20Repair&body=Hi%20RepairDesk%20team%2C%0A%0AI'd%20like%20to%20bring%20a%20unit%20in%20for%20inspection.%0A%0AAppliance%20Type%3A%20%0ABrand%20%2F%20Model%3A%20%0AReported%20Issue%3A%20%0A%0APreferred%20drop-off%3A%20Gilmore%20Workshop%20counter%0A%0AThank%20you!">&#9993;&#65039; Message Us About a Repair</a>
+              <a class="btn btn-primary" href="pages/help.html" data-shop-contact>&#9993;&#65039; Ask the shop</a>
               <a class="btn btn-outline" href="pages/pricing.html">View Service Fees</a>
             </div>
           </div>
@@ -1317,7 +1317,7 @@
           <h4>Company</h4>
           <ul>
             <li><a href="pages/about.html">About</a></li>
-            <li><a href="pages/about.html#team">Open Roles</a></li>
+            <li><a href="pages/roles.html">Open Roles</a></li>
             <li><a href="pages/help.html">Help Center</a></li>
           </ul>
         </div>
@@ -1325,7 +1325,7 @@
           <h4>Need a Repair?</h4>
           <ul>
             <li><a href="#need-a-repair">Available Locations</a></li>
-            <li><a href="mailto:support@repairdesk.ph?subject=Repair%20Inquiry">Message Us</a></li>
+            <li><a href="pages/help.html" data-shop-contact>Message Us</a></li>
             <li><a href="pages/pricing.html">Service Fee Schedule</a></li>
           </ul>
         </div>
@@ -1359,14 +1359,14 @@
   <!-- Contact Modal -->
   <div class="modal-overlay" id="contact-modal">
     <div class="modal-card">
-      <h3 style="margin-bottom: 8px;">Message Assigned Technician</h3>
+      <h3 style="margin-bottom: 8px;">Ask about this repair</h3>
       <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px;">
-        Your inquiry will be saved for the shop administrator to review.
+        Your question is attached to this repair. Shop staff can reply to the email recorded at intake.
       </p>
       <form onsubmit="submitMessage(event)">
         <div style="margin-bottom: 14px;">
           <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px;">Subject</label>
-          <input type="text" class="form-input" style="width: 100%;" value="Inquiry on Job #RD-8492" required>
+          <input type="text" class="form-input" style="width: 100%;" id="inquiry-subject" value="Repair question" required>
         </div>
         <div style="margin-bottom: 20px;">
           <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px;">Message</label>
@@ -1381,7 +1381,9 @@
   </div>
 
   <script src="js/api.js"></script>
+  <script src="node_modules/html5-qrcode/html5-qrcode.min.js"></script>
   <script src="js/tracking.js"></script>
+  <script src="js/contact.js"></script>
   <script src="js/main.js"></script>
   <script>
     /* Homepage header highlight: "Track Repair" is active by default; "Need a Repair?"
