@@ -21,7 +21,7 @@
     }
 
     .auth-card {
-      background: #ffffff;
+      background: light-dark(#ffffff, #202b36);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
@@ -35,22 +35,7 @@
       margin-bottom: 28px;
     }
 
-    .auth-logo {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 52px;
-      height: 52px;
-      background: var(--primary);
-      color: #fff;
-      border-radius: 14px;
-      margin-bottom: 16px;
-    }
 
-    .auth-logo svg {
-      width: 28px;
-      height: 28px;
-    }
 
     .auth-title {
       font-size: 1.5rem;
@@ -64,39 +49,9 @@
       color: var(--text-light);
     }
 
-    .demo-banner {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: var(--radius);
-      padding: 12px 14px;
-      margin-bottom: 24px;
-      font-size: 0.825rem;
-      color: #166534;
-    }
 
-    .demo-chips {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
 
-    .demo-chip {
-      padding: 4px 12px;
-      background: #dcfce7;
-      border: 1px solid #86efac;
-      border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      color: #14532d;
-      transition: background 0.15s;
-      white-space: nowrap;
-    }
 
-    .demo-chip:hover {
-      background: #bbf7d0;
-    }
 
     .form-group {
       margin-bottom: 18px;
@@ -117,7 +72,7 @@
       border-radius: var(--radius);
       font-size: 0.9375rem;
       font-family: inherit;
-      background: #fff;
+      background: light-dark(#fff, #202b36);
       color: var(--text);
       transition: border-color 0.2s, box-shadow 0.2s;
     }
@@ -144,14 +99,7 @@
       color: var(--text);
     }
 
-    .forgot-link {
-      color: var(--primary);
-      font-weight: 500;
-    }
 
-    .forgot-link:hover {
-      text-decoration: underline;
-    }
 
     .btn-submit {
       width: 100%;
@@ -179,26 +127,15 @@
   </style>
   <link rel="stylesheet" href="../css/interactions.css">
   <script src="../js/dialogs.js"></script>
+  <link rel="stylesheet" href="../css/theme.css">
+  <script src="../js/theme.js"></script>
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
 </head>
 <body>
-  <main class="rd-login"><a href="../index.html" class="rd-brand" aria-label="RepairDesk home">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-        </svg>
-        Repair<span>Desk</span>
-      </a>
+  <main class="rd-login"><a href="../index.html" class="rd-brand" aria-label="RepairDesk home"><img class="site-wordmark" src="../assets/logo.svg" alt="RepairDesk" width="156" height="26"></a>
     <div class="auth-card">
       <div class="auth-header">
         <h1 class="auth-title">Staff Sign In</h1>
-      </div>
-
-      <!-- Demo Access Banner -->
-      <div class="demo-banner">
-        <strong>Demo Access:</strong> Sample password: <strong>Pass123!</strong><br>Admin: admin@repairdesk.net<br>Technician: tech@repairdesk.net
-        <div class="demo-chips">
-          <button type="button" class="demo-chip" onclick="fillDemo('admin')">👑 Admin (Elena)</button>
-          <button type="button" class="demo-chip" onclick="fillDemo('tech')">🔧 Technician (Danilo)</button>
-        </div>
       </div>
 
       <form id="login-form" onsubmit="handleLogin(event)">
@@ -213,11 +150,30 @@
         </div>
 
         <div class="auth-row">
-          <button type="button" id="save-login" class="btn btn-outline" aria-pressed="false" title="Keep this device signed in for 30 days">Save Login</button>
+          <label class="remember-me"><input id="save-login" type="checkbox"> Save login</label>
         </div>
 
         <button type="submit" class="btn btn-primary btn-submit">Sign In to Workbench</button>
-        <p><a class="forgot-link" href="help.html" data-shop-contact data-subject="RepairDesk staff account recovery">Forgot password?</a></p>
+        <button type="button" class="text-action" id="forgot-password">Forgot password?</button>
+      </form>
+      <form id="recovery-form" hidden>
+        <div class="form-group">
+          <label class="form-label" for="recovery-email">Staff email address</label>
+          <input class="form-control" id="recovery-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <fieldset id="reset-details" hidden disabled>
+          <div class="form-group">
+            <label class="form-label" for="reset-code">Six-digit email code</label>
+            <input class="form-control" id="reset-code" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="new-password">New password (at least 8 characters)</label>
+            <input class="form-control" id="new-password" name="newPassword" type="password" autocomplete="new-password" minlength="8" maxlength="72" required>
+          </div>
+        </fieldset>
+        <p id="recovery-status" role="status"></p>
+        <button type="submit" class="btn btn-primary btn-submit">Email reset code</button>
+        <button type="button" id="back-to-login" class="text-action">Back to sign in</button>
       </form>
     </div>
   </main>
@@ -225,10 +181,9 @@
   <script src="../js/main.js"></script>
   <script src="../js/api.js"></script>
   <script>
-    function fillDemo(role) { document.getElementById('email').value=role==='admin'?'admin@repairdesk.net':'tech@repairdesk.net';document.getElementById('password').value='Pass123!'; }
-    async function handleLogin(e) {e.preventDefault();await RD.session();await RD.call('login',{email:document.getElementById('email').value,password:document.getElementById('password').value,remember:document.getElementById('save-login').getAttribute('aria-pressed')==='true'});location.href='../dashboard/index.html';}
-    document.addEventListener('DOMContentLoaded',async()=>{const save=document.getElementById('save-login');save.onclick=()=>save.setAttribute('aria-pressed',String(save.getAttribute('aria-pressed')!=='true'));await RD.session();if(RD.user){location.replace('../dashboard/index.html');return;}document.querySelector('.demo-banner').hidden=!RD.demo;});
+    async function handleLogin(e) {e.preventDefault();await RD.session();await RD.call('login',{email:document.getElementById('email').value,password:document.getElementById('password').value,remember:document.getElementById('save-login').checked});location.href='../dashboard/index.html';}
+    document.addEventListener('DOMContentLoaded',async()=>{await RD.session();if (RD.user) location.replace('../dashboard/index.html');});
   </script>
-<script src="../js/contact.js"></script>
+<script src="../js/staff-recovery.js"></script>
 </body>
 </html>

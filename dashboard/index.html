@@ -11,22 +11,17 @@
   <link rel="stylesheet" href="../css/dashboard.css">
   <link rel="stylesheet" href="../css/interactions.css">
   <script src="../js/dialogs.js"></script>
+  <link rel="stylesheet" href="../css/theme.css">
+  <script src="../js/theme.js"></script>
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
 </head>
 <body>
 
   <div class="dashboard-layout">
     
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-        </div>
-        <div>
-          <h2>RepairDesk</h2>
-        </div>
+        <img class="site-wordmark" src="../assets/logo.svg" alt="RepairDesk" width="156" height="26">
       </div>
 
       <nav class="sidebar-nav">
@@ -72,28 +67,22 @@
         </ul>
       </nav>
 
-      <!-- Sidebar User & Role Switcher -->
       <div class="sidebar-footer">
-        <a href="../pages/login.html" class="nav-link" aria-label="Sign out">Sign out</a>
         <div class="sidebar-user">
-          <div class="avatar" id="sidebar-avatar">EC</div>
+          <div class="avatar" id="sidebar-avatar"></div>
           <div class="user-info">
-            <div class="user-name" id="sidebar-user-name">Elena Corpuz</div>
+            <div class="user-name" id="sidebar-user-name"></div>
             <div class="user-role">
-              <select id="role-selector" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-size: 11px; padding: 2px 4px; margin-top: 4px; width: 100%;">
-                <option value="admin">Shop Admin</option>
-                <option value="technician">Technician</option>
-              </select>
+              <span id="staff-role"></span>
             </div>
           </div>
         </div>
+        <button type="button" class="staff-signout" id="staff-signout" aria-label="Sign out" title="Sign out"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4H5v16h5 M9 12h12m-5-5 5 5-5 5"/></svg></button>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="main-content">
       
-      <!-- Topbar -->
       <header class="topbar">
         <div class="topbar-left">
           <button class="hamburger" id="sidebar-toggle-btn" aria-label="Toggle menu">
@@ -116,16 +105,13 @@
         </div>
       </header>
 
-      <!-- Page Content -->
       <div class="page-content">
         
-        <!-- Welcome Banner -->
         <div class="page-welcome">
           <h2 id="header-user-greeting">Welcome back, Elena Corpuz</h2>
           <p>Here is what's happening across the Gilmore repair workbench today &bull; Oct 31, 2026</p>
         </div>
 
-        <!-- 4 Stats Cards -->
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-header">
@@ -180,10 +166,8 @@
           </div>
         </div>
 
-        <!-- 2 Column Layout -->
         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;" class="dashboard-two-col">
           
-          <!-- Recent Repairs Table -->
           <div class="table-card">
             <div style="padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
               <div>
@@ -207,20 +191,17 @@
                   </tr>
                 </thead>
                 <tbody id="overview-jobs-body">
-                  <!-- Populated by JS -->
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- Right Sidebar Widgets -->
           <div style="display: flex; flex-direction: column; gap: 24px;">
             
-            <!-- Technician Workload Card -->
             <div class="table-card" style="padding: 24px;">
               <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; display: flex; justify-content: space-between;">
                 <span>Technician Workload</span>
-                <a href="technicians.html" style="font-size: 12px; color: var(--primary); text-decoration: none;">Manage</a>
+                <a href="technicians.html" style="font-size: 12px; color: light-dark(var(--primary), #90dfac); text-decoration: none;">Manage</a>
               </h3>
 
               <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -229,7 +210,7 @@
                     <strong>Danilo "Dan" Mendoza</strong>
                     <span>4 active jobs</span>
                   </div>
-                  <div style="height: 8px; background: #e2e8f0; border-radius: 9999px; overflow: hidden;">
+                  <div style="height: 8px; background: light-dark(#e2e8f0, #202b36); border-radius: 9999px; overflow: hidden;">
                     <div style="width: 80%; height: 100%; background: var(--primary);"></div>
                   </div>
                 </div>
@@ -239,7 +220,7 @@
                     <strong>Sarah Dizon</strong>
                     <span>6 active jobs</span>
                   </div>
-                  <div style="height: 8px; background: #e2e8f0; border-radius: 9999px; overflow: hidden;">
+                  <div style="height: 8px; background: light-dark(#e2e8f0, #202b36); border-radius: 9999px; overflow: hidden;">
                     <div style="width: 95%; height: 100%; background: var(--primary);"></div>
                   </div>
                 </div>
@@ -249,16 +230,15 @@
                     <strong>Liam Bernardo</strong>
                     <span>3 active jobs</span>
                   </div>
-                  <div style="height: 8px; background: #e2e8f0; border-radius: 9999px; overflow: hidden;">
+                  <div style="height: 8px; background: light-dark(#e2e8f0, #202b36); border-radius: 9999px; overflow: hidden;">
                     <div style="width: 50%; height: 100%; background: var(--primary);"></div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Unclaimed Policy Reminder Box -->
-            <div class="table-card" style="padding: 20px; background: #fffbeb; border: 1px solid #fef3c7;">
-              <h4 style="font-size: 14px; font-weight: 700; color: #92400e; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+            <div class="table-card" style="padding: 20px; background: light-dark(#fffbeb, #202b36); border: 1px solid light-dark(#fef3c7, #445463);">
+              <h4 style="font-size: 14px; font-weight: 700; color: light-dark(#92400e, #f3b398); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 Unclaimed Policy Tracker
               </h4>

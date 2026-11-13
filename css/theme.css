@@ -1,0 +1,43 @@
+:root { color-scheme: light; --control-ink: #166534; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111923; --bg-alt: #1b2732; --surface: #202b36;
+  --text: #edf3f8; --text-light: #bcc8d3; --border: #455262;
+  --primary-50: #182f26; --primary-100: #204331; --primary-200: #376447;
+  --dark-100: #24313e; --dark-200: #3e4b59; --dark-300: #657383;
+  --dark-500: #a2afbd; --dark-600: #c3cfda; --control-ink: #8ce5ab;
+}
+.theme-control {
+  position: fixed; z-index: 10002; right: 1rem; bottom: 1rem;
+  display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
+  border: 1px solid var(--border); border-radius: 2rem; cursor: pointer;
+  color: var(--text); background: var(--surface); box-shadow: var(--shadow);
+}
+.theme-control[aria-pressed="false"] .sun,
+.theme-control[aria-pressed="true"] .moon { display: none; }
+.theme-control:focus-visible { outline: 2px solid var(--control-ink); outline-offset: 3px; }
+body .btn { padding: .42rem .84rem; font-size: .875rem; line-height: 1.4; }
+body .btn-sm { padding: .32rem .65rem; font-size: .8rem; }
+body .btn-lg { padding: .52rem 1rem; }
+.rd-dialog::backdrop { background: rgb(0 0 0 / 70%); }
+.rd-dialog { background: var(--surface); }
+.text-action {
+  display: block; margin: .75rem auto 0; padding: .25rem; border: 0;
+  background: transparent; font: inherit; font-size: .875rem; font-weight: 600;
+  color: var(--control-ink); cursor: pointer; text-decoration: underline;
+  text-underline-offset: .2em;
+}
+#scan-ticket, .staff-signout { display: inline-flex; align-items: center; gap: .45rem; }
+#scan-ticket { margin-top: .75rem; }
+#scan-ticket svg, .staff-signout svg { width: 1rem; height: 1rem; }
+.staff-signout {
+  background: transparent; border: 1px solid #627282; color: #f3f6fa;
+  border-radius: .4rem; font: inherit; font-size: .8rem; padding: .35rem .65rem;
+  margin-top: .55rem; cursor: pointer;
+}
+.staff-signout:hover { background: #334155; }
+#reset-details { padding: 0; margin: 0; border: 0; }
+#recovery-status { font-size: .875rem; margin-block: .6rem; }
+.remember-me input { accent-color: var(--primary); }
+[data-theme="dark"] .btn-outline { color: var(--control-ink); }
+@media print { .theme-control { display: none; } }

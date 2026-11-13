@@ -17,7 +17,7 @@
       margin-top: 20px;
     }
     .tech-card {
-      background: #fff;
+      background: light-dark(#fff, #202b36);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 24px;
@@ -64,7 +64,7 @@
       padding: 20px;
     }
     .modal-card {
-      background: #fff;
+      background: light-dark(#fff, #202b36);
       border-radius: var(--radius-xl);
       max-width: 500px;
       width: 100%;
@@ -73,22 +73,17 @@
   </style>
   <link rel="stylesheet" href="../css/interactions.css">
   <script src="../js/dialogs.js"></script>
+  <link rel="stylesheet" href="../css/theme.css">
+  <script src="../js/theme.js"></script>
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
 </head>
 <body>
 
   <div class="dashboard-layout">
     
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-        </div>
-        <div>
-          <h2>RepairDesk</h2>
-        </div>
+        <img class="site-wordmark" src="../assets/logo.svg" alt="RepairDesk" width="156" height="26">
       </div>
 
       <nav class="sidebar-nav">
@@ -107,26 +102,21 @@
       </nav>
 
       <div class="sidebar-footer">
-        <a href="../pages/login.html" class="nav-link" aria-label="Sign out">Sign out</a>
         <div class="sidebar-user">
-          <div class="avatar" id="sidebar-avatar">EC</div>
+          <div class="avatar" id="sidebar-avatar"></div>
           <div class="user-info">
-            <div class="user-name" id="sidebar-user-name">Elena Corpuz</div>
+            <div class="user-name" id="sidebar-user-name"></div>
             <div class="user-role">
-              <select id="role-selector" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-size: 11px; padding: 2px 4px; margin-top: 4px; width: 100%;">
-                <option value="admin">Shop Admin</option>
-                <option value="technician">Technician</option>
-              </select>
+              <span id="staff-role"></span>
             </div>
           </div>
         </div>
+        <button type="button" class="staff-signout" id="staff-signout" aria-label="Sign out" title="Sign out"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4H5v16h5 M9 12h12m-5-5 5 5-5 5"/></svg></button>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="main-content">
       
-      <!-- Topbar -->
       <header class="topbar">
         <div class="topbar-left">
           <button class="hamburger" id="sidebar-toggle-btn" aria-label="Toggle menu">
@@ -142,7 +132,6 @@
         </div>
       </header>
 
-      <!-- Page Content -->
       <div class="page-content">
         
         <div class="page-welcome">
@@ -150,16 +139,13 @@
           <p>Monitor technician capacity, active repair queues, and system access permissions.</p>
         </div>
 
-        <!-- Tech Cards Grid -->
         <div class="tech-card-grid" id="tech-list-grid">
-          <!-- Rendered by JS -->
         </div>
 
       </div>
     </main>
   </div>
 
-  <!-- Add Tech Modal -->
   <div class="modal-overlay" id="add-tech-modal">
     <div class="modal-card">
       <h3 style="font-size: 18px; margin-bottom: 8px;">Provision Technician Account</h3>
@@ -223,10 +209,10 @@
               </div>
 
               <div style="font-size: 13px; color: var(--text-light); margin-bottom: 4px;">
-                ✉️ ${RD.escape(t.email)}
+                Email: ${RD.escape(t.email)}
               </div>
               <div style="font-size: 13px; color: var(--text-light); margin-bottom: 12px;">
-                📞 ${RD.escape(t.phone)}
+                Phone: ${RD.escape(t.phone)}
               </div>
 
               <div class="workload-bar-wrap">
@@ -234,7 +220,7 @@
                   <span>Current Active Jobs</span>
                   <strong>${t.activeJobs} jobs</strong>
                 </div>
-                <div style="height: 8px; background: #e2e8f0; border-radius: 9999px; overflow: hidden;">
+                <div style="height: 8px; background: light-dark(#e2e8f0, #202b36); border-radius: 9999px; overflow: hidden;">
                   <div style="width: ${pct}%; height: 100%; background: ${pct > 80 ? 'var(--warning)' : 'var(--primary)'};"></div>
                 </div>
               </div>

@@ -19,7 +19,7 @@
       margin-bottom: 20px;
     }
     .breadcrumb-row a {
-      color: var(--primary);
+      color: light-dark(var(--primary), #90dfac);
       text-decoration: none;
     }
     .detail-grid-3-1 {
@@ -33,7 +33,7 @@
       }
     }
     .card-box {
-      background: #fff;
+      background: light-dark(#fff, #202b36);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 24px;
@@ -91,12 +91,12 @@
     }
     .timeline-user {
       font-size: 12px;
-      color: #64748b;
+      color: light-dark(#64748b, #d6e0e9);
     }
 
     /* Modal (shared with other dashboard pages) */
     .modal-card {
-      background: #fff;
+      background: light-dark(#fff, #202b36);
       border-radius: var(--radius-xl);
       max-width: 680px;
       width: 100%;
@@ -106,14 +106,56 @@
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 
+    #quote-dialog {
+      width: min(94vw, 40rem);
+      max-height: 90dvh;
+      overflow-y: auto;
+      padding: clamp(1rem, 3vw, 1.75rem);
+      background: var(--surface);
+    }
+    #quote-dialog h2 { margin: 0 0 1.25rem; }
+    #quote-fields { min-width: 0; border: 0; padding: 0; margin: 0; }
+    #quote-fields label { white-space: normal; font-size: .875rem; font-weight: 600; }
+    #quote-fields input { margin: .375rem 0 0; min-width: 0; color: var(--text); background: var(--surface); }
+    .quote-section-heading, .quote-charge, .quote-summary {
+      display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+    }
+    .quote-section-heading { flex-wrap: wrap; }
+    #quote-dialog h3 { margin: 0; font-size: 1rem; }
+    .quote-part-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(7rem, 9rem) auto;
+      align-items: end; gap: .75rem; padding-block: .75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    #quote-dialog [data-remove] {
+      min-height: 40px; border: 0; color: var(--text-light); background: transparent;
+      text-decoration: underline; text-underline-offset: .2em; cursor: pointer;
+    }
+    .quote-charges { margin: 1rem 0; }
+    .quote-charge { min-height: 2.75rem; }
+    #quote-fields #quote-labor { width: 9rem; text-align: right; }
+    .quote-summary {
+      background: var(--primary-50); color: var(--control-ink);
+      padding: .875rem 1rem; border-radius: var(--radius-md); font-weight: 700;
+    }
+    .quote-summary output { font-size: 1.2rem; font-variant-numeric: tabular-nums; }
+    #quote-fields p { font-size: .875rem; margin-top: .6rem; }
+    #quote-error { color: light-dark(#9b2424, #ffaaaa); }
+    @media (max-width: 500px) {
+      .quote-part-row { grid-template-columns: minmax(0, 1fr) auto; gap: .5rem .75rem; }
+      .quote-part-row label:first-child { grid-column: 1 / -1; }
+      #quote-dialog .rd-actions .btn { flex: 1; }
+    }
+
     /* Print Sticker Modal */
     .sticker-preview {
       width: 280px;
       height: 220px;
-      border: 2px dashed #94a3b8;
+      border: 2px dashed light-dark(#94a3b8, #445463);
       border-radius: 8px;
       padding: 16px;
-      background: #ffffff;
+      background: light-dark(#ffffff, #202b36);
       margin: 0 auto 20px;
       display: flex;
       flex-direction: column;
@@ -121,38 +163,56 @@
       box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
     }
     .sticker-qr {
-      width: 80px;
-      height: 80px;
-      background: #0f172a;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: monospace;
-      font-size: 10px;
-      text-align: center;
-      border-radius: 4px;
-      padding: 4px;
+      width: 104px;
+      flex: none;
+      background: white;
+    }
+    .sticker-qr svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      shape-rendering: crispEdges;
+    }
+    @media print {
+      body:has(#sticker-modal.show) > :not(#sticker-modal),
+      #sticker-modal .modal-card > :not(.sticker-preview) {
+        display: none !important;
+      }
+      #sticker-modal.show, #sticker-modal.show .modal-card {
+        display: block;
+        position: static;
+        padding: 0;
+        margin: 0;
+        background: white;
+        box-shadow: none;
+        border: 0;
+        overflow: visible;
+      }
+      #sticker-modal .sticker-preview {
+        width: 3in;
+        height: 2in;
+        box-sizing: border-box;
+        padding: 0.1in;
+        margin: 0;
+        color-scheme: light;
+        box-shadow: none;
+        break-inside: avoid;
+      }
     }
   </style>
   <link rel="stylesheet" href="../css/interactions.css">
   <script src="../js/dialogs.js"></script>
+  <link rel="stylesheet" href="../css/theme.css">
+  <script src="../js/theme.js"></script>
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
 </head>
 <body>
 
   <div class="dashboard-layout">
     
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-        </div>
-        <div>
-          <h2>RepairDesk</h2>
-        </div>
+        <img class="site-wordmark" src="../assets/logo.svg" alt="RepairDesk" width="156" height="26">
       </div>
 
       <nav class="sidebar-nav">
@@ -171,26 +231,21 @@
       </nav>
 
       <div class="sidebar-footer">
-        <a href="../pages/login.html" class="nav-link" aria-label="Sign out">Sign out</a>
         <div class="sidebar-user">
-          <div class="avatar" id="sidebar-avatar">EC</div>
+          <div class="avatar" id="sidebar-avatar"></div>
           <div class="user-info">
-            <div class="user-name" id="sidebar-user-name">Elena Corpuz</div>
+            <div class="user-name" id="sidebar-user-name"></div>
             <div class="user-role">
-              <select id="role-selector" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-size: 11px; padding: 2px 4px; margin-top: 4px; width: 100%;">
-                <option value="admin">Shop Admin</option>
-                <option value="technician">Technician</option>
-              </select>
+              <span id="staff-role"></span>
             </div>
           </div>
         </div>
+        <button type="button" class="staff-signout" id="staff-signout" aria-label="Sign out" title="Sign out"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4H5v16h5 M9 12h12m-5-5 5 5-5 5"/></svg></button>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="main-content">
       
-      <!-- Topbar -->
       <header class="topbar">
         <div class="topbar-left">
           <button class="hamburger" id="sidebar-toggle-btn" aria-label="Toggle menu">
@@ -201,23 +256,20 @@
 
         <div class="topbar-right">
           <button class="btn btn-outline btn-sm" onclick="openStickerModal()">
-            🖨️ Preview Intake Ticket
+            Preview Intake Ticket
           </button>
 
         </div>
       </header>
 
-      <!-- Page Content -->
       <div class="page-content">
         
-        <!-- Breadcrumb -->
         <div class="breadcrumb-row">
           <a href="jobs.html">&larr; Back to Jobs List</a>
           <span>/</span>
           <span id="breadcrumb-job-id">JOB-101</span>
         </div>
 
-        <!-- Job Header Banner -->
         <div class="card-box" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
           <div>
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
@@ -231,26 +283,23 @@
             </p>
           </div>
 
-          <!-- Quick Action Buttons -->
           <button id="retry-email" hidden class="btn btn-outline btn-sm" onclick="retryEmail()">Retry pending email</button>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button class="btn btn-primary btn-sm" onclick="openStatusModal()">Update Lifecycle Status</button>
             <button class="btn btn-outline btn-sm" onclick="markPaymentPaid()">Set Payment to Paid</button>
-            <button class="btn btn-sm btn-outline" style="color:#059669; border-color:#059669;" onclick="markCollected()">✓ Counter Pickup (Collected)</button>
+            <button class="btn btn-sm btn-outline" style="color:light-dark(#059669, #96dfaf); border-color:#059669;" onclick="markCollected()">✓ Counter Pickup (Collected)</button>
           </div>
         </div>
 
-        <!-- 2 Column Details Layout -->
         <div class="detail-grid-3-1">
           
-          <!-- Left Column -->
           <div>
             
-            <!-- Appliance & Fault Details -->
             <div class="card-box">
               <div class="card-title">
                 <span>Appliance & Intake Specifications</span>
               </div>
+              <img id="job-photo" class="intake-photo" alt="Appliance at intake" hidden>
               
               <div class="meta-list" style="margin-bottom: 20px;">
                 <div class="meta-item">
@@ -273,20 +322,19 @@
 
               <div style="margin-bottom: 16px;">
                 <div class="meta-label" style="font-size: 12px; color: var(--text-light); margin-bottom: 4px;">CUSTOMER REPORTED FAULT</div>
-                <div style="background: #f8fafc; padding: 12px; border-radius: 6px; font-size: 14px;" id="job-reported-issue">
+                <div style="background: light-dark(#f8fafc, #202b36); padding: 12px; border-radius: 6px; font-size: 14px;" id="job-reported-issue">
                   Pulsing on boost mode, shuts down after 10 seconds.
                 </div>
               </div>
 
               <div>
                 <div class="meta-label" style="font-size: 12px; color: var(--text-light); margin-bottom: 4px;">INTAKE PHYSICAL CONDITION</div>
-                <div style="font-size: 13px; color: #475569;" id="job-condition">
+                <div style="font-size: 13px; color: light-dark(#475569, #d6e0e9);" id="job-condition">
                   Minor cosmetic scratches on bin canister. No structural cracks.
                 </div>
               </div>
             </div>
 
-            <!-- Diagnostics & Quote Billing -->
             <div class="card-box">
               <div class="card-title">
                 <span>Diagnostics & Repair Quotation</span>
@@ -319,24 +367,22 @@
                   </tr>
                   <tr style="font-weight: 700; font-size: 15px;">
                     <td colspan="2" style="padding: 12px 0;">Total Quotation</td>
-                    <td style="padding: 12px 0; text-align: right; color: var(--primary);" id="job-total-billing">₱5,550.00</td>
+                    <td style="padding: 12px 0; text-align: right; color: light-dark(var(--primary), #90dfac);" id="job-total-billing">₱5,550.00</td>
                   </tr>
                 </tbody>
               </table>
 
-              <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px; border-radius: 6px; font-size: 13px; color: #166534;">
+              <div style="background: light-dark(#f0fdf4, #202b36); border: 1px solid light-dark(#bbf7d0, #445463); padding: 10px; border-radius: 6px; font-size: 13px; color: light-dark(#166534, #96dfaf);">
                 Quote is synced with customer status link. Once approved on the status page, status updates to <strong>Repairing</strong>.
               </div>
             </div>
 
-            <!-- Technician Notes History -->
             <div class="card-box">
               <div class="card-title">
                 <span>Progress Notes & Service History</span>
               </div>
 
-              <!-- Add Note Form -->
-              <form onsubmit="handleAddNote(event)" style="margin-bottom: 24px; background: #f8fafc; padding: 16px; border-radius: 8px;">
+              <form onsubmit="handleAddNote(event)" style="margin-bottom: 24px; background: light-dark(#f8fafc, #202b36); padding: 16px; border-radius: 8px;">
                 <textarea id="new-note-text" class="form-input" rows="2" placeholder="Add service note, parts tested, or progress update..." required></textarea>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
@@ -348,18 +394,14 @@
                 </div>
               </form>
 
-              <!-- Notes List -->
               <div id="notes-container">
-                <!-- Injected by script -->
               </div>
             </div>
 
           </div>
 
-          <!-- Right Column -->
           <div>
             
-            <!-- Customer Card -->
             <div class="card-box">
               <div class="card-title">
                 <span>Customer Contact</span>
@@ -368,17 +410,16 @@
                 <strong style="font-size: 16px;" id="cust-name">Christine Reyes</strong>
               </div>
               <div style="font-size: 13px; color: var(--text-light); margin-bottom: 6px;">
-                📞 <a href="#" id="cust-phone" style="color: var(--text); text-decoration: none;">0917 234 8901</a>
+                Phone: <a href="#" id="cust-phone" style="color: var(--text); text-decoration: none;">0917 234 8901</a>
               </div>
               <div style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">
-                ✉️ <a href="#" id="cust-email" style="color: var(--primary); text-decoration: none;">creyes@gmail.com</a>
+                Email: <a href="#" id="cust-email" style="color: light-dark(var(--primary), #90dfac); text-decoration: none;">creyes@gmail.com</a>
               </div>
               <button class="btn btn-outline btn-sm" style="width: 100%; text-align: center;" onclick="viewCustomerRequests()">
                 View Customer Requests
               </button>
             </div>
 
-            <!-- Payment & Warranty Card -->
             <div class="card-box">
               <div class="card-title">
                 <span>Payment & Warranty</span>
@@ -392,18 +433,16 @@
                 <span style="font-size: 13px; font-weight: 600;">90 Days</span>
               </div>
 
-              <div style="font-size: 12px; color: #64748b; line-height: 1.4; border-top: 1px solid var(--border); padding-top: 12px;">
+              <div style="font-size: 12px; color: light-dark(#64748b, #d6e0e9); line-height: 1.4; border-top: 1px solid var(--border); padding-top: 12px;">
                 * Per shop rules, warranty starts from the counter collection date and is linked to Job ID.
               </div>
             </div>
 
-            <!-- Audit Trail & Timeline -->
             <div class="card-box">
               <div class="card-title">
                 <span>Audit Trail & Activity Log</span>
               </div>
               <div id="timeline-container">
-                <!-- Injected by script -->
               </div>
             </div>
 
@@ -415,7 +454,44 @@
     </main>
   </div>
 
-  <!-- QR Sticker Print Modal -->
+  <dialog class="rd-dialog" id="quote-dialog" aria-labelledby="quote-title">
+    <form id="quote-form">
+      <h2 id="quote-title">Revise repair quote</h2>
+      <fieldset id="quote-fields" aria-label="Quote charges in Philippine pesos">
+        <div class="quote-section-heading">
+          <h3>Replacement parts</h3>
+          <button type="button" id="quote-add-part" class="btn btn-outline btn-sm">Add part</button>
+        </div>
+        <div id="quote-part-rows"></div>
+        <template id="quote-part-template">
+          <div class="quote-part-row">
+            <label>Part name
+              <input class="form-input" data-name maxlength="120" required>
+            </label>
+            <label>Fee (PHP)
+              <input class="form-input" data-fee type="number" min="0" max="9999999.99" step="0.01" required>
+            </label>
+            <button type="button" class="btn btn-outline btn-sm" data-remove>Remove</button>
+          </div>
+        </template>
+        <div class="quote-charges">
+          <div class="quote-charge">Diagnostic fee <span id="quote-fee"></span></div>
+          <div class="quote-charge">
+            <label for="quote-labor">Labor (PHP)</label>
+            <input class="form-input" id="quote-labor" name="labor" type="number" min="0" max="9999999.99" step="0.01" required>
+          </div>
+        </div>
+        <div class="quote-summary"><strong>Total quote</strong><output id="quote-total"></output></div>
+        <p>Saving sends the revised quote for customer approval.</p>
+        <p id="quote-error" role="alert" hidden></p>
+        <div class="rd-actions">
+          <button type="button" class="btn btn-outline" id="quote-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save quote</button>
+        </div>
+      </fieldset>
+    </form>
+  </dialog>
+
   <div class="modal-overlay" id="sticker-modal">
     <div class="modal-card" style="max-width: 440px;">
       <h3 style="margin-bottom: 12px; font-size: 18px;">Print Item Intake Sticker</h3>
@@ -426,15 +502,15 @@
       <div class="sticker-preview">
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
           <div>
-            <div style="font-size: 18px; font-weight: 800; color: #0f172a;" id="sticker-job-id">JOB-101</div>
-            <div style="font-size: 11px; font-family: monospace; font-weight: 700; color: var(--primary);" id="sticker-code">CODE: B9X2K4XX</div>
+            <div style="font-size: 18px; font-weight: 800; color: light-dark(#0f172a, #d6e0e9);" id="sticker-job-id">JOB-101</div>
+            <div style="font-size: 11px; font-family: monospace; font-weight: 700; color: light-dark(var(--primary), #90dfac);" id="sticker-code">CODE: B9X2K4XX</div>
           </div>
           <div class="sticker-qr" id="ticket-qr"></div>
         </div>
-        <div style="font-size: 12px; font-weight: 600; color: #1e293b;" id="sticker-appliance">
+        <div style="font-size: 12px; font-weight: 600; color: light-dark(#1e293b, #d6e0e9);" id="sticker-appliance">
           Dyson V11 Torque Drive
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 6px;">
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: light-dark(#64748b, #d6e0e9); border-top: 1px solid light-dark(#e2e8f0, #445463); padding-top: 6px;">
           <span id="sticker-customer">Christine Reyes</span>
           <span id="sticker-date">Oct 28, 2026</span>
         </div>
@@ -447,7 +523,6 @@
     </div>
   </div>
 
-  <!-- Update Status Modal -->
   <div class="modal-overlay" id="status-modal">
     <div class="modal-card" style="max-width: 440px;">
       <h3 style="margin-bottom: 12px; font-size: 18px;">Update Job Lifecycle Status</h3>
@@ -499,12 +574,12 @@
       currentJob = jobs.find(j => j.id === jobId);
       if(!currentJob){await RDUI.notice('Job not found or access denied.');location.href='jobs.html';return;}
 
+      RD.showAppliancePhoto(document.getElementById('job-photo'), currentJob);
       document.querySelector('[onclick="markPaymentPaid()"]').hidden=RD.user.role!=='admin'||!currentJob.canPay;
       document.querySelector('[onclick="markCollected()"]').hidden=RD.user.role!=='admin'||!currentJob.canPickUp;
       const retry=document.getElementById('retry-email'); retry.hidden=RD.user.role!=='admin'||!currentJob.pendingEmails;
       retry.textContent='Retry pending email ('+currentJob.pendingEmails+')';
       document.getElementById('cust-email').href='mailto:'+currentJob.customer.email+'?subject='+encodeURIComponent('RepairDesk '+currentJob.id);
-      // Fill header
       document.getElementById('breadcrumb-job-id').innerText = currentJob.id;
       document.getElementById('topbar-job-title').innerText = `${currentJob.id} — ${currentJob.brand} ${currentJob.model}`;
       document.getElementById('job-id-text').innerText = currentJob.id;
@@ -515,7 +590,6 @@
       document.getElementById('job-date-started').innerText = currentJob.dateStarted;
       document.getElementById('job-est-completion').innerText = currentJob.estCompletion;
 
-      // Meta specs
       document.getElementById('job-appliance-type').innerText = currentJob.appliance;
       document.getElementById('job-brand-model').innerText = `${currentJob.brand} ${currentJob.model}`;
       document.getElementById('job-serial').innerText = currentJob.serial;
@@ -523,29 +597,30 @@
       document.getElementById('job-reported-issue').innerText = currentJob.reportedIssue;
       document.getElementById('job-condition').innerText = currentJob.condition;
 
-      // Customer
       document.getElementById('cust-name').innerText = currentJob.customer.name;
       document.getElementById('cust-phone').innerText = currentJob.customer.phone;
       document.getElementById('cust-email').innerText = currentJob.customer.email;
 
-      // Payment
       document.getElementById('job-payment-badge').innerHTML = window.RepairDeskStore.getPaymentBadge(currentJob.payment);
       document.getElementById('job-total-billing').innerText = `₱${Number(currentJob.billing.total).toLocaleString()}.00`;
 
       const billRows=document.querySelectorAll('#billing-items-body tr');
       ['diagnosticFee','parts','labor'].forEach((key,i)=>{billRows[i].lastElementChild.textContent=formatPHP(currentJob.billing[key]);});
+      billRows[1].firstElementChild.replaceChildren('Replacement Parts');
+      for (const item of currentJob.billing.partItems || []) {
+        const detail = document.createElement('div');
+        detail.textContent = item.name + ' — ' + formatPHP(Number(item.fee));
+        billRows[1].firstElementChild.append(detail);
+      }
       document.getElementById('job-total-billing').textContent=formatPHP(currentJob.billing.total);
-      // Sticker preview
       document.getElementById('sticker-job-id').innerText = currentJob.id;
       document.getElementById('sticker-code').innerText = `CODE: ${currentJob.code}`;
       document.getElementById('sticker-appliance').innerText = `${currentJob.brand} ${currentJob.model}`;
       document.getElementById('sticker-customer').innerText = currentJob.customer.name;
       document.getElementById('sticker-date').innerText = currentJob.dateStarted;
 
-      // Render Notes
       renderNotes();
 
-      // Render Timeline
       renderTimeline();
     }
 
@@ -606,14 +681,94 @@
       if(await RDUI.ask('Confirm that the customer has collected this item?'))await changeJob('pickup');
     }
 
-    async function editDiagnostics(){const parts=await RDUI.input('Parts charge in PHP:',currentJob.billing.parts);if(parts===null)return;const labor=await RDUI.input('Labor charge in PHP:',currentJob.billing.labor);if(labor===null)return;await changeJob('quote',{parts,labor,diagnosticFee:currentJob.billing.diagnosticFee});}
+    const quoteDialog = document.getElementById('quote-dialog');
+    const quoteForm = document.getElementById('quote-form');
+    const quoteFields = document.getElementById('quote-fields');
+    const quoteError = document.getElementById('quote-error');
 
-    function saveCurrentJob(){throw new Error('Use a specific server operation.');}
+    const partRows = document.getElementById('quote-part-rows');
+    function addPartRow(name = '', fee = '') {
+      const row = document.getElementById('quote-part-template').content.firstElementChild.cloneNode(true);
+      row.querySelector('[data-name]').value = name;
+      row.querySelector('[data-fee]').value = fee;
+      row.querySelector('[data-remove]').onclick = () => {
+        row.remove();
+        updateQuoteTotal();
+        document.getElementById('quote-add-part').focus();
+      };
+      partRows.append(row);
+      return row;
+    }
+    document.getElementById('quote-add-part').onclick = () => {
+      addPartRow().querySelector('[data-name]').focus();
+      updateQuoteTotal();
+    };
+
+    function updateQuoteTotal() {
+      const charges = [quoteForm.elements.labor, ...partRows.querySelectorAll('[data-fee]')];
+      const total = document.getElementById('quote-total');
+      if (charges.some(input => !input.validity.valid)) {
+        total.value = '—';
+        return;
+      }
+      const cents = charges.reduce((sum, input) => sum + Math.round(input.valueAsNumber * 100),
+        Math.round(currentJob.billing.diagnosticFee * 100));
+      total.value = formatPHP(cents / 100);
+    }
+
+    function editDiagnostics() {
+      const {diagnosticFee, parts, labor} = currentJob.billing;
+      document.getElementById('quote-fee').textContent = formatPHP(diagnosticFee);
+      partRows.replaceChildren();
+      const items = currentJob.billing.partItems || [];
+      for (const item of items) addPartRow(item.name, item.fee);
+      if (!items.length && parts > 0) addPartRow('Replacement parts', parts);
+      quoteForm.elements.labor.value = labor;
+      quoteError.hidden = true;
+      updateQuoteTotal();
+      quoteDialog.showModal();
+    }
+
+    quoteForm.addEventListener('input', updateQuoteTotal);
+    document.getElementById('quote-cancel').onclick = () => quoteDialog.close();
+    quoteDialog.addEventListener('cancel', event => {
+      if (quoteFields.disabled) event.preventDefault();
+    });
+    quoteForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (quoteFields.disabled || !quoteForm.reportValidity()) return;
+      const labor = quoteForm.elements.labor;
+      const partItems = Array.from(partRows.children, row => ({
+        name: row.querySelector('[data-name]').value.trim(),
+        fee: row.querySelector('[data-fee]').value
+      }));
+      quoteFields.disabled = true;
+      quoteError.hidden = true;
+      try {
+        await changeJob('quote', {
+          diagnosticFee: currentJob.billing.diagnosticFee,
+          partItems,
+          labor: labor.valueAsNumber
+        });
+        quoteDialog.close();
+      } catch (error) {
+        quoteError.textContent = error.message || 'Could not save the quote.';
+        quoteError.hidden = false;
+      } finally {
+        quoteFields.disabled = false;
+      }
+    });
 
     function openStickerModal() {
-      const box=document.getElementById('ticket-qr');box.textContent='';
-      if(typeof qrcode==='function'){const qr=qrcode(0,'M');qr.addData(currentJob.code);qr.make();box.innerHTML=qr.createSvgTag(2,8);}
-      else box.textContent=currentJob.code;
+      if (typeof qrcode !== 'function') {
+        return RDUI.notice('The QR generator could not load. Check your connection and reload the page.');
+      }
+      const trackingUrl = new URL('../index.html', location.href);
+      trackingUrl.hash = new URLSearchParams({ticket: currentJob.code}).toString();
+      const qr = qrcode(0, 'M');
+      qr.addData(trackingUrl.href);
+      qr.make();
+      document.getElementById('ticket-qr').innerHTML = qr.createSvgTag(4, 16);
       document.getElementById('sticker-modal').classList.add('show');
     }
 
@@ -629,7 +784,7 @@
     async function reassignJob(){const id=await RDUI.input('Technician ID: '+getTechnicians().filter(t=>t.status==='Active').map(t=>t.id+' = '+t.name).join(', '));if(!id)return;await RD.call('reassign',{id:currentJob.dbId,version:currentJob.version,technicianId:Number(id.replace('TECH-',''))});await refreshData();loadJobDetails();}
     document.addEventListener('repairdesk:ready',()=>{const el=document.getElementById('job-tech-name');if(RD.user.role==='admin'){el.title='Click to reassign technician';el.onclick=reassignJob;}});
   </script>
-<script src="../node_modules/qrcode-generator/qrcode.js"></script>
+<script src="../js/vendor/qrcode-generator/qrcode.js"></script>
 </body>
 </html>
 

@@ -4,6 +4,7 @@ ini_set('display_errors','0');
 require_once __DIR__.'/tracking-auth.php';
 require_once __DIR__.'/notifications.php';
 require_once __DIR__.'/saved-login.php';
+require_once __DIR__.'/staff-recovery.php';
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 header('X-Content-Type-Options: nosniff');
@@ -33,6 +34,18 @@ function limited(string $scope,int $max): void {
     query('INSERT INTO rate_limits(bucket,hits,expires_at) VALUES(?,1,DATE_ADD(UTC_TIMESTAMP(),INTERVAL 15 MINUTE)) ON DUPLICATE KEY UPDATE hits=IF(expires_at<UTC_TIMESTAMP(),1,hits+1), expires_at=IF(expires_at<UTC_TIMESTAMP(),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 15 MINUTE),expires_at)',[$key]);
     if ((int)query('SELECT hits FROM rate_limits WHERE bucket=?',[$key])->fetchColumn()>$max) fail('Too many attempts. Try again in 15 minutes.',429);
 }
+function intake_photo(): ?array {
+    $file = $_FILES['photo'] ?? null;
+    if (!$file || $file['error'] === UPLOAD_ERR_NO_FILE) return null;
+    if ($file['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($file['tmp_name'])) fail('Photo upload failed. Choose a smaller image and try again.');
+    if ($file['size'] > 2 * 1024 * 1024) fail('Choose a photo of 2 MB or less.', 413);
+    $info = @getimagesize($file['tmp_name']);
+    if (!$info || !in_array($info['mime'], ['image/jpeg', 'image/png', 'image/webp'], true)) fail('Choose a JPEG, PNG or WebP photo.');
+    $bytes = file_get_contents($file['tmp_name']);
+    if ($bytes === false) fail('Could not read the uploaded photo.');
+    return [$info['mime'], $bytes];
+}
+
 function job(int $id,bool $lock=false): array {
     global $user;
     $j=query('SELECT * FROM jobs WHERE id=?'.($lock?' FOR UPDATE':''),[$id])->fetch();
@@ -46,6 +59,7 @@ function shape(array $j,bool $public=false): array {
     foreach($notes as &$note) $note['customerVisible']=(bool)$note['customerVisible']; unset($note);
     $billing=['diagnosticFee'=>(float)$j['diagnostic_fee'],'parts'=>(float)$j['parts'],'labor'=>(float)$j['labor']];
     $billing['total']=round(array_sum($billing),2);
+    $billing['partItems'] = json_decode($j['quote_parts_json'] ?? '[]', true, 512, JSON_THROW_ON_ERROR);
     $paid=(float)query('SELECT COALESCE(SUM(amount),0) FROM payments WHERE job_id=?',[$j['id']])->fetchColumn();
     $status=$j['status'];
     $atCounter = in_array($status,['Ready','Cannot Be Repaired'],true) && !$j['picked_up_at'];
@@ -53,7 +67,7 @@ function shape(array $j,bool $public=false): array {
     $canPickUp = $atCounter && !$canPay;
     $canCancel = in_array($status,['Received','Diagnosing','Awaiting Quote Approval'],true);
     if ($public) { [$local,$domain]=explode('@',$c['email'],2); $c=['name'=>$c['name'],'email'=>substr($local,0,1).'***@'.substr($domain,0,1).'***.'.pathinfo($domain,PATHINFO_EXTENSION)]; }
-    return ['pendingEmails'=>$public?0:(int)query('SELECT COUNT(*) FROM job_notifications WHERE job_id=? AND sent_at IS NULL',[$j['id']])->fetchColumn(),'canPay'=>$canPay,'canPickUp'=>$canPickUp,'canCancel'=>$canCancel,'pickedUpAt'=>$j['picked_up_at'],'id'=>'JOB-'.$j['id'],'dbId'=>(int)$j['id'],'version'=>(int)$j['version'],'code'=>$j['tracking_code'],'customer'=>$c,'technician'=>$t,'technicianId'=>$j['technician_id'],'appliance'=>$j['appliance'],'brand'=>$j['brand'],'model'=>$j['model'],'serial'=>$public?'':$j['serial'],'reportedIssue'=>$j['reported_issue'],'accessories'=>$public?'':$j['accessories'],'condition'=>$public?'':$j['item_condition'],'status'=>$status,'tab'=>$status==='Collected'?'completed':(in_array($status,['Cancelled','Declined','Cannot Be Repaired'],true)?'cancelled':'pending'),'dateStarted'=>substr($j['created_at'],0,10),'estCompletion'=>$j['estimated_completion']??'Not set','warrantyUntil'=>$j['warranty_until'],'billing'=>$billing,'paidAmount'=>$paid,'quoteDecision'=>$j['quote_decision'],'payment'=>$paid>=$billing['total']?'Paid':($paid>0?'Deposit':'Unpaid'),'notes'=>$notes,'timeline'=>$public?[]:query('SELECT created_at AS time,action,actor AS user FROM job_events WHERE job_id=? ORDER BY id DESC',[$j['id']])->fetchAll()];
+    return ['hasPhoto'=>(bool)query('SELECT 1 FROM job_photos WHERE job_id=?',[$j['id']])->fetchColumn(),'pendingEmails'=>$public?0:(int)query('SELECT COUNT(*) FROM job_notifications WHERE job_id=? AND sent_at IS NULL',[$j['id']])->fetchColumn(),'canPay'=>$canPay,'canPickUp'=>$canPickUp,'canCancel'=>$canCancel,'pickedUpAt'=>$j['picked_up_at'],'id'=>'JOB-'.$j['id'],'dbId'=>(int)$j['id'],'version'=>(int)$j['version'],'code'=>$j['tracking_code'],'customer'=>$c,'technician'=>$t,'technicianId'=>$j['technician_id'],'appliance'=>$j['appliance'],'brand'=>$j['brand'],'model'=>$j['model'],'serial'=>$public?'':$j['serial'],'reportedIssue'=>$j['reported_issue'],'accessories'=>$public?'':$j['accessories'],'condition'=>$public?'':$j['item_condition'],'status'=>$status,'tab'=>$status==='Collected'?'completed':(in_array($status,['Cancelled','Declined','Cannot Be Repaired'],true)?'cancelled':'pending'),'dateStarted'=>substr($j['created_at'],0,10),'estCompletion'=>$j['estimated_completion']??'Not set','warrantyUntil'=>$j['warranty_until'],'billing'=>$billing,'paidAmount'=>$paid,'quoteDecision'=>$j['quote_decision'],'payment'=>$paid>=$billing['total']?'Paid':($paid>0?'Deposit':'Unpaid'),'notes'=>$notes,'timeline'=>$public?[]:query('SELECT created_at AS time,action,actor AS user FROM job_events WHERE job_id=? ORDER BY id DESC',[$j['id']])->fetchAll()];
 }
 try {
     if (!is_file(__DIR__.'/config.php')) fail('Database setup required. See BACKEND.md.',503);
@@ -68,14 +82,35 @@ try {
     $_SESSION['last']=time();
     restore_device();
     $user=isset($_SESSION['uid'])?query('SELECT id,name,email,role FROM users WHERE id=? AND active=1',[$_SESSION['uid']])->fetch():false;
-    if ($method==='GET' && $action==='session') reply(['csrf'=>$_SESSION['csrf'],'user'=>$user?:null,'demo'=>(bool)$config['demo']]);
+    if ($method==='GET' && $action==='session') reply(['csrf'=>$_SESSION['csrf'],'user'=>$user?:null]);
+    if ($method === 'GET' && $action === 'appliance-photo') {
+        $id = (int)($_GET['id'] ?? 0);
+        $tracking = $_SESSION['tracking'] ?? [];
+        $verified = ($tracking['id'] ?? 0) === $id && ($tracking['until'] ?? 0) > time();
+        if (!$verified) {
+            if (!$user) fail('Verify your ticket or sign in.', 403);
+            job($id);
+        }
+        $photo = query('SELECT mime, image_data FROM job_photos WHERE job_id=?', [$id])->fetch();
+        if (!$photo) fail('Photo not found.', 404);
+        header('Content-Type: '.$photo['mime']);
+        echo $photo['image_data'];
+        exit;
+    }
     $body=[];
     if ($method==='POST') {
         if (!hash_equals($_SESSION['csrf'],$_SERVER['HTTP_X_CSRF_TOKEN']??'')) fail('Session expired. Refresh and try again.',403);
-        if ((int)($_SERVER['CONTENT_LENGTH']??0)>65536) fail('Request too large.',413);
-        $body=json_decode(file_get_contents('php://input'),true,32,JSON_THROW_ON_ERROR);
+        $multipart = $action === 'create-job' && str_starts_with($_SERVER['CONTENT_TYPE'] ?? '', 'multipart/form-data');
+        if ($multipart) admin();
+        $limit = $multipart ? 2 * 1024 * 1024 + 65536 : 65536;
+        if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > $limit) fail('Request too large.',413);
+        $json = $multipart ? ($_POST['job'] ?? '') : file_get_contents('php://input');
+        if (!is_string($json) || strlen($json) > 65536) fail('Invalid job details.');
+        $body=json_decode($json,true,32,JSON_THROW_ON_ERROR);
         if (!is_array($body)) fail('Invalid request.');
     }
+    if ($method==='POST' && $action==='request-staff-reset') request_staff_reset($body, $config['smtp'] ?? []);
+    if ($method==='POST' && $action==='reset-staff-password') reset_staff_password($body);
     if ($action==='login' && $method==='POST') {
         limited('login',20);
         $account=query('SELECT * FROM users WHERE email=? AND active=1',[email($body['email']??'')])->fetch();
@@ -130,7 +165,7 @@ try {
     }
     if ($method!=='POST') fail('Unknown endpoint.',404);
     if ($action==='create-job') {
-        admin(); $c=$body['customer']??[]; $mail=email($c['email']??''); $name=text($c['name']??''); $phone=text($c['phone']??'',40);
+        admin(); $photo=intake_photo(); $c=$body['customer']??[]; $mail=email($c['email']??''); $name=text($c['name']??''); $phone=text($c['phone']??'',40);
         if (($body['consent']??false)!==true) fail('Customer consent must be confirmed.');
         $db->beginTransaction();
         $tech=query("SELECT id FROM users WHERE name=? AND role='technician' AND active=1 FOR UPDATE",[text($body['technician']??'')])->fetchColumn(); if (!$tech) fail('Select an active technician.');
@@ -142,7 +177,9 @@ try {
             try { query('INSERT INTO jobs(customer_id,technician_id,tracking_code,appliance,brand,model,serial,reported_issue,accessories,item_condition) VALUES(?,?,?,?,?,?,?,?,?,?)',array_merge([$cid,$tech,$code],$values)); break; }
             catch(PDOException $e) { if (($e->errorInfo[1]??0)!==1062 || $attempt===9) throw $e; }
         }
-        $id=(int)$db->lastInsertId(); event($id,'Job created; customer consent recorded'); $notice=queue_job_email($id,'Your repair ticket has been created.'); $db->commit(); deliver_job_email($notice,$config); reply(shape(job($id)),201);
+        $id=(int)$db->lastInsertId();
+        if ($photo !== null) query('INSERT INTO job_photos(job_id,mime,image_data) VALUES(?,?,?)', [$id,$photo[0],$photo[1]]);
+        event($id,'Job created; customer consent recorded'); $notice=queue_job_email($id,'Your repair ticket has been created.'); $db->commit(); deliver_job_email($notice,$config); reply(shape(job($id)),201);
     }
     if ($action==='update-job') {
         $db->beginTransaction(); $j=job((int)($body['id']??0),true);
@@ -151,7 +188,30 @@ try {
         if ($op==='note') { query('INSERT INTO job_notes(job_id,author,text,customer_visible) VALUES(?,?,?,?)',[$j['id'],$user['name'],text($body['text']??'',4000),($body['customerVisible']??false)===true?1:0]); event((int)$j['id'],'Progress note added'); }
         elseif ($op==='quote') {
             if (in_array($j['status'],['Collected','Cancelled','Declined','Cannot Be Repaired'],true)) fail('Closed jobs cannot be quoted.',409);
-            query("UPDATE jobs SET diagnostic_fee=?,parts=?,labor=?,quote_decision=NULL,status='Awaiting Quote Approval' WHERE id=?",[money($body['diagnosticFee']??$j['diagnostic_fee']),money($body['parts']??0),money($body['labor']??0),$j['id']]); event((int)$j['id'],'Quote revised; customer approval required');
+            $parts = money($body['parts'] ?? 0);
+            $itemsJson = $parts === money($j['parts']) ? ($j['quote_parts_json'] ?? null) : null;
+            if (array_key_exists('partItems', $body)) {
+                if (!array_key_exists('quote_parts_json', $j)) fail('Install the quote parts database migration before saving itemized quotes.', 409);
+                if (!is_array($body['partItems']) || !array_is_list($body['partItems'])) fail('Invalid parts list.');
+                $items = [];
+                $cents = 0;
+                foreach ($body['partItems'] as $item) {
+                    if (!is_array($item)) fail('Invalid replacement part.');
+                    $name = trim(is_string($item['name'] ?? null) ? $item['name'] : '');
+                    if ($name === '' || !preg_match('/^.{1,120}$/usD', $name)) fail('Enter a part name of up to 120 characters.');
+                    $fee = money($item['fee'] ?? null);
+                    $cents += (int)str_replace('.', '', $fee);
+                    $items[] = ['name' => $name, 'fee' => $fee];
+                }
+                $parts = money($cents / 100);
+                $itemsJson = json_encode($items, JSON_THROW_ON_ERROR);
+            }
+            query("UPDATE jobs SET diagnostic_fee=?,parts=?,labor=?,quote_decision=NULL,status='Awaiting Quote Approval' WHERE id=?",
+                [money($body['diagnosticFee'] ?? $j['diagnostic_fee']), $parts, money($body['labor'] ?? 0), $j['id']]);
+            if (array_key_exists('quote_parts_json', $j)) {
+                query('UPDATE jobs SET quote_parts_json=? WHERE id=?', [$itemsJson, $j['id']]);
+            }
+            event((int)$j['id'], 'Quote revised; customer approval required');
         } elseif ($op==='payment') {
             admin(); if (!shape($j)['canPay']) fail('Payment is unavailable at this stage.',409);
             $due=round((float)$j['diagnostic_fee']+(float)$j['parts']+(float)$j['labor']-(float)query('SELECT COALESCE(SUM(amount),0) FROM payments WHERE job_id=?',[$j['id']])->fetchColumn(),2);

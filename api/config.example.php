@@ -10,5 +10,4 @@ return [
         'host' => 'smtp.gmail.com', 'port' => 587,
         'username' => '', 'password' => '', 'from' => '',
     ],
-    'demo' => true, // Disable demo hints and change seeded passwords before public use.
 ];

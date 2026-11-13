@@ -19,8 +19,7 @@ body.dashboard-body {
   left: 0;
   right: 0;
   height: 64px;
-  background-color: var(--dark) !important;
-  background: var(--dark) !important;
+  background: var(--dark);
   border-bottom: 1px solid var(--dark-alt);
   z-index: 1000;
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
@@ -127,7 +126,7 @@ body.dashboard-body {
   display: block;
   width: 20px;
   height: 2px;
-  background-color: #F1F5F9;
+  background-color: var(--text);
   border-radius: 2px;
   transition: transform 200ms ease, opacity 200ms ease;
 }
@@ -153,8 +152,7 @@ body.dashboard-body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--dark) !important;
-  background: var(--dark) !important;
+  background: var(--dark);
   opacity: 1 !important;
   z-index: 9999;
   padding: 20px 24px 40px;
@@ -196,9 +194,33 @@ body.dashboard-body {
   font-weight: 600;
 }
 
+/* Light navigation uses the same surface as the light wordmark. */
+:root[data-theme="light"] .navbar,
+:root[data-theme="light"] .navbar-mobile {
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: 0 1px 4px rgb(15 23 42 / 8%);
+}
+
+:root[data-theme="light"] .navbar-logo .site-wordmark {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+}
+
+:root[data-theme="light"] .navbar-links a,
+:root[data-theme="light"] .navbar-mobile a {
+  color: var(--text-light);
+  border-color: var(--border);
+}
+
+:root[data-theme="light"] .navbar-links a:is(:hover, .active),
+:root[data-theme="light"] .navbar-mobile a:is(:hover, .active) { color: var(--primary); }
+:root[data-theme="light"] .navbar-links a::after { background-color: var(--primary); }
+:root[data-theme="light"] .navbar-hamburger:hover { background-color: var(--primary-50); }
+
 /* --- Responsive Breakpoints --- */
 
-/* Tablet (collapse links into hamburger at <= 860px) */
 @media (max-width: 860px) {
   .navbar-links {
     display: none !important;
@@ -209,7 +231,6 @@ body.dashboard-body {
   }
 }
 
-/* Small Phones */
 @media (max-width: 600px) {
   .navbar {
     height: 56px;

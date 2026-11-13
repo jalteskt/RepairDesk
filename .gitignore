@@ -1,33 +1,37 @@
-# Environment & Secrets
+# Local configuration and secrets
+/api/config.php
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 *.pem
 *.key
 
-# Dependencies
+# Installed dependencies (js/vendor is shipped with the site)
+/vendor/
 node_modules/
-vendor/
 
-# Build & Output
+# Local database dumps and backups
+/repairdesk.sql
+/repairdesk.sql.gz
+/backups/
+/exports/
+
+# Local build output
 /dist
 /build
 /out
 *.exe
 *.dll
 
-# IDE & OS Files
+# IDE and operating system files
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
 ehthumbs.db
 
-# Logs & Diagnostics
+# Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Local database credentials
-/api/config.php

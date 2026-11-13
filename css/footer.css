@@ -1,135 +1,57 @@
-/* ============================================
-   RepairDesk - Footer Styles
-   Industrial Eco & Restoration theme
-   ============================================ */
+body:has(> [data-site-footer]) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+body > [data-site-footer] { margin-block-start: auto; }
 
 .footer {
-  background-color: var(--dark);
-  color: #CBD5E1;
-  padding: 64px 0 0;
+  background: var(--dark);
+  color: #cbd5e1;
   border-top: 1px solid var(--dark-alt);
 }
 
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1.5fr repeat(4, 1fr);
-  gap: 40px;
-  padding-bottom: 48px;
-}
-
-/* --- Footer Brand --- */
-.footer-brand {
+.footer-inner {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.footer-brand .footer-logo {
-  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  font-size: 1.25rem;
+  gap: .5rem 1.5rem;
+  padding-block: .75rem;
+}
+
+.footer-logo, .footer-nav, .footer-nav a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-logo {
+  gap: .5rem;
+  color: white;
   font-weight: 700;
-  color: #FFFFFF;
 }
 
-.footer-brand .footer-logo svg {
-  width: 28px;
-  height: 28px;
-  color: var(--primary-bright);
+.footer-logo svg { width: 22px; height: 22px; color: var(--primary-bright); }
+.footer-nav { flex-wrap: wrap; gap: 0 1rem; }
+.footer-nav a { color: inherit; font-size: .875rem; min-height: 36px; }
+.footer-nav a:hover, .footer-nav a:focus-visible { color: var(--primary-bright); }
+.footer small { margin-inline-start: auto; color: #b5c1ce; font-size: .8rem; }
+
+:root[data-theme="light"] .footer {
+  background: var(--surface);
+  color: var(--text-light);
+  border-color: var(--border);
 }
-
-.footer-brand p {
-  font-size: 0.9375rem;
-  color: #94A3B8;
-  line-height: 1.6;
+:root[data-theme="light"] .footer .site-wordmark {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
 }
+:root[data-theme="light"] .footer small { color: inherit; }
+:root[data-theme="light"] .footer-nav a:is(:hover, :focus-visible) { color: var(--primary); }
 
-/* --- Footer Columns --- */
-.footer-column h4 {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #F1F5F9;
-  margin-bottom: 20px;
-}
-
-.footer-column ul {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.footer-column a {
-  font-size: 0.9375rem;
-  color: #94A3B8;
-  transition: color var(--transition);
-}
-
-.footer-column a:hover {
-  color: var(--primary-bright);
-}
-
-/* --- Footer Bottom --- */
-.footer-bottom {
-  border-top: 1px solid var(--dark-alt);
-  padding: 24px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.footer-bottom p {
-  font-size: 0.875rem;
-  color: #94A3B8;
-}
-
-.footer-bottom-links {
-  display: flex;
-  gap: 24px;
-}
-
-.footer-bottom-links a {
-  font-size: 0.875rem;
-  color: #94A3B8;
-  transition: color var(--transition);
-}
-
-.footer-bottom-links a:hover {
-  color: var(--primary-bright);
-}
-
-/* --- Responsive --- */
-@media (max-width: 1024px) {
-  .footer-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .footer-brand {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 768px) {
-  .footer {
-    padding: 48px 0 0;
-  }
-
-  .footer-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .footer-grid {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 640px) {
+  .footer-inner { gap: .25rem 1rem; padding-inline-end: 4.5rem; }
+  .footer small { flex-basis: 100%; margin: 0; }
 }

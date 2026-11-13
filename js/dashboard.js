@@ -2,7 +2,6 @@
 let snapshot = {jobs:[],technicians:[],settings:[]};
 function getJobs(){ return structuredClone(snapshot.jobs); }
 function getTechnicians(){ return structuredClone(snapshot.technicians); }
-// Status Badge Styling Helper
 function getStatusBadge(status) {
   let badgeClass = "badge-gray";
   if (status === "Diagnosing") badgeClass = "badge-blue";
@@ -17,26 +16,22 @@ function getStatusBadge(status) {
   return `<span class="badge ${badgeClass}">${status}</span>`;
 }
 
-// Payment Badge Helper (Philippine Peso)
 function getPaymentBadge(status) {
   if (status === "Paid") return `<span class="badge badge-green">Paid</span>`;
   if (status === "Deposit") return `<span class="badge badge-blue">Deposit</span>`;
   return `<span class="badge badge-amber">Unpaid</span>`;
 }
 
-// Format Currency to Philippine Peso
 function formatPHP(amount) {
   return "₱" + Number(amount).toLocaleString("en-PH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 
-// Mobile Sidebar Toggle
 function initSidebarToggle() {
   const toggleBtn = document.getElementById("sidebar-toggle-btn");
   const sidebar = document.querySelector(".sidebar");
   if (!sidebar) return;
 
-  // Create overlay if not present
   let overlay = document.querySelector(".sidebar-overlay");
   if (!overlay) {
     overlay = document.createElement("div");
@@ -69,9 +64,13 @@ document.addEventListener('DOMContentLoaded',async()=>{
   if(!RD.user){ location.replace('../pages/login.html'); return; }
   if(RD.user.role!=='admin' && /(?:settings|reports|customers|technicians)\.html$/.test(location.pathname)) {location.replace('jobs.html');return;}
   await refreshData(); initSidebarToggle();
-  const role=document.getElementById('role-selector'); if(role){role.value=RD.user.role;role.disabled=true;}
+  document.getElementById('staff-role').textContent = RD.user.role === 'admin' ? 'Shop administrator' : 'Technician';
   for(const id of ['header-user-name','sidebar-user-name','header-user-greeting']) {const e=document.getElementById(id);if(e)e.textContent=RD.user.name;}
-  document.querySelectorAll('a[href*="login.html"]').forEach(a=>a.addEventListener('click',async e=>{e.preventDefault();await RD.call('logout',{});location.href=a.href;}));
+  document.getElementById('staff-signout').onclick = async () => {
+    if (!await RDUI.ask('Sign out of your RepairDesk account?')) return;
+    await RD.call('logout', {});
+    location.replace('../pages/login.html');
+  };
   for(const id of ['input-tech','filter-technician']) {
     const select=document.getElementById(id); if(!select)continue;
     select.replaceChildren();

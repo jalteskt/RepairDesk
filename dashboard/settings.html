@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/dashboard.css">
   <style>
-    /* ===== Secondary settings layout ===== */
     .settings-grid {
       display: grid;
       grid-template-columns: 260px minmax(0, 1fr);
@@ -29,15 +28,6 @@
       flex-direction: column;
       gap: 4px;
     }
-    .settings-nav-group {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      color: var(--text-light);
-      margin: 26px 0 10px;
-    }
-    .settings-nav-group:first-child { margin-top: 4px; }
     .settings-nav-btn {
       display: block;
       width: 100%;
@@ -59,36 +49,15 @@
     }
     .settings-nav-btn.active {
       background: var(--primary-50);
-      color: var(--primary);
+      color: light-dark(var(--primary), #90dfac);
     }
 
-    /* ===== Content header with Cancel / Save ===== */
-    .settings-page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 26px;
-    }
-    .settings-page-header h2 {
-      font-size: 22px;
-      font-weight: 700;
-      margin: 0 0 4px;
-    }
-    .settings-page-header p {
-      font-size: 13.5px;
-      color: var(--text-light);
-      margin: 0;
-      max-width: 60ch;
-    }
     .settings-actions {
       display: flex;
       gap: 10px;
       flex-shrink: 0;
     }
 
-    /* ===== Cards ===== */
     .settings-cards-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
@@ -97,12 +66,6 @@
     }
     @media (max-width: 1150px) {
       .settings-cards-grid { grid-template-columns: 1fr; }
-    }
-    .settings-cards-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      min-width: 0;
     }
     .settings-card {
       background: var(--surface);
@@ -132,104 +95,24 @@
       .form-row-2 { grid-template-columns: 1fr; }
     }
 
-    .toggle-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-      padding: 15px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .settings-card .toggle-row:first-of-type { padding-top: 0; }
-    .settings-card .toggle-row:last-of-type {
-      border-bottom: none;
-      padding-bottom: 4px;
-    }
-    .toggle-row strong { font-size: 14px; }
-    .toggle-row .row-sub {
-      font-size: 12.5px;
-      color: var(--text-light);
-      margin-top: 3px;
-    }
-
-    /* ===== Shop logo ===== */
-    .logo-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 18px;
-    }
-    .logo-tile {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: var(--primary-50);
-      border: 1px solid var(--primary-100);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary);
-      flex-shrink: 0;
-    }
-    .logo-tile svg { width: 30px; height: 30px; }
-    .logo-meta strong { font-size: 14px; display: block; }
-    .logo-meta .muted {
-      font-size: 12.5px;
-      color: var(--text-light);
-      margin-top: 2px;
-    }
-    .logo-actions {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .dropzone {
-      border: 2px dashed var(--dark-300);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      color: var(--text-light);
-    }
-    .dropzone:hover {
-      border-color: var(--primary);
-      background: var(--primary-50);
-    }
-    .dropzone svg {
-      display: block;
-      width: 22px;
-      height: 22px;
-      margin: 0 auto 6px auto;
-      color: var(--primary);
-    }
-    .dropzone .dz-strong {
-      color: var(--primary);
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .dropzone .dz-alt { font-weight: 400; }
-    .dropzone .dz-sub { font-size: 11.5px; margin-top: 4px; }
-
+    #contact-fields { border: 0; margin: 0; padding: 0; min-width: 0; }
+    #contact-fields legend { margin-bottom: 1rem; font-size: 1.125rem; font-weight: 700; }
+    .settings-nav a { display: block; }
+    [hidden] { display: none !important; }
   </style>
   <link rel="stylesheet" href="../css/interactions.css">
   <script src="../js/dialogs.js"></script>
+  <link rel="stylesheet" href="../css/theme.css">
+  <script src="../js/theme.js"></script>
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
 </head>
 <body>
 
   <div class="dashboard-layout">
     
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-        </div>
-        <div>
-          <h2>RepairDesk</h2>
-        </div>
+        <img class="site-wordmark" src="../assets/logo.svg" alt="RepairDesk" width="156" height="26">
       </div>
 
       <nav class="sidebar-nav">
@@ -248,256 +131,93 @@
       </nav>
 
       <div class="sidebar-footer">
-        <a href="../pages/login.html" class="nav-link" aria-label="Sign out">Sign out</a>
         <div class="sidebar-user">
-          <div class="avatar" id="sidebar-avatar">EC</div>
+          <div class="avatar" id="sidebar-avatar"></div>
           <div class="user-info">
-            <div class="user-name" id="sidebar-user-name">Elena Corpuz</div>
+            <div class="user-name" id="sidebar-user-name"></div>
             <div class="user-role">
-              <select id="role-selector" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-size: 11px; padding: 2px 4px; margin-top: 4px; width: 100%;">
-                <option value="admin">Shop Admin</option>
-                <option value="technician">Technician</option>
-              </select>
+              <span id="staff-role"></span>
             </div>
           </div>
         </div>
+        <button type="button" class="staff-signout" id="staff-signout" aria-label="Sign out" title="Sign out"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4H5v16h5 M9 12h12m-5-5 5 5-5 5"/></svg></button>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="main-content">
       
-      <!-- Topbar -->
       <header class="topbar">
         <div class="topbar-left">
           <button class="hamburger" id="sidebar-toggle-btn" aria-label="Toggle menu">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
-          <h1>Workshop Settings & Policy</h1>
+          <h1>Shop Settings</h1>
         </div>
       </header>
 
-      <!-- Page Content -->
       <div class="page-content">
         
         <div class="settings-grid">
 
-          <!-- Grouped Secondary Navigation -->
-          <aside>
-            <div class="settings-nav-group">General Settings</div>
+          <aside aria-label="Settings navigation">
             <ul class="settings-nav">
-              <li><button type="button" class="settings-nav-btn active" data-title="General Details" data-sub="Contact details shown on customer intake receipts and QR status pages." data-save-msg="Workshop settings saved successfully." onclick="switchSettingsTab('general', this)">General Details</button></li>
-            </ul>
-
-            <div class="settings-nav-group">Automation & Policy</div>
-            <ul class="settings-nav">
-              <li><button type="button" class="settings-nav-btn" data-title="Resend Email Triggers" data-sub="Automatic customer notifications sent throughout the job lifecycle." data-save-msg="Notification settings saved." onclick="switchSettingsTab('notifications', this)">Resend Email Triggers</button></li>
-              <li><button type="button" class="settings-nav-btn" data-title="Unclaimed Items Policy" data-sub="Storage terms, claim windows and disposal authority for abandoned units." data-save-msg="Storage terms policy updated." onclick="switchSettingsTab('unclaimed', this)">Unclaimed Items Policy</button></li>
-            </ul>
-
-            <div class="settings-nav-group">Access & Security</div>
-            <ul class="settings-nav">
-              <li><button type="button" class="settings-nav-btn" data-title="Security & RBAC" data-sub="Authentication standards, session limits and permission boundaries." data-save-msg="Security preferences saved." onclick="switchSettingsTab('security', this)">Security & RBAC</button></li>
+              <li><button type="button" class="settings-nav-btn active" data-panel="general" aria-controls="panel-general" aria-pressed="true">Shop contact details</button></li>
+              <li><button type="button" class="settings-nav-btn" data-panel="roles" aria-controls="panel-roles" aria-pressed="false">Open Roles</button></li>
+              <li><a class="settings-nav-btn" href="../pages/pricing.html#storage">View storage policy</a></li>
             </ul>
           </aside>
 
-          <!-- Content Column -->
           <section>
 
-            <!-- Content header: title updates per tab; global Cancel / Save -->
-            <div class="settings-page-header">
-              <div>
-                <h2 id="settings-title">General Details</h2>
-                <p id="settings-subtitle">Contact details shown on customer intake receipts and QR status pages.</p>
-              </div>
-              <div class="settings-actions">
-                <button type="button" class="btn btn-outline" onclick="discardChanges()">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveSettings()">Save</button>
-              </div>
-            </div>
-
-            <!-- General Details: two-column card layout -->
-            <div class="settings-cards-grid" id="panel-general">
-
-              <section class="settings-card"><h3>Open positions</h3><div id="positions"></div><form id="position-form"><label>Position title<input name="title" class="form-input" required maxlength="120"></label><label>Description<textarea name="description" class="form-input" required maxlength="4000"></textarea></label><button class="btn btn-primary" type="submit">List position</button></form></section>
-              <!-- Left: workshop info form -->
-              <div class="settings-card">
-                <h3>Workshop Information</h3>
-                <p class="card-sub">This contact information appears on customer intake receipts and QR status pages.</p>
-
+            <form id="panel-general" class="settings-card">
+              <fieldset id="contact-fields" disabled>
+                <legend>Shop contact details</legend>
                 <div class="form-group-custom">
-                  <label class="form-label">Shop Business Name</label>
-                  <input id="shop-name" type="text" class="form-input" value="Metro Manila Electronics & Appliance Service Hub">
+                  <label class="form-label" for="shop-name">Shop name</label>
+                  <input id="shop-name" name="shop-name" class="form-input" maxlength="1000">
                 </div>
-
                 <div class="form-group-custom form-row-2">
                   <div>
-                    <label class="form-label">Support Email</label>
-                    <input id="shop-email" type="email" class="form-input" value="support@repairdesk.ph">
+                    <label class="form-label" for="shop-email">Shop email</label>
+                    <input id="shop-email" name="shop-email" class="form-input" type="email" maxlength="1000" aria-describedby="email-help">
+                    <p class="row-sub" id="email-help">Receives support inquiries and job applications.</p>
                   </div>
                   <div>
-                    <label class="form-label">Shop Counter Phone</label>
-                    <input id="shop-phone" type="tel" class="form-input" value="(02) 8392-8100 / 0917 392 8100">
+                    <label class="form-label" for="shop-phone">Counter phone</label>
+                    <input id="shop-phone" name="shop-phone" class="form-input" type="tel" maxlength="1000">
                   </div>
                 </div>
-
                 <div class="form-group-custom">
-                  <label class="form-label">Physical Counter Address</label>
-                  <input id="shop-address" type="text" class="form-input" value="Unit 304, Gilmore Commercial Plaza, Aurora Blvd. cor. Gilmore Ave., New Manila, Quezon City 1112">
+                  <label class="form-label" for="shop-address">Counter address</label>
+                  <input id="shop-address" name="shop-address" class="form-input" maxlength="1000">
                 </div>
-
-                <div class="form-group-custom">
-                  <label class="form-label">Business Hours</label>
-                  <input type="text" class="form-input" value="Mon – Sat · 9:00 AM – 6:00 PM">
+                <div class="settings-actions">
+                  <button type="reset" class="btn btn-outline">Discard changes</button>
+                  <button type="submit" class="btn btn-primary">Save contact details</button>
                 </div>
+              </fieldset>
+            </form>
 
-                <div class="form-group-custom form-row-2">
-                  <div>
-                    <label class="form-label">Currency</label>
-                    <input type="text" class="form-input" value="PHP (₱)" readonly>
+            <div class="settings-cards-grid" id="panel-roles" hidden>
+              <section class="settings-card">
+                <h3>Post a role</h3>
+                <form id="position-form">
+                  <div class="form-group-custom">
+                    <label class="form-label" for="position-title">Position title</label>
+                    <input id="position-title" name="title" class="form-input" required maxlength="120">
                   </div>
-                  <div>
-                    <label class="form-label">Standard Diagnostic Fee</label>
-                    <input type="text" class="form-input" value="₱500.00">
+                  <div class="form-group-custom">
+                    <label class="form-label" for="position-description">Description</label>
+                    <textarea id="position-description" name="description" class="form-input" rows="5" required maxlength="4000"></textarea>
                   </div>
-                </div>
-              </div>
-
-              <!-- Right: logo + integrations stack -->
-              <div class="settings-cards-stack">
-
-                <div class="settings-card">
-                  <h3>Shop Logo</h3>
-                  <p class="card-sub">Displayed on customer receipts and the QR status page.</p>
-
-                  <div class="logo-row">
-                    <div class="logo-tile">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                      </svg>
-                    </div>
-                    <div class="logo-meta">
-                      <strong>Default wrench mark</strong>
-                      <div class="muted">PNG or JPG · square image recommended</div>
-                    </div>
-                  </div>
-
-                  <div class="logo-actions">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="RDUI.notice('Image upload is disabled in this demo.')">Update</button>
-                    <button type="button" class="btn btn-outline btn-sm" onclick="RDUI.notice('Logo uploads are not enabled in this release.')">Remove</button>
-                  </div>
-
-                  <div class="dropzone" onclick="RDUI.notice('Image upload is disabled in this demo.')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="16 16 12 20 8 16"/><line x1="12" y1="12" x2="12" y2="20"/>
-                      <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
-                    </svg>
-                    <div><span class="dz-strong">Click to upload</span> <span class="dz-alt">or drag and drop</span></div>
-                    <div class="dz-sub">PNG or JPG (max. 2MB)</div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <!-- Resend Email Triggers -->
-            <div class="settings-card" id="panel-notifications" style="display: none;">
-              <h3>Email Automation (via Resend)</h3>
-              <p class="card-sub">Email automation is not enabled in this release.</p>
-
-              <div class="toggle-row">
-                <div>
-                  <strong>Intake Confirmation & QR Code</strong>
-                  <div class="row-sub">Sent immediately upon creating a new repair job</div>
-                </div>
-                <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-              </div>
-
-              <div class="toggle-row">
-                <div>
-                  <strong>Diagnostics & Quote Ready for Approval</strong>
-                  <div class="row-sub">Includes repair quote breakdown and approve/decline buttons</div>
-                </div>
-                <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-              </div>
-
-              <div class="toggle-row">
-                <div>
-                  <strong>Ready for Collection (Starts 30-Day Window)</strong>
-                  <div class="row-sub">Dispatched when technician marks unit Ready</div>
-                </div>
-                <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-              </div>
-
-              <div class="toggle-row">
-                <div>
-                  <strong>14-Day & 25-Day Unclaimed Item Reminders</strong>
-                  <div class="row-sub">Alerts customer before 30-day storage fee policy applies</div>
-                </div>
-                <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-              </div>
-
-              <div class="toggle-row">
-                <div>
-                  <strong>Customer Message Inquiries</strong>
-                  <div class="row-sub">Copies incoming customer notes to Admin & assigned tech</div>
-                </div>
-                <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-              </div>
-            </div>
-
-            <!-- Unclaimed Items Policy -->
-            <div class="settings-card" id="panel-unclaimed" style="display: none;">
-              <h3>Unclaimed Property & Storage Terms</h3>
-              <p class="card-sub">Policy reference only. Automatic storage charges are not implemented.</p>
-
-              <div class="form-group-custom">
-                <label class="form-label">Claim Window (Days)</label>
-                <input type="number" class="form-input" value="30">
-                <div class="row-sub">Starts automatically when item status moves to Ready.</div>
-              </div>
-
-              <div class="form-group-custom">
-                <label class="form-label">Daily Storage Fee After 30 Days (₱/day)</label>
-                <input type="text" class="form-input" value="₱150.00">
-              </div>
-
-              <div class="form-group-custom">
-                <label class="form-label">Disposal / Sale Liquidation Threshold</label>
-                <input type="text" class="form-input" value="365 Days (1 Year)" readonly>
-                <div class="row-sub">Customer provides written statutory consent at intake allowing recycling or sale of unclaimed goods after 1 year.</div>
-              </div>
-            </div>
-
-            <!-- Security & RBAC -->
-            <div class="settings-card" id="panel-security" style="display: none;">
-              <h3>Security & Role Access (RBAC)</h3>
-              <p class="card-sub">Manage authentication standards, session limits, and permission boundaries.</p>
-
-              <div class="toggle-row">
-                <div>
-                  <strong>Strict Technician Stepping Rule</strong>
-                  <div class="row-sub">Technicians may only move jobs backward by 1 status step; Admins may jump any status.</div>
-                </div>
-                <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-              </div>
-
-              <div class="toggle-row">
-                <div>
-                  <strong>Two-Factor Authentication (2FA) for Admins</strong>
-                  <div class="row-sub">Not enabled in this release.</div>
-                </div>
-                <label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label>
-              </div>
-
-              <div class="form-group-custom" style="margin-top: 20px;">
-                <label class="form-label">Auto Session Timeout</label>
-                <select class="form-select">
-                  <option>30 Minutes of Inactivity</option>
-                  <option>1 Hour</option>
-                  <option>4 Hours</option>
-                </select>
-              </div>
+                  <button class="btn btn-primary" type="submit">Publish role</button>
+                </form>
+              </section>
+              <section class="settings-card">
+                <h3>Published roles</h3>
+                <p class="card-sub"><a href="../pages/roles.html">View public listings</a></p>
+                <div id="positions" aria-live="polite"></div>
+              </section>
             </div>
 
           </section>
@@ -511,26 +231,46 @@
   <script src="../js/api.js"></script>
   <script src="../js/dashboard.js"></script>
   <script>
-    const SETTINGS_PANEL_IDS = ['general', 'notifications', 'unclaimed', 'security'];
+    const contactForm = document.getElementById('panel-general');
+    const contactFields = document.getElementById('contact-fields');
+    const rolesPanel = document.getElementById('panel-roles');
+    const sectionButtons = document.querySelectorAll('[data-panel]');
 
-    function switchSettingsTab(tabId, el) {
-      document.querySelectorAll('.settings-nav-btn').forEach(b => b.classList.remove('active'));
-      el.classList.add('active');
-
-      SETTINGS_PANEL_IDS.forEach(id => {
-        const panel = document.getElementById('panel-' + id);
-        if (panel) panel.style.display = id === tabId ? '' : 'none';
-      });
-
-      document.getElementById('settings-title').textContent = el.dataset.title;
-      document.getElementById('settings-subtitle').textContent = el.dataset.sub;
+    for (const button of sectionButtons) {
+      button.onclick = () => {
+        const showRoles = button.dataset.panel === 'roles';
+        contactForm.hidden = showRoles;
+        rolesPanel.hidden = !showRoles;
+        for (const tab of sectionButtons) {
+          tab.classList.toggle('active', tab === button);
+          tab.setAttribute('aria-pressed', String(tab === button));
+        }
+      };
     }
 
-    async function saveSettings(){if(document.querySelector('.settings-nav-btn.active')?.dataset.title!=='General Details'){RDUI.notice('Only shop contact settings are editable in this release.');return;}const fields={};for(const id of ['shop-name','shop-email','shop-phone','shop-address'])fields[id]=document.getElementById(id).value;await RD.call('settings',fields);await refreshData();RDUI.notice('Shop contact settings saved.');}
+    document.addEventListener('repairdesk:ready', () => {
+      for (const {field, value} of snapshot.settings) {
+        const input = contactForm.elements.namedItem(field);
+        if (input) input.defaultValue = value;
+      }
+      contactFields.disabled = false;
+    });
 
-    function discardChanges(){for(const row of snapshot.settings){const el=document.getElementById(row.field);if(el)el.value=row.value;}}
-
-    document.addEventListener('repairdesk:ready',()=>{discardChanges();document.querySelectorAll('#panel-general input:not([id]), #panel-notifications input, #panel-unclaimed input, #panel-security input, #panel-security select').forEach(el=>el.disabled=true);document.querySelectorAll('#panel-notifications input').forEach(el=>el.checked=false);const sec=document.querySelectorAll('#panel-security input');if(sec[1])sec[1].checked=false;document.querySelector('#panel-security select').selectedIndex=1;});
+    contactForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (contactFields.disabled) return;
+      const values = Object.fromEntries(new FormData(contactForm));
+      contactFields.disabled = true;
+      try {
+        await RD.call('settings', values);
+        for (const [field, value] of Object.entries(values)) {
+          contactForm.elements.namedItem(field).defaultValue = value;
+        }
+        RDUI.notice('Shop contact details saved.');
+      } finally {
+        contactFields.disabled = false;
+      }
+    });
   </script>
 <script src="../js/positions.js"></script>
 </body>

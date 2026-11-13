@@ -31,7 +31,7 @@
       gap: 8px;
     }
     .tab-btn.active {
-      color: var(--primary);
+      color: light-dark(var(--primary), #90dfac);
       border-bottom-color: var(--primary);
     }
     .filter-row {
@@ -46,7 +46,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       font-size: 14px;
-      background: #fff;
+      background: light-dark(#fff, #202b36);
     }
     .modal-overlay {
       position: fixed;
@@ -59,7 +59,7 @@
       padding: 20px;
     }
     .modal-card {
-      background: #fff;
+      background: light-dark(#fff, #202b36);
       border-radius: var(--radius-xl);
       max-width: 680px;
       width: 100%;
@@ -95,22 +95,17 @@
   </style>
   <link rel="stylesheet" href="../css/interactions.css">
   <script src="../js/dialogs.js"></script>
+  <link rel="stylesheet" href="../css/theme.css">
+  <script src="../js/theme.js"></script>
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
 </head>
 <body>
 
   <div class="dashboard-layout">
     
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-        </div>
-        <div>
-          <h2>RepairDesk</h2>
-        </div>
+        <img class="site-wordmark" src="../assets/logo.svg" alt="RepairDesk" width="156" height="26">
       </div>
 
       <nav class="sidebar-nav">
@@ -156,26 +151,21 @@
       </nav>
 
       <div class="sidebar-footer">
-        <a href="../pages/login.html" class="nav-link" aria-label="Sign out">Sign out</a>
         <div class="sidebar-user">
-          <div class="avatar" id="sidebar-avatar">EC</div>
+          <div class="avatar" id="sidebar-avatar"></div>
           <div class="user-info">
-            <div class="user-name" id="sidebar-user-name">Elena Corpuz</div>
+            <div class="user-name" id="sidebar-user-name"></div>
             <div class="user-role">
-              <select id="role-selector" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; font-size: 11px; padding: 2px 4px; margin-top: 4px; width: 100%;">
-                <option value="admin">Shop Admin</option>
-                <option value="technician">Technician</option>
-              </select>
+              <span id="staff-role"></span>
             </div>
           </div>
         </div>
+        <button type="button" class="staff-signout" id="staff-signout" aria-label="Sign out" title="Sign out"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4H5v16h5 M9 12h12m-5-5 5 5-5 5"/></svg></button>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="main-content">
       
-      <!-- Topbar -->
       <header class="topbar">
         <div class="topbar-left">
           <button class="hamburger" id="sidebar-toggle-btn" aria-label="Toggle menu">
@@ -191,10 +181,8 @@
         </div>
       </header>
 
-      <!-- Page Content -->
       <div class="page-content">
         
-        <!-- 3 Required Tabs (Pending / Completed / Cancelled) -->
         <div class="tab-bar">
           <button class="tab-btn active" id="tab-pending" onclick="switchTab('pending')">
             Pending (In Shop)
@@ -210,7 +198,6 @@
           </button>
         </div>
 
-        <!-- Filter Row -->
         <div class="filter-row">
           <input type="text" id="filter-search" class="filter-input" placeholder="Search by Job ID, customer, appliance..." style="flex: 1; min-width: 240px;">
           
@@ -235,7 +222,6 @@
           <button class="btn btn-outline btn-sm" onclick="resetFilters()">Reset</button>
         </div>
 
-        <!-- Jobs Table Card -->
         <div class="table-card">
           <div class="table-wrapper">
             <table class="data-table">
@@ -253,7 +239,6 @@
                 </tr>
               </thead>
               <tbody id="jobs-table-body">
-                <!-- Dynamically rendered -->
               </tbody>
             </table>
           </div>
@@ -263,7 +248,6 @@
     </main>
   </div>
 
-  <!-- Create Job Modal -->
   <div class="modal-overlay" id="new-job-modal">
     <div class="modal-card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -294,6 +278,13 @@
             <label class="form-label">Serial Number</label>
             <input type="text" id="input-serial" class="form-input" placeholder="e.g. SN-88219-X">
           </div>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label class="form-label" for="intake-photo">Appliance photo (optional)</label>
+          <input id="intake-photo" class="form-input" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="photo-hint">
+          <small id="photo-hint">JPEG, PNG or WebP, up to 2 MB. Visible to the customer after ticket verification.</small>
+          <img id="photo-preview" class="intake-photo" alt="Selected appliance photo" hidden>
         </div>
 
         <div style="margin-bottom: 14px;">
@@ -341,7 +332,7 @@
           </div>
         </div>
 
-        <div style="background: #f8fafc; padding: 12px; border-radius: 6px; font-size: 12px; color: #64748b; margin-bottom: 20px;">
+        <div style="background: light-dark(#f8fafc, #202b36); padding: 12px; border-radius: 6px; font-size: 12px; color: light-dark(#64748b, #d6e0e9); margin-bottom: 20px;">
           ✓ Customer consents to data storage (RA 10173) and accepts the 30-day unclaimed collection window policy.<br>
           ✓ System will auto-generate unique 8-character code (non-sequential, no look-alike 0/O, 1/I/L).
         </div>
@@ -370,13 +361,10 @@
       const allJobs = window.RepairDeskStore.getJobs();
       const currentRole = RD.user.role;
 
-      // Role filter: Danilo only sees his jobs if in technician mode
       let filtered = allJobs;
 
-      // Tab filter
       filtered = filtered.filter(j => j.tab === activeTab);
 
-      // Search & dropdown filter
       const searchVal = document.getElementById('filter-search').value.toLowerCase().trim();
       const statusVal = document.getElementById('filter-status').value;
       const techVal = document.getElementById('filter-technician').value;
@@ -400,7 +388,6 @@
         filtered = filtered.filter(j => j.technician === techVal);
       }
 
-      // Update counters
       const pendingCount = allJobs.filter(j => j.tab === 'pending').length;
       const compCount = allJobs.filter(j => j.tab === 'completed').length;
       const cancCount = allJobs.filter(j => j.tab === 'cancelled').length;
@@ -419,7 +406,7 @@
         <tr>
           <td>
             <strong>${RD.escape(job.id)}</strong>
-            <div style="font-size: 11px; font-family: monospace; color: var(--primary); font-weight: 700;">${RD.escape(job.code)}</div>
+            <div style="font-size: 11px; font-family: monospace; color: light-dark(var(--primary), #90dfac); font-weight: 700;">${RD.escape(job.code)}</div>
           </td>
           <td>
             <div style="font-weight: 600;">${RD.escape(job.brand)} ${RD.escape(job.model)}</div>
@@ -457,16 +444,52 @@
       document.getElementById('new-job-modal').classList.remove('show');
     }
 
+    const photoInput = document.getElementById('intake-photo');
+    const preview = document.getElementById('photo-preview');
+    let previewUrl;
+    function clearPhotoPreview() {
+      preview.hidden = true;
+      preview.removeAttribute('src');
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = null;
+      photoInput.setCustomValidity('');
+    }
+    photoInput.addEventListener('change', () => {
+      clearPhotoPreview();
+      const file = photoInput.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024 || !['image/jpeg','image/png','image/webp'].includes(file.type)) {
+        photoInput.setCustomValidity('Choose a JPEG, PNG or WebP photo of 2 MB or less.');
+        photoInput.reportValidity();
+        return;
+      }
+      previewUrl = URL.createObjectURL(file);
+      preview.src = previewUrl;
+      preview.hidden = false;
+    });
+    document.getElementById('create-job-form').addEventListener('reset', clearPhotoPreview);
+
     async function handleCreateJob(e) {
       e.preventDefault();
       const value=id=>document.getElementById(id).value;
       if(!await RDUI.ask('Confirm that the customer consented to storing their contact and repair details and accepted the collection policy.'))return;
-      const j=await RD.call('create-job',{appliance:value('input-appliance'),brand:value('input-brand'),model:value('input-model'),serial:value('input-serial'),reportedIssue:value('input-issue'),accessories:value('input-accessories'),condition:value('input-condition'),technician:value('input-tech'),customer:{name:value('input-cust-name'),phone:value('input-cust-phone'),email:value('input-cust-email')},consent:true});
-      await refreshData();closeNewJobModal();document.getElementById('create-job-form').reset();renderJobsTable();RDUI.notice('Job created: '+j.id+'; tracking code: '+j.code+'. Share this code with the customer.');
+      const details={appliance:value('input-appliance'),brand:value('input-brand'),model:value('input-model'),serial:value('input-serial'),reportedIssue:value('input-issue'),accessories:value('input-accessories'),condition:value('input-condition'),technician:value('input-tech'),customer:{name:value('input-cust-name'),phone:value('input-cust-phone'),email:value('input-cust-email')},consent:true};
+      let payload = details;
+      if (photoInput.files.length) {
+        payload = new FormData();
+        payload.append('job', JSON.stringify(details));
+        payload.append('photo', photoInput.files[0]);
+      }
+      const submit = e.target.querySelector('[type="submit"]');
+      if (submit.disabled) return;
+      submit.disabled = true;
+      try {
+        const j=await RD.call('create-job', payload);
+        closeNewJobModal();document.getElementById('create-job-form').reset();await refreshData();renderJobsTable();RDUI.notice('Job created: '+j.id+'; tracking code: '+j.code+'. Share this code with the customer.');
+      } finally { submit.disabled = false; }
     }
 
     document.addEventListener('repairdesk:ready', () => {
-      // Check query param for modal
       const urlParams = new URLSearchParams(window.location.search);
       document.getElementById('filter-search').value=urlParams.get('q')||'';
       if (RD.user.role==='admin' && urlParams.get('action') === 'new') {

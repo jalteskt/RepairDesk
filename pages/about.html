@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="../css/navbar.css">
   <link rel="stylesheet" href="../css/footer.css">
   <style>
-    /* --- About Page Specific --- */
     .about-hero {
       padding: 80px 0 60px;
       text-align: center;
@@ -40,20 +39,12 @@
       align-items: center;
     }
     .story-image {
+      display: block;
       width: 100%;
-      aspect-ratio: 4/3;
-      background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 50%, #BBF7D0 100%);
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
       border-radius: var(--radius-xl);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid #BBF7D0;
-    }
-    .story-image svg {
-      width: 64px;
-      height: 64px;
-      color: var(--primary);
-      opacity: 0.6;
     }
     .story-content h2 {
       margin-bottom: 20px;
@@ -71,12 +62,12 @@
       width: 96px;
       height: 96px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%);
+      background: linear-gradient(135deg, light-dark(#DCFCE7, #213e30) 0%, light-dark(#BBF7D0, #213e30) 100%);
       margin: 0 auto 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--primary);
+      color: light-dark(var(--primary), #90dfac);
     }
     .team-avatar svg {
       width: 40px;
@@ -88,33 +79,12 @@
     }
     .team-card .role {
       font-size: 0.875rem;
-      color: var(--primary);
+      color: light-dark(var(--primary), #90dfac);
       font-weight: 500;
       margin-bottom: 12px;
     }
     .team-card p {
       font-size: 0.875rem;
-    }
-
-    /* Values */
-    .value-card {
-      text-align: center;
-      padding: 40px 32px;
-    }
-    .value-icon {
-      width: 64px;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
-      color: var(--primary);
-      border-radius: 50%;
-      margin: 0 auto 20px;
-    }
-    .value-icon svg {
-      width: 28px;
-      height: 28px;
     }
 
     @media (max-width: 768px) {
@@ -129,18 +99,15 @@
   </style>
   <link rel="stylesheet" href="../css/interactions.css">
   <script src="../js/dialogs.js"></script>
+  <link rel="stylesheet" href="../css/theme.css">
+  <script src="../js/theme.js"></script>
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
 </head>
 <body>
 
-  <!-- ========== NAVBAR ========== -->
   <nav class="navbar" id="navbar">
     <div class="container">
-      <a href="../index.html" class="navbar-logo">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-        </svg>
-        Repair<span>Desk</span>
-      </a>
+      <a href="../index.html" class="navbar-logo"><img class="site-wordmark" src="../assets/logo.svg" alt="RepairDesk" width="156" height="26"></a>
       <div class="navbar-links">
         <a href="../index.html">Track Repair</a>
         <a href="about.html" class="active">About</a>
@@ -162,7 +129,6 @@
   </div>
 
   <main>
-    <!-- ========== HERO ========== -->
     <section class="about-hero">
       <div class="container">
         <span class="badge badge-primary">Our Mission</span>
@@ -171,35 +137,25 @@
       </div>
     </section>
 
-    <!-- ========== OUR STORY ========== -->
     <section class="story-section">
       <div class="container">
         <div class="story-grid">
-          <div class="story-image">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 20h9"/>
-              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-            </svg>
-          </div>
+          <img class="story-image" src="../assets/story-circuit-boards.jpg" alt="Two bins filled with circuit boards and computer motherboards" width="480" height="640" loading="lazy">
           <div class="story-content">
             <h2>Our Story</h2>
-            <p>RepairDesk was born out of frustration. Our founders operated a bustling electronics repair shop along Gilmore Avenue in Quezon City and were buried in carbon-copy paper tickets, missed customer calls, and misplaced units. Every day was hectic — and existing systems were either too rigid or not designed for local repair shops.</p>
-            <p>So they built RepairDesk. What started as an internal tool to track intake items, diagnostic approvals, and technician queues quickly became the system that repair shops across Metro Manila, Cebu, and Davao rely on every single day.</p>
-            <p>Today, our team is united by one mission: to make repair workshop management seamless, transparent, and trusted for technicians and customers alike.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ========== TEAM ========== -->
     <section class="section section-alt">
       <div class="container">
         <div class="section-header">
           <h2>Meet the team</h2>
-          <p>The people behind RepairDesk who are passionate about empowering repair businesses across the Philippines.</p>
         </div>
         <div class="grid grid-3">
-          <!-- Member 1 -->
           <div class="card team-card">
             <div class="team-avatar">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -208,10 +164,9 @@
               </svg>
             </div>
             <h3>Alejandro Santos</h3>
-            <p class="role">Co-Founder & CEO</p>
-            <p>Former Gilmore tech hub repair shop operator. Alejandro brings 12+ years of hands-on electronics servicing experience.</p>
+            <p class="role">Owner / Manager</p>
+            <p>Alejandro manages the shop and brings more than 12 years of hands-on electronics repair experience.</p>
           </div>
-          <!-- Member 2 -->
           <div class="card team-card">
             <div class="team-avatar">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -220,10 +175,9 @@
               </svg>
             </div>
             <h3>Sarah Dizon</h3>
-            <p class="role">Co-Founder & Lead Engineer</p>
-            <p>Full-stack developer and hardware enthusiast passionate about building reliable software for workbench technicians.</p>
+            <p class="role">Technician</p>
+            <p>Sarah diagnoses hardware faults and repairs devices at the workbench.</p>
           </div>
-          <!-- Member 3 -->
           <div class="card team-card">
             <div class="team-avatar">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -232,60 +186,13 @@
               </svg>
             </div>
             <h3>Jaime Bautista</h3>
-            <p class="role">Head of Product & Operations</p>
-            <p>Dedicated to customer-first workflows, ensuring painless status tracking and seamless counter pickups.</p>
+            <p class="role">Technician</p>
+            <p>Jaime repairs devices and keeps customers informed about repair progress and pickup.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ========== VALUES ========== -->
-    <section class="section">
-      <div class="container">
-        <div class="section-header">
-          <h2>What we stand for</h2>
-          <p>Our values guide every decision we make and every feature we build.</p>
-        </div>
-        <div class="grid grid-3">
-          <!-- Value 1 -->
-          <div class="card value-card">
-            <div class="value-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </div>
-            <h3>Reliability First</h3>
-            <p>Your business depends on us. We obsess over uptime, data safety, and consistent performance so you never have to worry.</p>
-          </div>
-          <!-- Value 2 -->
-          <div class="card value-card">
-            <div class="value-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                <line x1="9" y1="9" x2="9.01" y2="9"/>
-                <line x1="15" y1="9" x2="15.01" y2="9"/>
-              </svg>
-            </div>
-            <h3>Built for Humans</h3>
-            <p>We design for real people running real shops. No jargon, no complexity — just clean tools that make sense.</p>
-          </div>
-          <!-- Value 3 -->
-          <div class="card value-card">
-            <div class="value-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                <polyline points="17 6 23 6 23 12"/>
-              </svg>
-            </div>
-            <h3>Grow Together</h3>
-            <p>When your business grows, we grow. We succeed by helping you succeed — that's our only metric that matters.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== CTA ========== -->
     <section class="cta-section" style="background: linear-gradient(135deg, #14532D 0%, #166534 50%, #16A34A 100%); padding: 80px 0; text-align: center;">
       <div class="container">
         <h2 style="color: #fff; margin-bottom: 16px;">Want to join our journey?</h2>
@@ -295,61 +202,10 @@
     </section>
   </main>
 
-  <!-- ========== FOOTER ========== -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="../index.html" class="footer-logo">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-            </svg>
-            RepairDesk
-          </a>
-          <p>Streamline your repair shop operations with modern job tracking and customer communication tools.</p>
-        </div>
-        <div class="footer-column">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="about.html">About</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Blog</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Product</h4>
-          <ul>
-            <li><a href="#">Features</a></li>
-            <li><a href="pricing.html">Pricing</a></li>
-            <li><a href="#">Integrations</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Support</h4>
-          <ul>
-            <li><a href="help.html">Help Center</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Status</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="#">Privacy</a></li>
-            <li><a href="#">Terms</a></li>
-            <li><a href="#">Security</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 RepairDesk. All rights reserved.</p>
-        <div class="footer-bottom-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-        </div>
-      </div>
-    </div>
+  <footer class="footer" data-site-footer>
+    <div class="container footer-inner"><a class="footer-logo" href="../index.html"><img class="site-wordmark" src="../assets/logo.svg" alt="RepairDesk" width="156" height="26"></a></div>
   </footer>
+  <script defer src="../js/footer.js"></script>
 
   <script src="../js/main.js"></script>
 </body>
