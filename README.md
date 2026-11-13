@@ -1,4 +1,4 @@
-# RepairDesk
+<h1 align="center">Centered Main Title</h1>
 
 ## Description
 
