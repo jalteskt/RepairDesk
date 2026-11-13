@@ -786,7 +786,7 @@
         <div class="track-search-card" id="track-card">
           <form id="track-form" onsubmit="handleLookup(event)">
             <div class="track-input-group">
-              <input type="text" id="track-code" aria-label="Ticket code" aria-describedby="code-hint" class="track-input" maxlength="8" minlength="8" pattern="[A-Za-z2-9]{8}" placeholder="B9X2K4XX" required autofocus>
+              <input type="text" id="track-code" aria-label="Ticket code" aria-describedby="code-hint" class="track-input" maxlength="8" minlength="8" pattern="[A-Za-z2-9]{8}" placeholder="Ticket code" required autofocus>
               <button type="submit" class="btn btn-primary" style="padding: 0 28px;">Check Status</button>
             </div>
           </form>
@@ -831,16 +831,16 @@
           <div class="job-title-row">
             <img id="tracked-photo" class="intake-photo" alt="Appliance at intake" hidden>
             <div>
-              <span class="job-ref-badge" id="display-code">CODE: B9X2K4XX</span>
-              <span class="badge badge-amber" id="display-status-badge" style="margin-left: 8px;">Awaiting Quote Approval</span>
-              <h2 style="font-size: 1.75rem; margin-top: 8px;" id="display-appliance">Dyson V11 Torque Drive Cordless Vacuum</h2>
-              <p style="color: var(--text-light); margin: 0;">Reported fault: <span id="display-fault" style="color: var(--text);">Pulsing on boost mode, shuts off after 10 seconds.</span></p>
+              <span class="job-ref-badge" id="display-code"></span>
+              <span class="badge badge-amber" id="display-status-badge" style="margin-left: 8px;"></span>
+              <h2 style="font-size: 1.75rem; margin-top: 8px;" id="display-appliance"></h2>
+              <p style="color: var(--text-light); margin: 0;">Reported fault: <span id="display-fault" style="color: var(--text);"></span></p>
             </div>
 
             <div style="text-align: right;">
               <div style="font-size: 0.85rem; color: var(--text-light);">Customer</div>
-              <strong id="display-customer" style="font-size: 1.1rem; color: var(--text);">Christine Reyes</strong>
-              <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;" id="display-date">Intake: Oct 28, 2026</div>
+              <strong id="display-customer" style="font-size: 1.1rem; color: var(--text);"></strong>
+              <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;" id="display-date"></div>
             </div>
           </div>
 
@@ -848,15 +848,15 @@
             <div class="stepper-scroll-container">
               <ol class="stepper">
                 <li class="step-item" id="step-0" hidden><div class="step-circle">0</div><span class="step-label">Cannot Be Repaired</span></li>
-                <li class="step-item completed" id="step-1">
-                  <div class="step-circle">&#10003;</div>
+                <li class="step-item" id="step-1">
+                  <div class="step-circle">1</div>
                   <span class="step-label">Received</span>
                 </li>
-                <li class="step-item completed" id="step-2">
-                  <div class="step-circle">&#10003;</div>
+                <li class="step-item" id="step-2">
+                  <div class="step-circle">2</div>
                   <span class="step-label">Diagnosing</span>
                 </li>
-                <li class="step-item active" id="step-3">
+                <li class="step-item" id="step-3">
                   <div class="step-circle">3</div>
                   <span class="step-label">Quote Approval</span>
                 </li>
@@ -884,10 +884,10 @@
             <div class="quote-box" id="quote-approval-box">
               <h4 style="color: light-dark(#92400e, #f3b398); margin-bottom: 8px; font-size: 1.05rem;">Technician Diagnostics & Repair Quote Ready</h4>
               <p style="color: #b45309; font-size: 0.9rem; margin-bottom: 12px;">
-                Technician Danilo Mendoza has diagnosed battery cell degradation and a clogged cyclone manifold. Your approval is required before our shop commences repair.
+                Review the itemized quote below before approving repair.
               </p>
               <div class="quote-actions">
-                <button type="button" class="btn btn-primary" onclick="approveQuote()">Approve Repair Quote (&#8369;5,550.00)</button>
+                <button type="button" class="btn btn-primary" onclick="approveQuote()">Approve Repair Quote</button>
                 <button type="button" class="btn btn-outline" style="border-color:#b45309; color:#b45309;" onclick="declineQuote()">Decline Quote</button>
               </div>
             </div>
@@ -897,16 +897,7 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 Technician Progress Log
               </h3>
-              <div id="notes-list">
-                <div class="note-entry">
-                  <div class="note-time">Oct 29, 2026 &bull; 14:15 &bull; Danilo Mendoza (Technician)</div>
-                  <div class="note-text">Diagnostics complete. Battery pack voltage under load drops from 25.2V to 18.1V causing auto-cutoff. Main logic board is intact. Quotation prepared for OEM battery replacement and thermal deep clean.</div>
-                </div>
-                <div class="note-entry">
-                  <div class="note-time">Oct 28, 2026 &bull; 09:30 &bull; Gilmore Intake Counter</div>
-                  <div class="note-text">Appliance received with aluminum wand and torque drive head. Wall charger included. Minor scuffs on exterior bin.</div>
-                </div>
-              </div>
+              <div id="notes-list"></div>
             </div>
 
             <!-- Warranty Section (Available if Collected) -->
@@ -928,25 +919,25 @@
               <table class="price-table">
                 <tr>
                   <td>Diagnostic Inspection</td>
-                  <td style="text-align: right;">&#8369;500.00</td>
+                  <td style="text-align: right;"></td>
                 </tr>
                 <tr>
                   <td>Replacement Parts</td>
-                  <td style="text-align: right;">&#8369;3,850.00</td>
+                  <td style="text-align: right;"></td>
                 </tr>
                 <tr>
                   <td>Labor</td>
-                  <td style="text-align: right;">&#8369;1,200.00</td>
+                  <td style="text-align: right;"></td>
                 </tr>
                 <tr>
                   <td>Total Estimated</td>
-                  <td style="text-align: right; color: light-dark(var(--primary-dark), #90dfac); font-weight: 800;">&#8369;5,550.00</td>
+                  <td style="text-align: right; color: light-dark(var(--primary-dark), #90dfac); font-weight: 800;"></td>
                 </tr>
               </table>
 
               <div style="margin-top: 16px; padding: 10px; background: var(--bg); border-radius: 6px; font-size: 0.85rem;">
                 <strong>Payment Status:</strong>
-                <span class="badge badge-amber" id="payment-badge" style="margin-left: 6px;">Unpaid</span>
+                <span class="badge badge-amber" id="payment-badge" style="margin-left: 6px;"></span>
                 <p style="color: var(--text-light); margin-top: 4px; font-size: 0.75rem;">
                   Payment is made at our Gilmore counter upon item pickup via Cash, GCash, Maya, or Credit/Debit Card.
                 </p>
@@ -1022,15 +1013,7 @@
 
     <section class="stats-bar">
       <div class="container">
-        <div class="stats-grid">
-          <div class="stat">
-            <h3>500+</h3>
-            <p>Repairs Completed</p>
-          </div>
-          <div class="stat">
-            <h3>4</h3>
-            <p>Expert Technicians</p>
-          </div>
+        <div class="stats-grid" style="grid-template-columns: 1fr;">
           <div class="stat">
             <h3>90-Day</h3>
             <p>Parts Warranty</p>

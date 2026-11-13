@@ -138,8 +138,8 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
               </div>
             </div>
-            <div class="stat-number">₱485,250</div>
-            <div class="stat-change up" style="margin-top: 6px;">+18.4% compared to Sept</div>
+            <div class="stat-number">—</div>
+            <div class="stat-change up" style="margin-top: 6px;"></div>
           </div>
 
           <div class="stat-card">
@@ -149,8 +149,8 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </div>
             </div>
-            <div class="stat-number">3.2 Days</div>
-            <div class="stat-change up" style="margin-top: 6px;">-0.8 days faster than average</div>
+            <div class="stat-number">—</div>
+            <div class="stat-change up" style="margin-top: 6px;"></div>
           </div>
 
           <div class="stat-card">
@@ -160,8 +160,8 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
               </div>
             </div>
-            <div class="stat-number">48 Units</div>
-            <div class="stat-change up" style="margin-top: 6px;">96% quote approval rate</div>
+            <div class="stat-number">—</div>
+            <div class="stat-change up" style="margin-top: 6px;"></div>
           </div>
         </div>
 
@@ -175,33 +175,14 @@
           </div>
 
           <div class="bar-chart">
-            <div class="bar-col">
-              <div class="bar-fill" style="height: 75%;">
-                <span class="bar-val">15</span>
+            <template id="report-bar">
+              <div class="bar-col">
+                <div class="bar-fill" style="height: 0;">
+                  <span class="bar-val"></span>
+                </div>
+                <span class="bar-label"></span>
               </div>
-              <span class="bar-label">Danilo Mendoza</span>
-            </div>
-
-            <div class="bar-col">
-              <div class="bar-fill" style="height: 95%;">
-                <span class="bar-val">19</span>
-              </div>
-              <span class="bar-label">Sarah Dizon</span>
-            </div>
-
-            <div class="bar-col">
-              <div class="bar-fill" style="height: 50%;">
-                <span class="bar-val">10</span>
-              </div>
-              <span class="bar-label">Liam Bernardo</span>
-            </div>
-
-            <div class="bar-col">
-              <div class="bar-fill" style="height: 60%;">
-                <span class="bar-val">12</span>
-              </div>
-              <span class="bar-label">Maya Villanueva</span>
-            </div>
+            </template>
           </div>
         </div>
 
@@ -221,40 +202,7 @@
                   <th>Gross Revenue</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><strong>October 2026</strong></td>
-                  <td>56</td>
-                  <td>48</td>
-                  <td>96%</td>
-                  <td>₱28,000</td>
-                  <td style="font-weight: 700; color: light-dark(var(--primary), #90dfac);">₱485,250</td>
-                </tr>
-                <tr>
-                  <td>September 2026</td>
-                  <td>49</td>
-                  <td>42</td>
-                  <td>93%</td>
-                  <td>₱24,500</td>
-                  <td style="font-weight: 700;">₱412,000</td>
-                </tr>
-                <tr>
-                  <td>August 2026</td>
-                  <td>44</td>
-                  <td>39</td>
-                  <td>91%</td>
-                  <td>₱22,000</td>
-                  <td style="font-weight: 700;">₱395,000</td>
-                </tr>
-                <tr>
-                  <td>July 2026</td>
-                  <td>51</td>
-                  <td>45</td>
-                  <td>94%</td>
-                  <td>₱25,500</td>
-                  <td style="font-weight: 700;">₱440,000</td>
-                </tr>
-              </tbody>
+              <tbody></tbody>
             </table>
           </div>
         </div>
@@ -267,7 +215,7 @@
   <script src="../js/dashboard.js"></script>
 <script>
     function exportJobs(){const cols=['id','code','status','technician','dateStarted'];const csv=[cols.join(','),...getJobs().map(j=>cols.map(k=>'"'+String(j[k]).replace(/^[=+@-]/,"' </body>").replaceAll('"','""')+'"').join(','))].join('\r\n');const u=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download='repairdesk-jobs.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
-    document.addEventListener('repairdesk:ready',async()=>{const report=await RD.call('reports');const jobs=getJobs();const values=[formatPHP(report.payments.reduce((s,p)=>s+Number(p.revenue),0)),jobs.filter(j=>j.tab==='pending').length,jobs.filter(j=>j.status==='Collected').length];document.querySelectorAll('.stat-number').forEach((e,i)=>e.textContent=values[i]);document.querySelectorAll('.stat-change').forEach(e=>e.textContent='From saved records');const chart=document.querySelector('.bar-chart');const template=chart.firstElementChild.cloneNode(true);chart.replaceChildren();const techs=getTechnicians();const max=Math.max(1,...techs.map(t=>t.completedJobs));for(const t of techs){const col=template.cloneNode(true);col.querySelector('.bar-label').textContent=t.name;col.querySelector('.bar-val').textContent=t.completedJobs;col.querySelector('.bar-fill').style.height=t.completedJobs/max*100+'%';chart.append(col);}const tbody=document.querySelector('tbody');tbody.replaceChildren();const months=[...new Set([...report.months.map(m=>m.month),...report.payments.map(m=>m.month)])].sort().reverse();for(const month of months){const m=report.months.find(m=>m.month===month)||{intake:0,completed:0,decided:0,approved:0,diagnostic:0};const row=document.createElement('tr');for(const v of [month,m.intake,m.completed,Number(m.decided)?Math.round(Number(m.approved)/Number(m.decided)*100)+'%':'N/A',formatPHP(m.diagnostic),formatPHP(report.payments.find(p=>p.month===month)?.revenue||0)]){const td=document.createElement('td');td.textContent=v;row.append(td);}tbody.append(row);}});
+    document.addEventListener('repairdesk:ready',async()=>{const report=await RD.call('reports');const jobs=getJobs();const values=[formatPHP(report.payments.reduce((s,p)=>s+Number(p.revenue),0)),jobs.filter(j=>j.tab==='pending').length,jobs.filter(j=>j.status==='Collected').length];document.querySelectorAll('.stat-number').forEach((e,i)=>e.textContent=values[i]);document.querySelectorAll('.stat-change').forEach(e=>e.textContent='From saved records');const chart=document.querySelector('.bar-chart');const template=document.getElementById("report-bar").content.firstElementChild;chart.replaceChildren();const techs=getTechnicians();const max=Math.max(1,...techs.map(t=>t.completedJobs));for(const t of techs){const col=template.cloneNode(true);col.querySelector('.bar-label').textContent=t.name;col.querySelector('.bar-val').textContent=t.completedJobs;col.querySelector('.bar-fill').style.height=t.completedJobs/max*100+'%';chart.append(col);}const tbody=document.querySelector('tbody');tbody.replaceChildren();const months=[...new Set([...report.months.map(m=>m.month),...report.payments.map(m=>m.month)])].sort().reverse();for(const month of months){const m=report.months.find(m=>m.month===month)||{intake:0,completed:0,decided:0,approved:0,diagnostic:0};const row=document.createElement('tr');for(const v of [month,m.intake,m.completed,Number(m.decided)?Math.round(Number(m.approved)/Number(m.decided)*100)+'%':'N/A',formatPHP(m.diagnostic),formatPHP(report.payments.find(p=>p.month===month)?.revenue||0)]){const td=document.createElement('td');td.textContent=v;row.append(td);}tbody.append(row);}});
   </script>
 </body>
 </html>

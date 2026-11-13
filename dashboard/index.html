@@ -37,7 +37,7 @@
             <a href="jobs.html" class="nav-link">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
               <span>Jobs & Repairs</span>
-              <span class="badge badge-teal" style="margin-left: auto; font-size: 11px;">6</span>
+              <span class="badge badge-teal" style="margin-left: auto; font-size: 11px;"></span>
             </a>
           </li>
           <li class="nav-item">
@@ -108,8 +108,7 @@
       <div class="page-content">
         
         <div class="page-welcome">
-          <h2 id="header-user-greeting">Welcome back, Elena Corpuz</h2>
-          <p>Here is what's happening across the Gilmore repair workbench today &bull; Oct 31, 2026</p>
+          <h2 id="header-user-greeting">Dashboard</h2>
         </div>
 
         <div class="stats-grid">
@@ -120,7 +119,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
               </div>
             </div>
-            <div class="stat-number" id="stat-active">5</div>
+            <div class="stat-number" id="stat-active">—</div>
             <div class="stat-change up" style="margin-top: 6px;">
               <span>● Pending repairs</span>
             </div>
@@ -133,7 +132,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </div>
             </div>
-            <div class="stat-number">1</div>
+            <div class="stat-number">—</div>
             <div class="stat-change" style="margin-top: 6px; color: var(--warning);">
               <span>Awaiting customer response</span>
             </div>
@@ -146,7 +145,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
               </div>
             </div>
-            <div class="stat-number">1</div>
+            <div class="stat-number">—</div>
             <div class="stat-change up" style="margin-top: 6px;">
               <span>Awaiting collection</span>
             </div>
@@ -159,7 +158,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
               </div>
             </div>
-            <div class="stat-number">₱485,250</div>
+            <div class="stat-number">—</div>
             <div class="stat-change up" style="margin-top: 6px;">
               <span>All recorded payments</span>
             </div>
@@ -205,35 +204,17 @@
               </h3>
 
               <div style="display: flex; flex-direction: column; gap: 16px;">
-                <div>
-                  <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
-                    <strong>Danilo "Dan" Mendoza</strong>
-                    <span>4 active jobs</span>
+                <template id="workload-row">
+                  <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+                      <strong></strong>
+                      <span></span>
+                    </div>
+                    <div style="height: 8px; background: light-dark(#e2e8f0, #202b36); border-radius: 9999px; overflow: hidden;">
+                      <div style="width: 0; height: 100%; background: var(--primary);"></div>
+                    </div>
                   </div>
-                  <div style="height: 8px; background: light-dark(#e2e8f0, #202b36); border-radius: 9999px; overflow: hidden;">
-                    <div style="width: 80%; height: 100%; background: var(--primary);"></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
-                    <strong>Sarah Dizon</strong>
-                    <span>6 active jobs</span>
-                  </div>
-                  <div style="height: 8px; background: light-dark(#e2e8f0, #202b36); border-radius: 9999px; overflow: hidden;">
-                    <div style="width: 95%; height: 100%; background: var(--primary);"></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
-                    <strong>Liam Bernardo</strong>
-                    <span>3 active jobs</span>
-                  </div>
-                  <div style="height: 8px; background: light-dark(#e2e8f0, #202b36); border-radius: 9999px; overflow: hidden;">
-                    <div style="width: 50%; height: 100%; background: var(--primary);"></div>
-                  </div>
-                </div>
+                </template>
               </div>
             </div>
 
@@ -290,7 +271,7 @@
       renderWorkbench();
       document.getElementById('header-user-greeting').textContent='Welcome back, '+RD.user.name;
     });
-    document.addEventListener('repairdesk:ready',()=>{const jobs=getJobs();const values=[jobs.filter(j=>j.tab==='pending').length,jobs.filter(j=>j.status==='Awaiting Quote Approval').length,jobs.filter(j=>j.status==='Ready').length,formatPHP(jobs.reduce((sum,j)=>sum+j.paidAmount,0))];document.querySelectorAll('.stat-number').forEach((e,i)=>e.textContent=values[i]);const title=[...document.querySelectorAll('h3')].find(e=>e.textContent.includes('Technician Workload'));const list=title.nextElementSibling;const template=list.firstElementChild.cloneNode(true);list.replaceChildren();for(const t of getTechnicians()){const row=template.cloneNode(true);row.querySelector('strong').textContent=t.name;row.querySelector('span').textContent=t.activeJobs+' active jobs';row.lastElementChild.firstElementChild.style.width=Math.min(100,t.activeJobs/6*100)+'%';list.append(row);}});
+    document.addEventListener('repairdesk:ready',()=>{const jobs=getJobs();const values=[jobs.filter(j=>j.tab==='pending').length,jobs.filter(j=>j.status==='Awaiting Quote Approval').length,jobs.filter(j=>j.status==='Ready').length,formatPHP(jobs.reduce((sum,j)=>sum+j.paidAmount,0))];document.querySelectorAll('.stat-number').forEach((e,i)=>e.textContent=values[i]);const title=[...document.querySelectorAll('h3')].find(e=>e.textContent.includes('Technician Workload'));const list=title.nextElementSibling;const template=document.getElementById("workload-row").content.firstElementChild;list.replaceChildren();for(const t of getTechnicians()){const row=template.cloneNode(true);row.querySelector('strong').textContent=t.name;row.querySelector('span').textContent=t.activeJobs+' active jobs';row.lastElementChild.firstElementChild.style.width=Math.min(100,t.activeJobs/6*100)+'%';list.append(row);}});
   </script>
 </body>
 </html>

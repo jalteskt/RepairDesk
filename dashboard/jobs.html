@@ -186,15 +186,15 @@
         <div class="tab-bar">
           <button class="tab-btn active" id="tab-pending" onclick="switchTab('pending')">
             Pending (In Shop)
-            <span class="badge badge-teal" id="badge-pending-count">4</span>
+            <span class="badge badge-teal" id="badge-pending-count">—</span>
           </button>
           <button class="tab-btn" id="tab-completed" onclick="switchTab('completed')">
             Completed (Collected)
-            <span class="badge badge-gray" id="badge-completed-count">1</span>
+            <span class="badge badge-gray" id="badge-completed-count">—</span>
           </button>
           <button class="tab-btn" id="tab-cancelled" onclick="switchTab('cancelled')">
             Cancelled / Declined
-            <span class="badge badge-gray" id="badge-cancelled-count">1</span>
+            <span class="badge badge-gray" id="badge-cancelled-count">—</span>
           </button>
         </div>
 
@@ -213,10 +213,6 @@
 
           <select id="filter-technician" class="filter-input">
             <option value="all">All Technicians</option>
-            <option value="Danilo &quot;Dan&quot; Mendoza">Danilo "Dan" Mendoza</option>
-            <option value="Sarah Dizon">Sarah Dizon</option>
-            <option value="Liam Bernardo">Liam Bernardo</option>
-            <option value="Maya Villanueva">Maya Villanueva</option>
           </select>
 
           <button class="btn btn-outline btn-sm" onclick="resetFilters()">Reset</button>
@@ -324,10 +320,6 @@
           <div>
             <label class="form-label">Assign Technician *</label>
             <select id="input-tech" class="form-input" required>
-              <option value="Danilo &quot;Dan&quot; Mendoza">Danilo "Dan" Mendoza</option>
-              <option value="Sarah Dizon">Sarah Dizon</option>
-              <option value="Liam Bernardo">Liam Bernardo</option>
-              <option value="Maya Villanueva">Maya Villanueva</option>
             </select>
           </div>
         </div>
