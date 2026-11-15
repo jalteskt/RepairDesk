@@ -150,9 +150,11 @@ try {
             query('INSERT INTO customer_requests(job_id,kind,message) VALUES(?,?,?)',[$j['id'],$kind,text($body['message']??'',4000)]);
             event((int)$j['id'],'Customer request: '.$kind);
         } else fail('Unknown request.');
+        notify_staff_of_customer_action($j, $kind);
         $db->commit(); reply(shape(query('SELECT * FROM jobs WHERE id=?',[$j['id']])->fetch(),true));
     }
     if (!$user) fail('Sign in required.',401);
+    if ($action==='staff-notifications') staff_notifications($method,$body);
     if ($action==='bootstrap' && $method==='GET') {
         $jobs=query('SELECT * FROM jobs'.($user['role']==='technician'?' WHERE technician_id=?':'').' ORDER BY id DESC',$user['role']==='technician'?[$user['id']]:[])->fetchAll();
         $techs=query("SELECT id,name,email,phone,specialty,IF(active=1,'Active','Deactivated') AS status FROM users WHERE role='technician'".($user['role']==='technician'?' AND id=?':''),$user['role']==='technician'?[$user['id']]:[])->fetchAll();
@@ -230,8 +232,7 @@ try {
                 $from=array_search($j['status'],$flow,true); $to=array_search($s,$flow,true);
                 if ($s==='Collected' || $from===false || $to===false || abs($to-$from)>1 || ($s==='Repairing' && $j['quote_decision']!=='approve')) fail('This transition requires administrator access or quote approval.',403);
             }
-            $warranty=$j['warranty_until']; if ($s==='Collected') { admin(); if ($j['status']!=='Collected') $warranty=gmdate('Y-m-d',time()+90*86400); }
-            query('UPDATE jobs SET status=?,warranty_until=? WHERE id=?',[$s,$warranty,$j['id']]); event((int)$j['id'],'Status: '.$s.'; '.text($body['reason']??'Staff update',1000));
+            query('UPDATE jobs SET status=? WHERE id=?',[$s,$j['id']]); event((int)$j['id'],'Status: '.$s.'; '.text($body['reason']??'Staff update',1000));
         } else fail('Unknown operation.');
         query('UPDATE jobs SET version=version+1 WHERE id=?',[$j['id']]);
         $messages=['quote'=>'Your repair quotation is ready for review.','payment'=>'Your payment has been recorded.','pickup'=>'Your item was collected.','status'=>'Your repair status is now '.($s??'').'.'];

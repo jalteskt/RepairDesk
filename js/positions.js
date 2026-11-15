@@ -2,7 +2,7 @@ async function showPositions() {
   const list=document.getElementById('positions');
   const adminForm=document.getElementById('position-form');
   const positions=await RD.call('positions'); list.replaceChildren();
-  if(adminForm && !positions.length)list.textContent='There are no open positions at the moment.';
+  if(!positions.length)list.textContent='There are no open positions at the moment.';
   for(const position of positions){
     const item=document.createElement('article'); item.className='card';
     const title=document.createElement(adminForm ? 'h3' : 'h2'); title.textContent=position.title;
@@ -15,11 +15,6 @@ async function showPositions() {
     list.append(item);
   }
 }
-const sampleRole = {
-  id: 'sample',
-  title: 'Workshop Apprentice (sample)',
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nSed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-};
 
 function roleLink(role) {
   const link = document.createElement('a');
@@ -31,8 +26,7 @@ function roleLink(role) {
 }
 
 async function showRoleDetails(id, list) {
-  const role = id === sampleRole.id ? sampleRole :
-    (await RD.call('positions')).find(position => String(position.id) === id);
+  const role = (await RD.call('positions')).find(position => String(position.id) === id);
   list.replaceChildren();
   if (!role) {
     list.textContent = 'This position is no longer listed.';
@@ -99,16 +93,7 @@ if(document.getElementById('position-form')){
     }
   }
   const selectedRole = new URLSearchParams(location.search).get('position');
-  if (selectedRole === null) {
-    const card = document.createElement('article');
-    card.className = 'card';
-    const title = document.createElement('h2');
-    title.textContent = sampleRole.title;
-    const summary = document.createElement('p');
-    summary.textContent = sampleRole.description.split('\n')[0];
-    card.append(title, summary, roleLink(sampleRole));
-    document.getElementById('sample-position').append(card);
-  } else {
+  if (selectedRole !== null) {
     const back = document.getElementById('roles-back');
     back.href = 'roles.html';
     back.textContent = '← All open roles';

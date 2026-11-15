@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-function send_shop_mail(string $address, string $subject, string $message, array $settings): void {
+function send_shop_mail(string $address, string $subject, string $message, array $settings, ?string $ticketUrl = null): void {
     $loader = dirname(__DIR__).'/vendor/autoload.php';
     if (!is_file($loader) || empty($settings['username']) || empty($settings['password'])) {
         throw new RuntimeException('SMTP configuration missing');
@@ -20,6 +20,10 @@ function send_shop_mail(string $address, string $subject, string $message, array
     $mailer->addAddress($address);
     $mailer->Subject = $subject;
     $mailer->Body = $message;
+    if ($ticketUrl !== null) {
+        require_once __DIR__.'/ticket-email.php';
+        format_ticket_email($mailer, $message, $ticketUrl);
+    }
     $mailer->send();
 }
 

@@ -92,6 +92,41 @@
       border-radius: var(--radius-md);
       font-size: 14px;
     }
+    .status-label-short { display: none; }
+
+    @media screen and (max-width: 600px) {
+      .dashboard-layout .job-status-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0;
+        border-bottom: 0;
+        overflow: visible;
+      }
+      .dashboard-layout .job-status-tabs .tab-btn {
+        position: relative;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-width: 0;
+        min-height: 54px;
+        padding: 5px 2px;
+        margin: 0;
+        gap: 3px;
+        font-size: .8125rem;
+        border-bottom: 2px solid var(--border);
+      }
+      .dashboard-layout .job-status-tabs .tab-btn.active { border-bottom-color: currentColor; }
+      .job-status-tabs .badge { order: -1; }
+      .job-status-tabs .status-label-short { display: inline; }
+      .job-status-tabs .status-label-full {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+    }
   </style>
   <link rel="stylesheet" href="../css/interactions.css">
   <script src="../js/dialogs.js"></script>
@@ -183,17 +218,17 @@
 
       <div class="page-content">
         
-        <div class="tab-bar">
+        <div class="tab-bar job-status-tabs" role="group" aria-label="Job status">
           <button class="tab-btn active" id="tab-pending" onclick="switchTab('pending')">
-            Pending (In Shop)
+            <span class="status-label-full">Pending (In Shop)</span><span class="status-label-short" aria-hidden="true">Pending</span>
             <span class="badge badge-teal" id="badge-pending-count">—</span>
           </button>
           <button class="tab-btn" id="tab-completed" onclick="switchTab('completed')">
-            Completed (Collected)
+            <span class="status-label-full">Completed (Collected)</span><span class="status-label-short" aria-hidden="true">Completed</span>
             <span class="badge badge-gray" id="badge-completed-count">—</span>
           </button>
           <button class="tab-btn" id="tab-cancelled" onclick="switchTab('cancelled')">
-            Cancelled / Declined
+            <span class="status-label-full">Cancelled / Declined</span><span class="status-label-short" aria-hidden="true">Cancelled</span>
             <span class="badge badge-gray" id="badge-cancelled-count">—</span>
           </button>
         </div>

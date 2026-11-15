@@ -15,6 +15,10 @@ node_modules/
 /repairdesk.sql.gz
 /backups/
 /exports/
+/docs/
+/database/migrations/
+/database/seeds/
+
 
 # Local build output
 /dist
@@ -22,6 +26,9 @@ node_modules/
 /out
 *.exe
 *.dll
+
+# Local development files
+/patches/
 
 # IDE and operating system files
 .vscode/

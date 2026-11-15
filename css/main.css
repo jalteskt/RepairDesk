@@ -1,8 +1,4 @@
-/* ============================================
-   RepairDesk - Main Styles
-   ============================================ */
 
-/* --- CSS Custom Properties --- */
 :root {
   --primary: #166534;
   --primary-dark: #14532D;
@@ -39,7 +35,6 @@
   --transition: 150ms ease;
 }
 
-/* --- CSS Reset --- */
 *,
 *::before,
 *::after {
@@ -112,7 +107,6 @@ p {
   line-height: 1.7;
 }
 
-/* --- Layout --- */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -142,7 +136,6 @@ p {
   font-size: 1.125rem;
 }
 
-/* --- Buttons --- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -216,7 +209,6 @@ p {
   box-shadow: var(--shadow-md);
 }
 
-/* --- Form Inputs --- */
 .form-group {
   margin-bottom: 20px;
 }
@@ -258,7 +250,6 @@ p {
   min-height: 100px;
 }
 
-/* --- Search Input --- */
 .search-bar {
   position: relative;
   max-width: 560px;
@@ -284,7 +275,6 @@ p {
   height: 20px;
 }
 
-/* --- Card Component --- */
 .card {
   background-color: var(--surface);
   border: 1px solid var(--border);
@@ -324,7 +314,6 @@ p {
   font-size: 0.9375rem;
 }
 
-/* --- Badge / Tag --- */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -376,7 +365,6 @@ p {
   color: var(--text-light);
 }
 
-/* --- Table --- */
 .table-wrapper {
   overflow-x: auto;
   border: 1px solid var(--border);
@@ -417,7 +405,6 @@ tbody tr:hover {
   background-color: var(--bg-alt);
 }
 
-/* --- Grid Helpers --- */
 .grid {
   display: grid;
   gap: 24px;
@@ -427,7 +414,6 @@ tbody tr:hover {
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-4 { grid-template-columns: repeat(4, 1fr); }
 
-/* --- Flex Helpers --- */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
 .flex-wrap { flex-wrap: wrap; }
@@ -442,7 +428,6 @@ tbody tr:hover {
 .gap-32 { gap: 32px; }
 .gap-48 { gap: 48px; }
 
-/* --- Spacing --- */
 .mt-8 { margin-top: 8px; }
 .mt-16 { margin-top: 16px; }
 .mt-24 { margin-top: 24px; }
@@ -452,7 +437,6 @@ tbody tr:hover {
 .mb-16 { margin-bottom: 16px; }
 .mb-24 { margin-bottom: 24px; }
 
-/* --- Text Helpers --- */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-sm { font-size: 0.875rem; }
@@ -464,7 +448,6 @@ tbody tr:hover {
 .font-semibold { font-weight: 600; }
 .font-bold { font-weight: 700; }
 
-/* --- Accordion --- */
 .accordion {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -524,7 +507,6 @@ tbody tr:hover {
   max-height: 500px;
 }
 
-/* --- Responsive --- */
 
 @media (max-width: 1200px) {
   .container {
@@ -643,7 +625,6 @@ tbody tr:hover {
 .site-wordmark { display: block; width: 156px; max-width: 100%; height: auto; }
 .rd-brand .site-wordmark, .wordmark-panel { background: #0f172a; border-radius: 6px; padding: 6px 10px; }
 .rd-brand .site-wordmark { width: min(100%, 260px); }
-.signup-wordmark { margin: 0 auto 1rem; }
 
 /* Keep the light wordmark legible on the dark navigation and footer. */
 :root[data-theme="light"] .site-wordmark {

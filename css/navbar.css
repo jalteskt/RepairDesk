@@ -1,7 +1,3 @@
-/* ============================================
-   RepairDesk - Navbar Styles
-   Industrial Eco & Restoration theme
-   ============================================ */
 
 /* Body offset for fixed navbar */
 body {
@@ -37,7 +33,6 @@ body.dashboard-body {
   height: 100%;
 }
 
-/* --- Logo --- */
 .navbar-logo {
   display: flex;
   align-items: center;
@@ -60,7 +55,6 @@ body.dashboard-body {
   color: var(--primary-bright);
 }
 
-/* --- Nav Links --- */
 .navbar-links {
   display: flex;
   align-items: center;
@@ -100,7 +94,6 @@ body.dashboard-body {
   width: 100%;
 }
 
-/* --- Mobile Hamburger Button --- */
 .navbar-hamburger {
   display: none;
   flex-direction: column;
@@ -144,7 +137,6 @@ body.dashboard-body {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* --- Mobile Menu Drawer --- */
 .navbar-mobile {
   display: none;
   position: fixed;
@@ -219,7 +211,6 @@ body.dashboard-body {
 :root[data-theme="light"] .navbar-links a::after { background-color: var(--primary); }
 :root[data-theme="light"] .navbar-hamburger:hover { background-color: var(--primary-50); }
 
-/* --- Responsive Breakpoints --- */
 
 @media (max-width: 860px) {
   .navbar-links {

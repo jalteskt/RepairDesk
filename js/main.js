@@ -1,6 +1,3 @@
-/* ============================================
-   RepairDesk - Core JavaScript
-   ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();

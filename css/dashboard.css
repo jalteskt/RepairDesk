@@ -1,6 +1,4 @@
-/* ===== RepairDesk - Dashboard Styles ===== */
 
-/* --- Dashboard Theme Variables --- */
 :root {
   --dark: #0F172A;
   --dark-alt: #1E293B;
@@ -36,14 +34,12 @@
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* ===== Layout ===== */
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
   background-color: var(--bg);
 }
 
-/* ===== Sidebar ===== */
 .sidebar {
   width: 250px;
   min-width: 250px;
@@ -237,7 +233,6 @@
   border-left-color: var(--primary);
 }
 
-/* ===== Main Content ===== */
 .main-content {
   flex: 1;
   min-width: 0;
@@ -246,7 +241,6 @@
   min-height: 100vh;
 }
 
-/* ===== Top Bar ===== */
 .topbar {
   background: var(--dark-alt);
   border-bottom: 1px solid var(--dark);
@@ -413,7 +407,6 @@
   color: var(--primary-dark);
 }
 
-/* ===== Page Content ===== */
 .page-content {
   padding: 28px;
 }
@@ -447,7 +440,6 @@
   font-size: 14px;
 }
 
-/* ===== Stats Cards ===== */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -520,7 +512,6 @@
 .stat-card .stat-change.up { color: var(--success); }
 .stat-card .stat-change.down { color: var(--danger); }
 
-/* ===== Data Tables ===== */
 .table-card {
   background: light-dark(var(--white), #202b36);
   border-radius: var(--radius-lg);
@@ -634,7 +625,6 @@
   font-size: 12px;
 }
 
-/* ===== Status Badges ===== */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -654,7 +644,6 @@
   flex-shrink: 0;
 }
 
-/* ===== Tabs ===== */
 .tabs {
   display: flex;
   gap: 0;
@@ -713,7 +702,6 @@
   display: block;
 }
 
-/* ===== Pagination ===== */
 .pagination {
   display: flex;
   align-items: center;
@@ -767,7 +755,6 @@
   cursor: not-allowed;
 }
 
-/* ===== Filters Bar ===== */
 .filters-bar {
   display: flex;
   align-items: center;
@@ -830,7 +817,6 @@
   border-color: var(--primary);
 }
 
-/* ===== Modal ===== */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -912,14 +898,12 @@
   border-top: 1px solid var(--dark-200);
 }
 
-/* ===== Form Layout ===== */
 .form-row-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-/* ===== Detail Page ===== */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -1024,7 +1008,6 @@
   text-align: right;
 }
 
-/* ===== Timeline ===== */
 .timeline {
   position: relative;
   padding-left: 24px;
@@ -1073,7 +1056,6 @@
   color: light-dark(var(--dark), #e4ebf2);
 }
 
-/* ===== Bar Chart (CSS) ===== */
 .bar-chart {
   display: flex;
   align-items: flex-end;
@@ -1119,7 +1101,6 @@
   white-space: nowrap;
 }
 
-/* ===== Technician Cards ===== */
 .tech-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1213,7 +1194,6 @@
   color: var(--dark-500);
 }
 
-/* ===== Settings ===== */
 .settings-card {
   background: light-dark(var(--white), #202b36);
   border-radius: var(--radius-lg);
@@ -1315,7 +1295,6 @@
   gap: 10px;
 }
 
-/* ===== Photo Grid ===== */
 .photo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -1349,7 +1328,6 @@
   height: 24px;
 }
 
-/* ===== Notes Section ===== */
 .notes-section {
   margin-top: 24px;
 }
@@ -1387,7 +1365,6 @@
   color: var(--dark-600);
 }
 
-/* ===== Sidebar Overlay ===== */
 .sidebar-overlay {
   display: none;
   position: fixed;
@@ -1398,14 +1375,12 @@
   cursor: pointer;
 }
 
-/* ===== Quick Actions ===== */
 .quick-actions {
   display: flex;
   gap: 12px;
   margin-top: 16px;
 }
 
-/* ===== Responsive ===== */
 @media (max-width: 1200px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1649,4 +1624,83 @@
   .topbar-right .btn span {
     display: none;
   }
+}
+
+.staff-notifications{position:relative}
+.staff-notifications [hidden]{display:none!important}
+.staff-notifications button{position:relative;display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#334155;cursor:pointer}
+.staff-notifications .alert-count{position:absolute;top:-5px;right:-5px;min-width:20px;padding:2px 4px;border-radius:12px;background:#b91c1c;color:#fff;font-size:11px;font-weight:700}
+.staff-notifications section{position:absolute;right:0;top:calc(100% + 10px);z-index:1000;width:min(360px,calc(100vw - 32px));max-height:65vh;overflow:auto;padding:16px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;color:#1e293b;box-shadow:0 12px 35px #0002}
+.staff-notifications p{font-size:12px;margin:10px 0}
+.staff-notifications ul{list-style:none;padding:0;margin:0}
+.staff-notifications a{display:block;padding:12px 8px;border-top:1px solid #e2e8f0;color:#334155;text-decoration:none}
+.staff-notifications a.is-unread{background:#eff6ff;font-weight:600}
+.staff-notifications a:hover{background:#e2e8f0}
+.staff-notifications small{display:block;margin-top:5px;font-size:11px;font-weight:400}
+.staff-notifications :focus-visible{outline:3px solid #2563eb;outline-offset:2px}
+
+
+@media screen and (max-width: 1024px) {
+  .dashboard-layout .main-content,
+  .page-content .settings-grid > *,
+  .page-content .settings-cards-grid > *,
+  .page-content .detail-grid-3-1 > * {
+    min-width: 0;
+  }
+
+  .dashboard-layout .tab-bar {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .dashboard-layout .tab-bar .tab-btn {
+    flex: none;
+    min-height: 44px;
+  }
+
+  .dashboard-layout .hamburger,
+  .dashboard-layout .settings-nav-btn {
+    min-height: 44px;
+  }
+
+  .dashboard-layout .hamburger { min-width: 44px; }
+
+  .dashboard-layout .modal-card {
+    max-height: calc(100dvh - 40px);
+    overflow-y: auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .page-content .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)) !important;
+  }
+
+  .page-content .detail-grid-3-1,
+  .page-content .settings-grid,
+  .page-content .settings-cards-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page-content .detail-grid-3-1 :is(th, td) {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .dashboard-layout .staff-notifications section {
+    position: fixed;
+    inset: 60px 12px auto auto;
+    width: min(360px, calc(100% - 24px));
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .dashboard-layout .tab-bar { flex-wrap: wrap; gap: 4px; }
+  .dashboard-layout .tab-bar .tab-btn { padding: 8px 10px; }
+  .page-content .filter-row > * { width: 100%; max-width: 100%; }
+  .page-content .tech-card-grid { grid-template-columns: minmax(0, 1fr); }
+  .page-content .meta-list { grid-template-columns: minmax(0, 1fr); }
+  .dashboard-layout .modal-card { padding: 18px; }
+  .page-content .settings-actions,
+  .page-content .chart-container > div:first-child { flex-wrap: wrap; gap: 8px; }
 }

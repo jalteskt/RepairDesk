@@ -158,3 +158,15 @@ CREATE TABLE `tracking_otp` (
   PRIMARY KEY (`job_id`),
   CONSTRAINT `tracking_otp_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS staff_notifications (
+ id int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ user_id int UNSIGNED NOT NULL,
+ job_id int UNSIGNED NOT NULL,
+ message varchar(255) NOT NULL,
+ created_at datetime NOT NULL DEFAULT current_timestamp(),
+ read_at datetime DEFAULT NULL,
+ KEY recipient_unread (user_id,read_at,id),
+ FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+ FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
