@@ -779,7 +779,7 @@
         <div class="track-search-card" id="track-card">
           <form id="track-form" onsubmit="handleLookup(event)">
             <div class="track-input-group">
-              <input type="text" id="track-code" aria-label="Ticket code" aria-describedby="code-hint" class="track-input" maxlength="8" minlength="8" pattern="[A-Za-z2-9]{8}" placeholder="Ticket code" required autofocus>
+              <input type="text" id="track-code" aria-label="Ticket code" class="track-input" maxlength="8" minlength="8" pattern="[A-Za-z2-9]{8}" placeholder="Ticket code" required autofocus>
               <button type="submit" class="btn btn-primary" style="padding: 0 28px;">Check Status</button>
             </div>
           </form>
@@ -794,8 +794,6 @@
               <button type="button" id="close-scanner" class="btn btn-outline" autofocus>Close</button>
             </div>
           </dialog>
-          <div id="code-hint" style="font-size: 0.8rem; color: var(--text-light); margin-top: 10px;">
-            Tickets originally printed with six characters now end in XX.</div>
 
           <div id="verify-step" style="display: none;">
             <div class="code-receipt">
@@ -931,7 +929,7 @@
                 <strong>Payment Status:</strong>
                 <span class="badge badge-amber" id="payment-badge" style="margin-left: 6px;"></span>
                 <p style="color: var(--text-light); margin-top: 4px; font-size: 0.75rem;">
-                  Payment is made at our Gilmore counter upon item pickup via Cash, GCash, Maya, or Credit/Debit Card.
+                  Pay at our Gilmore counter when you collect your item. We accept cash, GCash, Maya, and Visa or Mastercard credit and debit cards.
                 </p>
               </div>
             </div>
