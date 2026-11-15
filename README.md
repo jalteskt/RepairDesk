@@ -1,4 +1,4 @@
-# RepairDesk
+<h1 align="center">RepairDesk</h1>
 
 ## Description
 
